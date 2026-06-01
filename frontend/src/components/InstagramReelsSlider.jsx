@@ -4,7 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { FaInstagram } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
 const getFullMediaUrl = (url) => {
   if (!url) return '';

@@ -8,7 +8,7 @@ const Cart = () => {
   const { cart, loading, updateCartItem, removeFromCart, clearCart } = useCart();
   const navigate = useNavigate();
   
-  const API_BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5000';
+  const API_BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : (import.meta.env.PROD ? '' : 'http://localhost:5000');
   const sessionId = localStorage.getItem('sessionId');
 
   console.log('Cart.jsx: Cart data:', cart);
