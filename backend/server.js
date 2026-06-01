@@ -19,6 +19,11 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const errorHandler = require('./middleware/errorHandler');
 
+const setupDatabase = require('./setup.js');
+setupDatabase()
+  .then(() => console.log('✅ Database setup/migration completed successfully.'))
+  .catch(err => console.error('⚠️ Database setup/migration failed:', err.message));
+
 const app = express();
 
 app.use((req, res, next) => {

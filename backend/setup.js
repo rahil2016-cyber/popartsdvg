@@ -238,11 +238,21 @@ async function setupDatabase() {
     console.log('📧 Login email: admin@popartsdvg.com');
     console.log('🔑 Login password: admin123');
 
-    process.exit(0);
+    if (require.main === module) {
+      process.exit(0);
+    }
   } catch (error) {
     console.error('❌ Error during setup:', error.message);
-    process.exit(1);
+    if (require.main === module) {
+      process.exit(1);
+    } else {
+      throw error;
+    }
   }
 }
 
-setupDatabase();
+if (require.main === module) {
+  setupDatabase();
+}
+
+module.exports = setupDatabase;
