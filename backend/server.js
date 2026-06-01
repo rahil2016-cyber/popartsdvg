@@ -19,16 +19,25 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const errorHandler = require('./middleware/errorHandler');
 
+let dbSetupError = null;
 const setupDatabase = require('./setup.js');
-setupDatabase()
+const dbSetupPromise = setupDatabase()
   .then(() => console.log('✅ Database setup/migration completed successfully.'))
-  .catch(err => console.error('⚠️ Database setup/migration failed:', err.message));
+  .catch(err => {
+    console.error('⚠️ Database setup/migration failed:', err.message);
+    dbSetupError = err;
+  });
 
 const app = express();
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-  next();
+  try {
+    await dbSetupPromise;
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
 
@@ -63,6 +72,23 @@ apiRouter.use('/admin', adminRoutes);
 
 apiRouter.get('/health', (req, res) => {
   res.json({ message: 'POPARTS DVG API is running!' });
+});
+
+apiRouter.get('/db-status', async (req, res) => {
+  try {
+    const pool = require('./config/db');
+    const [tables] = await pool.execute('SHOW TABLES');
+    const [categories] = await pool.execute('SELECT * FROM categories');
+    res.json({
+      success: true,
+      tables: tables.map(row => Object.values(row)[0]),
+      categories: categories,
+      dbSetupError: dbSetupError ? dbSetupError.message : null,
+      dbSetupErrorStack: dbSetupError ? dbSetupError.stack : null
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message, stack: err.stack, dbSetupError: dbSetupError ? dbSetupError.message : null });
+  }
 });
 
 app.use('/api', apiRouter);
