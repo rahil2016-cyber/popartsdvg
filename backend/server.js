@@ -91,6 +91,32 @@ apiRouter.get('/db-status', async (req, res) => {
   }
 });
 
+apiRouter.get('/test-products', async (req, res) => {
+  try {
+    const pool = require('./config/db');
+    const query = `
+      SELECT p.*, 
+             COALESCE(
+               (SELECT GROUP_CONCAT(cat.name SEPARATOR ', ') 
+                FROM categories cat 
+                JOIN product_categories pc ON cat.id = pc.category_id 
+                WHERE pc.product_id = p.id),
+               c.name
+             ) as category_name,
+             pi.image_url as primary_image
+      FROM products p
+      LEFT JOIN categories c ON p.category_id = c.id
+      LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
+      WHERE 1=1
+      ORDER BY p.created_at DESC LIMIT 12 OFFSET 0
+    `;
+    const [products] = await pool.execute(query);
+    res.json({ success: true, count: products.length, products });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message, stack: err.stack });
+  }
+});
+
 app.use('/api', apiRouter);
 app.use('/', apiRouter);
 
