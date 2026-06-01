@@ -13,7 +13,7 @@ const getProducts = async (req, res) => {
              ANY_VALUE(pi.image_url) as primary_image
       FROM products p
       LEFT JOIN categories c ON p.category_id = c.id
-      LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
+      LEFT JOIN product_images pi ON p.id = pi.product_id
       WHERE 1=1
     `;
     const params = [];
@@ -65,26 +65,30 @@ const getProducts = async (req, res) => {
     const [countResult] = await pool.execute(countQuery, countParams);
     const total = countResult[0].total;
 
-    // Optionally enrich with product_images and category_ids (safe - wrapped in try/catch)
-    for (let product of products) {
+    // Batch fetch images to avoid N+1 queries timeout
+    if (products.length > 0) {
       try {
-        const [images] = await pool.execute(
-          'SELECT id, image_url, is_primary FROM product_images WHERE product_id = ?',
-          [product.id]
+        const productIds = products.map(p => p.id);
+        const [allImages] = await pool.query(
+          `SELECT product_id, id, image_url, is_primary FROM product_images WHERE product_id IN (${productIds.join(',')})`
         );
-        product.images = images;
-      } catch (e) {
-        product.images = [];
-      }
+        const [allCategories] = await pool.query(
+          `SELECT product_id, category_id FROM product_categories WHERE product_id IN (${productIds.join(',')})`
+        );
 
-      try {
-        const [categoryRows] = await pool.execute(
-          'SELECT category_id FROM product_categories WHERE product_id = ?',
-          [product.id]
-        );
-        product.category_ids = categoryRows.map(row => row.category_id);
+        for (let product of products) {
+          product.images = allImages.filter(img => img.product_id === product.id);
+          product.category_ids = allCategories.filter(cat => cat.product_id === product.id).map(c => c.category_id);
+          if (product.category_ids.length === 0 && product.category_id) {
+            product.category_ids = [product.category_id];
+          }
+        }
       } catch (e) {
-        product.category_ids = product.category_id ? [product.category_id] : [];
+        console.error('Batch enrichment failed:', e);
+        for (let product of products) {
+          product.images = [];
+          product.category_ids = product.category_id ? [product.category_id] : [];
+        }
       }
     }
 
@@ -336,7 +340,7 @@ const updateProduct = async (req, res) => {
 
     if (directImageUrls.length > 0) {
       const [existingImages] = await connection.execute('SELECT COUNT(*) as count FROM product_images WHERE product_id = ?', [id]);
-      const currentCount = existingImages[0].count;
+      const currentCount = Number(existingImages[0].count || 0);
       const canAdd = 6 - currentCount;
       
       if (canAdd > 0) {
