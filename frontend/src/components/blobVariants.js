@@ -1,0 +1,58 @@
+export const blobVariants = [
+  {
+    glow: 'rounded-[48%_52%_68%_32%/58%_42%_58%_42%]',
+    frame: 'rounded-[42%_58%_52%_48%/46%_54%_46%_54%]',
+    image: 'rounded-[38%_62%_58%_42%/48%_52%_48%_52%]',
+    rotate: '-rotate-2',
+    hoverRotate: 'group-hover:-rotate-1',
+  },
+  {
+    glow: 'rounded-[55%_45%_40%_60%/50%_50%_50%_50%]',
+    frame: 'rounded-[50%_50%_45%_55%/55%_45%_55%_45%]',
+    image: 'rounded-[45%_55%_50%_50%/50%_50%_50%_50%]',
+    rotate: 'rotate-1',
+    hoverRotate: 'group-hover:rotate-0',
+  },
+  {
+    glow: 'rounded-[40%_60%_55%_45%/62%_38%_62%_38%]',
+    frame: 'rounded-[58%_42%_48%_52%/44%_56%_44%_56%]',
+    image: 'rounded-[52%_48%_42%_58%/50%_50%_50%_50%]',
+    rotate: '-rotate-1',
+    hoverRotate: 'group-hover:rotate-1',
+  },
+  {
+    glow: 'rounded-[52%_48%_62%_38%/46%_54%_46%_54%]',
+    frame: 'rounded-[44%_56%_54%_46%/52%_48%_52%_48%]',
+    image: 'rounded-[40%_60%_55%_45%/48%_52%_48%_52%]',
+    rotate: 'rotate-2',
+    hoverRotate: 'group-hover:rotate-0',
+  },
+  {
+    glow: 'rounded-[46%_54%_50%_50%/58%_42%_58%_42%]',
+    frame: 'rounded-[50%_50%_46%_54%/48%_52%_48%_52%]',
+    image: 'rounded-[44%_56%_50%_50%/52%_48%_52%_48%]',
+    rotate: '-rotate-3',
+    hoverRotate: 'group-hover:-rotate-2',
+  },
+  {
+    glow: 'rounded-[50%_50%_58%_42%/44%_56%_44%_56%]',
+    frame: 'rounded-[46%_54%_48%_52%/52%_48%_52%_48%]',
+    image: 'rounded-[42%_58%_54%_46%/50%_50%_50%_50%]',
+    rotate: 'rotate-1',
+    hoverRotate: 'group-hover:rotate-2',
+  },
+  {
+    glow: 'rounded-[44%_56%_52%_48%/58%_42%_58%_42%]',
+    frame: 'rounded-[52%_48%_44%_56%/46%_54%_46%_54%]',
+    image: 'rounded-[48%_52%_46%_54%/52%_48%_52%_48%]',
+    rotate: '-rotate-2',
+    hoverRotate: 'group-hover:-rotate-1',
+  },
+  {
+    glow: 'rounded-[58%_42%_46%_54%/50%_50%_50%_50%]',
+    frame: 'rounded-[40%_60%_52%_48%/54%_46%_54%_46%]',
+    image: 'rounded-[46%_54%_50%_50%/48%_52%_48%_52%]',
+    rotate: 'rotate-3',
+    hoverRotate: 'group-hover:rotate-1',
+  },
+];

@@ -1,0 +1,40 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #ffffff;
+  overflow-x: hidden;
+}
+
+/* Premium hero */
+.hero-luxe {
+  background: linear-gradient(165deg, #fdf4ff 0%, #faf5ff 38%, #fff1f2 72%, #f5f3ff 100%);
+}
+
+.hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.hero-shimmer {
+  animation: hero-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes hero-shimmer {
+  0%, 100% { box-shadow: 0 8px 32px rgba(124, 58, 237, 0.12); }
+  50% { box-shadow: 0 8px 40px rgba(236, 72, 153, 0.22); }
+}
+
+/* Custom scrollbar for horizontal product scroll */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
