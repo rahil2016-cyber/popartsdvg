@@ -215,9 +215,9 @@ const getAllOrders = async (req, res) => {
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
     params.push(parseInt(limit), parseInt(offset));
 
-    const [orders] = await pool.execute(query, params);
+    const [orders] = await pool.query(query, params);
 
-    const [countResult] = await pool.execute(
+    const [countResult] = await pool.query(
       query.replace(/SELECT.*FROM/, 'SELECT COUNT(*) as total FROM').replace(/ORDER BY.*$/, ''),
       params.slice(0, -2)
     );

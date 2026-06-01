@@ -15,6 +15,8 @@ import Register from './pages/Register';
 import Profile from './pages/Profile';
 import Orders from './pages/Orders';
 import OrderDetail from './pages/OrderDetail';
+import TrackOrder from './pages/TrackOrder';
+import Shop from './pages/Shop';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import PaymentVerify from './pages/PaymentVerify';
@@ -68,6 +70,7 @@ const AppContent = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/orders" element={<Orders />} />
           <Route path="/order/:id" element={<OrderDetail />} />
+          <Route path="/track-order" element={<TrackOrder />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/refund-policy" element={<RefundPolicy />} />

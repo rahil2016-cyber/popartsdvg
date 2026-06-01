@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ChevronLeft, MapPin, Clock } from 'lucide-react';
+import toast from 'react-hot-toast';
 import api from '../services/api';
 
 const OrderDetail = () => {
@@ -92,6 +93,27 @@ const OrderDetail = () => {
           <span className={`px-4 py-2 rounded-full font-semibold ${getStatusColor(order.order_status)}`}>
             {order.order_status.charAt(0).toUpperCase() + order.order_status.slice(1)}
           </span>
+        </div>
+
+        <div className="mb-8">
+          <div className="bg-purple-50 rounded-xl p-6 border border-purple-100 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+              <h3 className="text-lg font-semibold text-purple-900 mb-1">Your Tracking Code</h3>
+              <p className="text-purple-700 text-sm">Save this code to track your order anytime from our website.</p>
+            </div>
+            <div className="bg-white px-6 py-3 rounded-lg border border-purple-200 shadow-sm flex items-center gap-3">
+              <span className="font-mono text-xl font-bold text-gray-900">{order.order_number}</span>
+              <button 
+                onClick={() => {
+                  navigator.clipboard.writeText(order.order_number);
+                  toast.success('Tracking code copied!');
+                }}
+                className="text-purple-600 hover:text-purple-800 text-sm font-medium"
+              >
+                Copy
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="mb-8">
