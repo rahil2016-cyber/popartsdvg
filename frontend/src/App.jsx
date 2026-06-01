@@ -17,6 +17,7 @@ import Orders from './pages/Orders';
 import OrderDetail from './pages/OrderDetail';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import PaymentVerify from './pages/PaymentVerify';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProducts from './pages/admin/AdminProducts';
@@ -28,6 +29,11 @@ import AdminReels from './pages/admin/AdminReels';
 const AdminRoute = ({ children }) => {
   const adminToken = localStorage.getItem('adminToken');
   return adminToken ? children : <Navigate to="/admin/login" replace />;
+};
+
+const PrivateRoute = ({ children }) => {
+  const token = localStorage.getItem('token');
+  return token ? children : <Navigate to="/login" replace />;
 };
 
 const GuestAdminRoute = ({ children }) => {
@@ -50,7 +56,8 @@ const AppContent = () => {
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout" element={<PrivateRoute><Checkout /></PrivateRoute>} />
+          <Route path="/payment/verify/:orderId" element={<PrivateRoute><PaymentVerify /></PrivateRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />

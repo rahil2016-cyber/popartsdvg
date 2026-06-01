@@ -16,6 +16,7 @@ const reviewRoutes = require('./routes/reviewRoutes');
 const bannerRoutes = require('./routes/bannerRoutes');
 const reelRoutes = require('./routes/reelRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 const errorHandler = require('./middleware/errorHandler');
 
@@ -57,6 +58,7 @@ apiRouter.use('/reviews', reviewRoutes);
 apiRouter.use('/banners', bannerRoutes);
 apiRouter.use('/reels', reelRoutes);
 apiRouter.use('/admin', adminRoutes);
+apiRouter.use('/payments', paymentRoutes);
 
 apiRouter.get('/health', (req, res) => {
   res.json({ message: 'POPARTS DVG API is running!' });

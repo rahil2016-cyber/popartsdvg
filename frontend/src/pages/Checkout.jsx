@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import api from '../services/api';
 import toast from 'react-hot-toast';
+import { load } from '@cashfreepayments/cashfree-js';
 
 const DELIVERY_CHARGE = 120;
 const PICKUP_LOCATION = "Poparts DVG Store, 123 Main Street, Davanagere, Karnataka - 577001";
@@ -77,8 +78,26 @@ const Checkout = () => {
 
       const res = await api.post('/orders', orderData);
       await clearCart();
-      toast.success('Order placed successfully!');
-      navigate(`/order/${res.data.order_number}`);
+      
+      if (formData.paymentMethod === 'Cashfree') {
+        const orderId = res.data.id;
+        const sessionRes = await api.post('/payments/create-session', { orderId });
+        
+        if (sessionRes.data && sessionRes.data.payment_session_id) {
+          const cashfree = await load({ mode: 'production' });
+          cashfree.checkout({
+            paymentSessionId: sessionRes.data.payment_session_id,
+            redirectTarget: '_self'
+          });
+          return; // Stop execution as Cashfree will redirect
+        } else {
+          toast.error('Could not initiate payment session');
+          navigate(`/order/${res.data.order_number}`);
+        }
+      } else {
+        toast.success('Order placed successfully!');
+        navigate(`/order/${res.data.order_number}`);
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to place order');
     } finally {
@@ -266,12 +285,12 @@ const Checkout = () => {
                 <input
                   type="radio"
                   name="paymentMethod"
-                  value="Razorpay"
-                  checked={formData.paymentMethod === 'Razorpay'}
+                  value="Cashfree"
+                  checked={formData.paymentMethod === 'Cashfree'}
                   onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
                   className="w-4 h-4 text-hot-pink"
                 />
-                <span className="ml-3 text-gray-800">Razorpay (UPI/Card)</span>
+                <span className="ml-3 text-gray-800">Pay Online (Cards/UPI/NetBanking)</span>
               </label>
             </div>
 
