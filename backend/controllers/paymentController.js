@@ -47,7 +47,7 @@ const createSession = async (req, res) => {
         customer_name: order.customer_name || "Guest User"
       },
       order_meta: {
-        return_url: `${process.env.CLIENT_URL || 'http://localhost:5173'}/payment/verify/${order.order_number}?order_id={order_id}`
+        return_url: `${process.env.CLIENT_URL || 'https://www.popartsdvg.com'}/payment/verify/${order.order_number}?order_id={order_id}`.replace('http://', 'https://')
       }
     };
     
@@ -60,13 +60,17 @@ const createSession = async (req, res) => {
     const data = await response.json();
     
     if (!response.ok) {
-      throw { response: { data } };
+      throw { response: { data, status: response.status } };
     }
     
     res.json({ payment_session_id: data.payment_session_id, order_id: data.order_id });
   } catch (error) {
     console.error('Error creating Cashfree session:', error.response?.data || error.message);
-    res.status(500).json({ message: 'Could not create payment session', error: error.response?.data?.message || error.message });
+    res.status(500).json({ 
+      message: 'Could not create payment session', 
+      error: error.response?.data?.message || error.message,
+      cashfree_raw_error: error.response?.data
+    });
   }
 };
 
