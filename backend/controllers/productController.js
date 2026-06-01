@@ -217,7 +217,9 @@ const createProduct = async (req, res) => {
     }
 
     // Save images (from direct frontend uploads or multer)
-    const directImageUrls = req.body['image_urls[]'] 
+    const directImageUrls = req.body.image_urls 
+      ? (Array.isArray(req.body.image_urls) ? req.body.image_urls : [req.body.image_urls])
+      : req.body['image_urls[]'] 
       ? (Array.isArray(req.body['image_urls[]']) ? req.body['image_urls[]'] : [req.body['image_urls[]']]) 
       : [];
 
@@ -326,7 +328,9 @@ const updateProduct = async (req, res) => {
     }
 
     // Add new images (direct or multer)
-    const directImageUrls = req.body['image_urls[]'] 
+    const directImageUrls = req.body.image_urls 
+      ? (Array.isArray(req.body.image_urls) ? req.body.image_urls : [req.body.image_urls])
+      : req.body['image_urls[]'] 
       ? (Array.isArray(req.body['image_urls[]']) ? req.body['image_urls[]'] : [req.body['image_urls[]']]) 
       : [];
 
@@ -337,11 +341,11 @@ const updateProduct = async (req, res) => {
       
       if (canAdd > 0) {
         const urlsToAdd = directImageUrls.slice(0, canAdd);
-        for (const url of urlsToAdd) {
+        for (let i = 0; i < urlsToAdd.length; i++) {
           try {
             await connection.execute(
               'INSERT INTO product_images (product_id, image_url, is_primary) VALUES (?, ?, ?)',
-              [id, url, 0]
+              [id, urlsToAdd[i], (currentCount === 0 && i === 0) ? 1 : 0]
             );
           } catch (imgErr) {
             console.log('Warning: Could not save direct image URL:', imgErr.message);
@@ -355,14 +359,14 @@ const updateProduct = async (req, res) => {
       
       if (canAdd > 0) {
         const filesToAdd = req.files.slice(0, canAdd);
-        for (const file of filesToAdd) {
+        for (let i = 0; i < filesToAdd.length; i++) {
           try {
-            const imageUrl = file.path && file.path.startsWith('http')
-              ? file.path
-              : `/uploads/${file.filename}`;
+            const imageUrl = filesToAdd[i].path && filesToAdd[i].path.startsWith('http')
+              ? filesToAdd[i].path
+              : `/uploads/${filesToAdd[i].filename}`;
             await connection.execute(
               'INSERT INTO product_images (product_id, image_url, is_primary) VALUES (?, ?, ?)',
-              [id, imageUrl, 0]
+              [id, imageUrl, (currentCount === 0 && i === 0) ? 1 : 0]
             );
           } catch (imgErr) {
             console.log('Warning: Could not save image:', imgErr.message);
