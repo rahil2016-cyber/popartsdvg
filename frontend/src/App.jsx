@@ -16,7 +16,6 @@ import Profile from './pages/Profile';
 import Orders from './pages/Orders';
 import OrderDetail from './pages/OrderDetail';
 import TrackOrder from './pages/TrackOrder';
-import Shop from './pages/Shop';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import PaymentVerify from './pages/PaymentVerify';
