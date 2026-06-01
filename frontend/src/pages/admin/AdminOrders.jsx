@@ -182,7 +182,7 @@ const AdminOrders = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <p className="font-bold text-gray-900">₹{order.total_amount?.toFixed(2)}</p>
+                        <p className="font-bold text-gray-900">₹{parseFloat(order.total_amount || 0).toFixed(2)}</p>
                       </td>
                       <td className="px-6 py-4 pr-8 text-right">
                         <div className="flex items-center justify-end gap-2">
@@ -321,7 +321,7 @@ const AdminOrders = () => {
                             <span className="bg-gray-100 px-2 py-1 rounded">Qty: {item.quantity}</span>
                           </td>
                           <td className="px-4 py-4 text-right font-semibold text-gray-900">
-                            ₹{(item.price * item.quantity).toFixed(2)}
+                            ₹{(parseFloat(item.price || 0) * parseInt(item.quantity || 1)).toFixed(2)}
                           </td>
                         </tr>
                       ))}
@@ -333,10 +333,10 @@ const AdminOrders = () => {
               {/* Order Summary */}
               <div className="border-t border-gray-200 pt-5">
                 <div className="space-y-2 max-w-md ml-auto">
-                  {selectedOrder.discount_amount > 0 && (
+                  {parseFloat(selectedOrder.discount_amount || 0) > 0 && (
                     <div className="flex justify-between text-sm text-gray-600">
                       <span>Discount:</span>
-                      <span className="text-green-600">-₹{selectedOrder.discount_amount.toFixed(2)}</span>
+                      <span className="text-green-600">-₹{parseFloat(selectedOrder.discount_amount).toFixed(2)}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-sm text-gray-600">
@@ -355,7 +355,7 @@ const AdminOrders = () => {
                   </div>
                   <div className="flex justify-between text-xl font-bold text-gray-900 border-t border-gray-200 pt-3 mt-3">
                     <span>Total Amount:</span>
-                    <span>₹{selectedOrder.total_amount.toFixed(2)}</span>
+                    <span>₹{parseFloat(selectedOrder.total_amount || 0).toFixed(2)}</span>
                   </div>
                 </div>
               </div>
