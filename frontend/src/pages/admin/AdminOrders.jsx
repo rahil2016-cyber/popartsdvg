@@ -316,7 +316,7 @@ const AdminOrders = () => {
                               <p className="font-medium text-gray-900">{item.name}</p>
                             </div>
                           </td>
-                          <td className="px-4 py-4 text-sm text-gray-700">₹{item.price.toFixed(2)}</td>
+                          <td className="px-4 py-4 text-sm text-gray-700">₹{parseFloat(item.price || 0).toFixed(2)}</td>
                           <td className="px-4 py-4 text-sm text-gray-700">
                             <span className="bg-gray-100 px-2 py-1 rounded">Qty: {item.quantity}</span>
                           </td>

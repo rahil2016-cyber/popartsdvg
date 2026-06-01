@@ -204,7 +204,7 @@ const getAllOrders = async (req, res) => {
     const { status, page = 1, limit = 20 } = req.query;
     const offset = (page - 1) * limit;
 
-    let query = 'SELECT * FROM orders WHERE 1=1';
+    let query = 'SELECT * FROM orders WHERE (payment_method = "COD" OR payment_status != "pending")';
     const params = [];
 
     if (status) {
