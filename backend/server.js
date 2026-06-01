@@ -43,7 +43,9 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+app.use('/uploads', express.static('/tmp'));
 app.use('/api/uploads', express.static(path.join(__dirname, 'public/uploads')));
+app.use('/api/uploads', express.static('/tmp'));
 
 const apiRouter = express.Router();
 

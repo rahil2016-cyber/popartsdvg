@@ -187,7 +187,11 @@ const AdminProducts = () => {
 
   const handleEdit = (product) => {
     setEditingProduct(product);
-    setSelectedCategories(product.category_id ? [String(product.category_id)] : []);
+    setSelectedCategories(
+      product.category_ids && product.category_ids.length > 0
+        ? product.category_ids.map(String)
+        : (product.category_id ? [String(product.category_id)] : [])
+    );
     setFormData({
       name: product.name || '',
       slug: product.slug || '',

@@ -110,6 +110,7 @@ async function setupDatabase() {
         payment_status ENUM('pending','completed','failed','refunded') DEFAULT 'pending',
         order_status ENUM('pending','processing','shipped','delivered','cancelled','returned') DEFAULT 'pending',
         delivery_type ENUM('shipping','pickup') DEFAULT 'shipping',
+        delivery_charge DECIMAL(10,2) DEFAULT 0,
         shipping_address TEXT NOT NULL,
         billing_address TEXT,
         customer_name VARCHAR(255) NOT NULL,
@@ -187,12 +188,40 @@ async function setupDatabase() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )`,
+      `CREATE TABLE IF NOT EXISTS insta_reels (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        media_url VARCHAR(255) NOT NULL,
+        media_type VARCHAR(20) NOT NULL DEFAULT 'image',
+        is_active TINYINT(1) DEFAULT 1,
+        position INT DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )`,
+      `CREATE TABLE IF NOT EXISTS product_categories (
+        product_id INT NOT NULL,
+        category_id INT NOT NULL,
+        PRIMARY KEY (product_id, category_id),
+        FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+      )`,
     ];
 
     for (const query of tableQueries) {
       await connection.query(query);
     }
     console.log('✅ All tables created!');
+
+    // Ensure delivery_charge column exists in orders table (migration for existing setups)
+    try {
+      const [columns] = await connection.query("SHOW COLUMNS FROM orders LIKE 'delivery_charge'");
+      if (columns.length === 0) {
+        console.log('Adding delivery_charge column to orders table...');
+        await connection.query('ALTER TABLE orders ADD COLUMN delivery_charge DECIMAL(10,2) DEFAULT 0');
+        console.log('✅ Column delivery_charge added successfully!');
+      }
+    } catch (e) {
+      console.log('ℹ️ Could not check/add delivery_charge column:', e.message);
+    }
 
     // 4. Create admin user
     const salt = await bcrypt.genSalt(10);
@@ -214,11 +243,25 @@ async function setupDatabase() {
 
     // 5. Also insert some sample data
     try {
-      // Insert sample category
-      await connection.query(
-        `INSERT IGNORE INTO categories (name, slug, description) VALUES (?, ?, ?)`,
-        ['Birthday Gifts', 'birthday-gifts', 'Beautiful birthday gifts for all ages']
-      );
+      const categoriesToSeed = [
+        { name: 'Best Sellers', slug: 'best-sellers' },
+        { name: 'New Arrivals', slug: 'new-arrivals' },
+        { name: 'Personalized Gifts', slug: 'personalized-gifts' },
+        { name: 'Premium Hampers', slug: 'premium-hampers' },
+        { name: 'Birthday Gifts', slug: 'birthday-gifts' },
+        { name: 'Return Gifts', slug: 'return-gifts' },
+        { name: 'Baby Hampers', slug: 'baby-hampers' },
+        { name: 'Bridal & Muhurtam', slug: 'bridal-gifting' },
+        { name: 'Festivals', slug: 'festivals' },
+        { name: 'Corporate Gifting', slug: 'corporate-gifting' }
+      ];
+      for (const cat of categoriesToSeed) {
+        await connection.query(
+          `INSERT IGNORE INTO categories (name, slug) VALUES (?, ?)`,
+          [cat.name, cat.slug]
+        );
+      }
+      console.log('✅ Seed categories created/verified!');
       
       // Insert sample product
       await connection.query(
@@ -229,7 +272,7 @@ async function setupDatabase() {
       
       console.log('✅ Sample data inserted!');
     } catch (e) {
-      console.log('ℹ️ Sample data already exists');
+      console.log('ℹ️ Sample data already exists', e.message);
     }
 
     await connection.end();
