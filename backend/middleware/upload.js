@@ -3,10 +3,12 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Determine if Cloudinary is configured
-const useCloudinary = process.env.CLOUDINARY_CLOUD_NAME && 
-                      process.env.CLOUDINARY_API_KEY && 
-                      process.env.CLOUDINARY_API_SECRET;
+// Determine if Cloudinary is configured (via URL or individual vars)
+const useCloudinary = process.env.CLOUDINARY_URL || (
+  process.env.CLOUDINARY_CLOUD_NAME && 
+  process.env.CLOUDINARY_API_KEY && 
+  process.env.CLOUDINARY_API_SECRET
+);
 
 let upload;
 
