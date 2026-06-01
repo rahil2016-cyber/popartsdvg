@@ -40,21 +40,26 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 app.use('/api/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/categories', categoryRoutes);
-app.use('/api/cart', cartRoutes);
-app.use('/api/wishlist', wishlistRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/coupons', couponRoutes);
-app.use('/api/reviews', reviewRoutes);
-app.use('/api/banners', bannerRoutes);
-app.use('/api/reels', reelRoutes);
-app.use('/api/admin', adminRoutes);
+const apiRouter = express.Router();
 
-app.get('/api/health', (req, res) => {
+apiRouter.use('/auth', authRoutes);
+apiRouter.use('/products', productRoutes);
+apiRouter.use('/categories', categoryRoutes);
+apiRouter.use('/cart', cartRoutes);
+apiRouter.use('/wishlist', wishlistRoutes);
+apiRouter.use('/orders', orderRoutes);
+apiRouter.use('/coupons', couponRoutes);
+apiRouter.use('/reviews', reviewRoutes);
+apiRouter.use('/banners', bannerRoutes);
+apiRouter.use('/reels', reelRoutes);
+apiRouter.use('/admin', adminRoutes);
+
+apiRouter.get('/health', (req, res) => {
   res.json({ message: 'POPARTS DVG API is running!' });
 });
+
+app.use('/api', apiRouter);
+app.use('/', apiRouter);
 
 app.use(errorHandler);
 
