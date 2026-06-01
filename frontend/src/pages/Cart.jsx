@@ -52,6 +52,11 @@ const Cart = () => {
         >
           Shop Now
         </Link>
+        <div className="mt-6">
+          <Link to="/track-order" className="text-gray-500 hover:text-hot-pink transition-colors underline font-medium">
+            View Order History & Track Order
+          </Link>
+        </div>
       </div>
     );
   }
@@ -139,10 +144,17 @@ const Cart = () => {
 
             <button
               onClick={clearCart}
-              className="w-full mt-4 text-gray-500 hover:text-hot-pink transition-colors"
+              className="w-full mt-4 text-gray-500 hover:text-hot-pink transition-colors font-medium"
             >
               Clear Cart
             </button>
+            
+            <div className="mt-8 pt-6 border-t border-gray-100 text-center">
+              <Link to="/track-order" className="text-gray-600 hover:text-hot-pink transition-colors font-medium inline-flex items-center gap-2">
+                View Order History
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </div>
       </div>

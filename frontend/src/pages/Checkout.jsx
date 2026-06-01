@@ -178,7 +178,11 @@ const Checkout = () => {
                   name="deliveryType"
                   value="shipping"
                   checked={formData.deliveryType === 'shipping'}
-                  onChange={(e) => setFormData({ ...formData, deliveryType: e.target.value })}
+                  onChange={(e) => setFormData({ 
+                    ...formData, 
+                    deliveryType: e.target.value,
+                    paymentMethod: formData.paymentMethod === 'COD' ? 'Cashfree' : formData.paymentMethod 
+                  })}
                   className="w-4 h-4 text-hot-pink"
                 />
                 <div className="flex items-center gap-2">
@@ -277,17 +281,19 @@ const Checkout = () => {
             </h2>
 
             <div className="space-y-4 mb-8">
-              <label className="flex items-center p-4 border-2 rounded-xl cursor-pointer transition-colors border-gray-200 hover:border-hot-pink">
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="COD"
-                  checked={formData.paymentMethod === 'COD'}
-                  onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
-                  className="w-4 h-4 text-hot-pink"
-                />
-                <span className="ml-3 text-gray-800">Cash on Delivery</span>
-              </label>
+              {formData.deliveryType === 'pickup' && (
+                <label className="flex items-center p-4 border-2 rounded-xl cursor-pointer transition-colors border-gray-200 hover:border-hot-pink">
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="COD"
+                    checked={formData.paymentMethod === 'COD'}
+                    onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
+                    className="w-4 h-4 text-hot-pink"
+                  />
+                  <span className="ml-3 text-gray-800">Cash on Delivery</span>
+                </label>
+              )}
               <label className="flex items-center p-4 border-2 rounded-xl cursor-pointer transition-colors border-gray-200 hover:border-hot-pink">
                 <input
                   type="radio"
