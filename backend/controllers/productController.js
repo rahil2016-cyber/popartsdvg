@@ -9,8 +9,8 @@ const getProducts = async (req, res) => {
     // Simple resilient query - no dependency on product_categories
     let query = `
       SELECT p.*, 
-             c.name as category_name,
-             pi.image_url as primary_image
+             ANY_VALUE(c.name) as category_name,
+             ANY_VALUE(pi.image_url) as primary_image
       FROM products p
       LEFT JOIN categories c ON p.category_id = c.id
       LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
@@ -106,10 +106,11 @@ const getProductById = async (req, res) => {
     const { id } = req.params;
 
     const [products] = await pool.execute(`
-      SELECT p.*, c.name as category_name
+      SELECT p.*, ANY_VALUE(c.name) as category_name
       FROM products p
       LEFT JOIN categories c ON p.category_id = c.id
       WHERE p.id = ? OR p.slug = ?
+      GROUP BY p.id
     `, [id, id]);
 
     if (products.length === 0) {
