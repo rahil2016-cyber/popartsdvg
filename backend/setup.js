@@ -7,24 +7,27 @@ async function setupDatabase() {
   console.log('🚀 Setting up database...');
 
   try {
-    // 1. Create connection and database
-    const tempConnection = await mysql.createConnection({
-      host: process.env.DB_HOST || 'localhost',
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || '',
-      multipleStatements: true,
-    });
+    const dbName = process.env.DB_NAME || 'popartsdvg';
 
-    await tempConnection.query('CREATE DATABASE IF NOT EXISTS popartsdvg');
-    console.log('✅ Database created or already exists!');
-    await tempConnection.end();
+    // 1. Create database if connecting locally (skip if cloud database)
+    if (!process.env.DB_HOST || process.env.DB_HOST === 'localhost' || process.env.DB_HOST === '127.0.0.1') {
+      const tempConnection = await mysql.createConnection({
+        host: process.env.DB_HOST || 'localhost',
+        user: process.env.DB_USER || 'root',
+        password: process.env.DB_PASSWORD || '',
+        multipleStatements: true,
+      });
+      await tempConnection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`);
+      console.log('✅ Database created or already exists!');
+      await tempConnection.end();
+    }
 
     // 2. Now connect to the database
     const connection = await mysql.createConnection({
       host: process.env.DB_HOST || 'localhost',
       user: process.env.DB_USER || 'root',
       password: process.env.DB_PASSWORD || '',
-      database: 'popartsdvg',
+      database: dbName,
       multipleStatements: true,
     });
 
