@@ -1,11 +1,9 @@
 const { Cashfree, CFEnvironment } = require('cashfree-pg');
 const pool = require('../config/db');
 
-const cashfree = new Cashfree(
-  process.env.CASHFREE_ENV === 'PRODUCTION' ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX,
-  process.env.CASHFREE_APP_ID,
-  process.env.CASHFREE_SECRET_KEY
-);
+Cashfree.XClientId = process.env.CASHFREE_APP_ID;
+Cashfree.XClientSecret = process.env.CASHFREE_SECRET_KEY;
+Cashfree.XEnvironment = process.env.CASHFREE_ENV === 'PRODUCTION' ? Cashfree.Environment.PRODUCTION : Cashfree.Environment.SANDBOX;
 
 const createSession = async (req, res) => {
   try {
@@ -25,7 +23,7 @@ const createSession = async (req, res) => {
       return res.status(403).json({ message: 'Unauthorized access to this order' });
     }
 
-    let phone = order.customer_phone || "9999999999";
+    let phone = String(order.customer_phone || "9999999999");
     // Ensure phone is at least 10 digits for Cashfree
     if (phone.replace(/[^0-9]/g, '').length < 10) {
       phone = "9999999999";
@@ -47,7 +45,7 @@ const createSession = async (req, res) => {
       }
     };
 
-    const response = await cashfree.PGCreateOrder(request);
+    const response = await Cashfree.PGCreateOrder("2023-08-01", request);
     res.json({ payment_session_id: response.data.payment_session_id, order_id: response.data.order_id });
   } catch (error) {
     console.error('Error creating Cashfree session:', error.response?.data || error.message);
@@ -59,7 +57,7 @@ const verifyPayment = async (req, res) => {
   try {
     const { order_id } = req.body;
 
-    const response = await cashfree.PGOrderFetchPayments(order_id);
+    const response = await Cashfree.PGOrderFetchPayments("2023-08-01", order_id);
     const payments = response.data;
     
     // Check if any payment is successful

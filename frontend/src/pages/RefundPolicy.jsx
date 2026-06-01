@@ -13,8 +13,8 @@ const RefundPolicy = () => {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-3">2. Refund Policy</h2>
-          <p>We strive to deliver the best quality products. Due to the personalized nature of our items, we do not accept returns or offer refunds unless the item arrives damaged or defective.</p>
+          <h2 className="text-2xl font-semibold mb-3">2. Refund & Exchange Policy</h2>
+          <p>We strive to deliver the best quality products. Due to the personalized nature of our items, <strong>we strictly do not accept returns, and we do not offer any exchanges or refunds</strong> unless the item arrives severely damaged or defective.</p>
         </section>
 
         <section>
