@@ -19,30 +19,21 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const errorHandler = require('./middleware/errorHandler');
 
-let dbSetupError = null;
+// Run DB setup in background (non-blocking) - don't delay requests
 const setupDatabase = require('./setup.js');
-const dbSetupPromise = setupDatabase()
+setupDatabase()
   .then(() => console.log('✅ Database setup/migration completed successfully.'))
-  .catch(err => {
-    console.error('⚠️ Database setup/migration failed:', err.message);
-    dbSetupError = err;
-  });
+  .catch(err => console.error('⚠️ Database setup/migration failed (non-fatal):', err.message));
 
 const app = express();
 
-app.use(async (req, res, next) => {
+app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-  try {
-    await dbSetupPromise;
-    next();
-  } catch (err) {
-    next(err);
-  }
+  next();
 });
 
-
 app.use(helmet({
-  contentSecurityPolicy: false, // Disable CSP temporarily for testing
+  contentSecurityPolicy: false,
   crossOriginResourcePolicy: { policy: "cross-origin" },
   crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
 }));
@@ -83,34 +74,27 @@ apiRouter.get('/db-status', async (req, res) => {
       success: true,
       tables: tables.map(row => Object.values(row)[0]),
       categories: categories,
-      dbSetupError: dbSetupError ? dbSetupError.message : null,
-      dbSetupErrorStack: dbSetupError ? dbSetupError.stack : null
     });
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message, stack: err.stack, dbSetupError: dbSetupError ? dbSetupError.message : null });
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+apiRouter.get('/run-setup', async (req, res) => {
+  try {
+    await setupDatabase();
+    res.json({ success: true, message: 'Database setup completed!' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 
 apiRouter.get('/test-products', async (req, res) => {
   try {
     const pool = require('./config/db');
-    const query = `
-      SELECT p.*, 
-             COALESCE(
-               (SELECT GROUP_CONCAT(cat.name SEPARATOR ', ') 
-                FROM categories cat 
-                JOIN product_categories pc ON cat.id = pc.category_id 
-                WHERE pc.product_id = p.id),
-               c.name
-             ) as category_name,
-             pi.image_url as primary_image
-      FROM products p
-      LEFT JOIN categories c ON p.category_id = c.id
-      LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
-      WHERE 1=1
-      ORDER BY p.created_at DESC LIMIT 12 OFFSET 0
-    `;
-    const [products] = await pool.execute(query);
+    const [products] = await pool.execute(
+      'SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.created_at DESC LIMIT 12'
+    );
     res.json({ success: true, count: products.length, products });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message, stack: err.stack });
@@ -131,4 +115,3 @@ if (process.env.NODE_ENV !== 'production' || require.main === module || process.
 }
 
 module.exports = app;
-
