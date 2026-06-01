@@ -1,9 +1,15 @@
-const { Cashfree, CFEnvironment } = require('cashfree-pg');
 const pool = require('../config/db');
 
-Cashfree.XClientId = process.env.CASHFREE_APP_ID;
-Cashfree.XClientSecret = process.env.CASHFREE_SECRET_KEY;
-Cashfree.XEnvironment = process.env.CASHFREE_ENV === 'PRODUCTION' ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX;
+const CASHFREE_BASE_URL = process.env.CASHFREE_ENV === 'PRODUCTION' 
+  ? 'https://api.cashfree.com/pg' 
+  : 'https://sandbox.cashfree.com/pg';
+
+const getCashfreeHeaders = () => ({
+  'x-client-id': process.env.CASHFREE_APP_ID,
+  'x-client-secret': process.env.CASHFREE_SECRET_KEY,
+  'x-api-version': '2023-08-01',
+  'Content-Type': 'application/json'
+});
 
 const createSession = async (req, res) => {
   try {
@@ -43,11 +49,19 @@ const createSession = async (req, res) => {
       order_meta: {
         return_url: `${process.env.CLIENT_URL || 'http://localhost:5173'}/payment/verify/${order.order_number}?order_id={order_id}`
       }
-    };
-
-    const cashfree = new Cashfree();
-    const response = await cashfree.PGCreateOrder("2023-08-01", request);
-    res.json({ payment_session_id: response.data.payment_session_id, order_id: response.data.order_id });
+    const response = await fetch(`${CASHFREE_BASE_URL}/orders`, {
+      method: 'POST',
+      headers: getCashfreeHeaders(),
+      body: JSON.stringify(request)
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw { response: { data } };
+    }
+    
+    res.json({ payment_session_id: data.payment_session_id, order_id: data.order_id });
   } catch (error) {
     console.error('Error creating Cashfree session:', error.response?.data || error.message);
     res.status(500).json({ message: 'Could not create payment session', error: error.response?.data?.message || error.message });
@@ -58,9 +72,16 @@ const verifyPayment = async (req, res) => {
   try {
     const { order_id } = req.body;
 
-    const cashfree = new Cashfree();
-    const response = await cashfree.PGOrderFetchPayments("2023-08-01", order_id);
-    const payments = response.data;
+    const response = await fetch(`${CASHFREE_BASE_URL}/orders/${order_id}/payments`, {
+      method: 'GET',
+      headers: getCashfreeHeaders()
+    });
+    
+    const payments = await response.json();
+    
+    if (!response.ok) {
+      throw { response: { data: payments } };
+    }
     
     // Check if any payment is successful
     const successfulPayment = payments.find(p => p.payment_status === 'SUCCESS');
