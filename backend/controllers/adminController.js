@@ -21,11 +21,11 @@ const getDashboardStats = async (req, res) => {
     `);
 
     const [topProducts] = await pool.execute(`
-      SELECT p.id, p.name, p.slug, pi.image_url, COUNT(oi.id) as order_count
+      SELECT p.id, p.name, p.slug, MAX(pi.image_url) as image_url, COUNT(oi.id) as order_count
       FROM products p
       LEFT JOIN order_items oi ON p.id = oi.product_id
       LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
-      GROUP BY p.id
+      GROUP BY p.id, p.name, p.slug
       ORDER BY order_count DESC
       LIMIT 5
     `);
