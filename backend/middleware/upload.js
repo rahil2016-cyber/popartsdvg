@@ -12,7 +12,7 @@ let upload;
 
 if (useCloudinary) {
   // Use Cloudinary storage in production
-  const cloudinary = require('./cloudinary');
+  const cloudinary = require('../config/cloudinary');
   const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
   const storage = new CloudinaryStorage({
