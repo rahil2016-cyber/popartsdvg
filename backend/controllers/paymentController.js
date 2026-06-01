@@ -49,6 +49,8 @@ const createSession = async (req, res) => {
       order_meta: {
         return_url: `${process.env.CLIENT_URL || 'http://localhost:5173'}/payment/verify/${order.order_number}?order_id={order_id}`
       }
+    };
+    
     const response = await fetch(`${CASHFREE_BASE_URL}/orders`, {
       method: 'POST',
       headers: getCashfreeHeaders(),
