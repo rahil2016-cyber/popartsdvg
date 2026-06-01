@@ -49,7 +49,7 @@ const Checkout = () => {
     }
   }, [user]);
 
-  if (!cart.items || cart.items.length === 0) {
+  if (!loading && (!cart.items || cart.items.length === 0)) {
     navigate('/cart');
     return null;
   }
