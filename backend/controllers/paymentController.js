@@ -45,7 +45,8 @@ const createSession = async (req, res) => {
       }
     };
 
-    const response = await Cashfree.PGCreateOrder("2023-08-01", request);
+    const cashfree = new Cashfree();
+    const response = await cashfree.PGCreateOrder("2023-08-01", request);
     res.json({ payment_session_id: response.data.payment_session_id, order_id: response.data.order_id });
   } catch (error) {
     console.error('Error creating Cashfree session:', error.response?.data || error.message);
@@ -57,7 +58,8 @@ const verifyPayment = async (req, res) => {
   try {
     const { order_id } = req.body;
 
-    const response = await Cashfree.PGOrderFetchPayments("2023-08-01", order_id);
+    const cashfree = new Cashfree();
+    const response = await cashfree.PGOrderFetchPayments("2023-08-01", order_id);
     const payments = response.data;
     
     // Check if any payment is successful
