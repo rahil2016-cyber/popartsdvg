@@ -25,6 +25,12 @@ const createSession = async (req, res) => {
       return res.status(403).json({ message: 'Unauthorized access to this order' });
     }
 
+    let phone = order.customer_phone || "9999999999";
+    // Ensure phone is at least 10 digits for Cashfree
+    if (phone.replace(/[^0-9]/g, '').length < 10) {
+      phone = "9999999999";
+    }
+
     // Prepare Create Order Request for Cashfree
     const request = {
       order_amount: parseFloat(order.total_amount),
@@ -32,7 +38,7 @@ const createSession = async (req, res) => {
       order_id: order.order_number, // Unique order number generated during order creation
       customer_details: {
         customer_id: order.user_id ? order.user_id.toString() : 'guest_' + Date.now(),
-        customer_phone: order.customer_phone || "9999999999",
+        customer_phone: phone,
         customer_email: order.customer_email || "guest@example.com",
         customer_name: order.customer_name || "Guest User"
       },
