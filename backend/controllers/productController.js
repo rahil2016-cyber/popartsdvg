@@ -59,8 +59,7 @@ const getProducts = async (req, res) => {
       countParams.push(parseFloat(max_price));
     }
 
-    query += ' GROUP BY p.id ORDER BY p.created_at DESC LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), parseInt(offset));
+    query += ` GROUP BY p.id ORDER BY p.created_at DESC LIMIT ${parseInt(limit)} OFFSET ${parseInt(offset)}`;
 
     const [products] = await pool.execute(query, params);
     const [countResult] = await pool.execute(countQuery, countParams);
