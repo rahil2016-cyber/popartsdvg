@@ -29,7 +29,7 @@ const AdminOrders = () => {
 
   const handleUpdateStatus = async (id, status) => {
     try {
-      await api.put(`/admin/orders/${id}/status`, { order_status: status });
+      await api.put(`/admin/orders/${id}/status`, { orderStatus: status });
       toast.success('Order status updated!');
       fetchOrders();
     } catch (error) {
