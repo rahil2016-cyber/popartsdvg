@@ -39,7 +39,10 @@ const createReel = async (req, res) => {
     
     // If file is uploaded
     if (req.file) {
-      media_url = `/uploads/${req.file.filename}`;
+      // Cloudinary returns full URL in file.path; local storage uses filename
+      media_url = req.file.path && req.file.path.startsWith('http')
+        ? req.file.path
+        : `/uploads/${req.file.filename}`;
       // Determine media type from file
       const mimeType = req.file.mimetype;
       if (mimeType.startsWith('video/')) {
@@ -79,7 +82,10 @@ const updateReel = async (req, res) => {
     
     // If file is uploaded
     if (req.file) {
-      media_url = `/uploads/${req.file.filename}`;
+      // Cloudinary returns full URL in file.path; local storage uses filename
+      media_url = req.file.path && req.file.path.startsWith('http')
+        ? req.file.path
+        : `/uploads/${req.file.filename}`;
       const mimeType = req.file.mimetype;
       if (mimeType.startsWith('video/')) {
         media_type = 'video';

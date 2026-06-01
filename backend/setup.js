@@ -223,6 +223,52 @@ async function setupDatabase() {
       console.log('ℹ️ Could not check/add delivery_charge column:', e.message);
     }
 
+    // Ensure product_categories table exists (migration for existing setups)
+    try {
+      await connection.query(`CREATE TABLE IF NOT EXISTS product_categories (
+        product_id INT NOT NULL,
+        category_id INT NOT NULL,
+        PRIMARY KEY (product_id, category_id),
+        FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+      )`);
+      console.log('✅ product_categories table verified!');
+    } catch (e) {
+      console.log('ℹ️ product_categories check:', e.message);
+    }
+
+    // Ensure insta_reels table exists (migration for existing setups)
+    try {
+      await connection.query(`CREATE TABLE IF NOT EXISTS insta_reels (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        media_url VARCHAR(1024) NOT NULL,
+        media_type VARCHAR(20) NOT NULL DEFAULT 'image',
+        is_active TINYINT(1) DEFAULT 1,
+        position INT DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )`);
+      console.log('✅ insta_reels table verified!');
+    } catch (e) {
+      console.log('ℹ️ insta_reels check:', e.message);
+    }
+
+    // Ensure image_url supports long Cloudinary URLs (VARCHAR 1024)
+    try {
+      await connection.query("ALTER TABLE product_images MODIFY COLUMN image_url VARCHAR(1024) NOT NULL");
+      console.log('✅ product_images.image_url column expanded for Cloudinary URLs!');
+    } catch (e) {
+      console.log('ℹ️ product_images column check:', e.message);
+    }
+
+    // Ensure banners image_url supports long Cloudinary URLs
+    try {
+      await connection.query("ALTER TABLE banners MODIFY COLUMN image_url VARCHAR(1024) NOT NULL");
+    } catch (e) {
+      // Ignore
+    }
+
+
     // 4. Create admin user
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash('admin123', salt);

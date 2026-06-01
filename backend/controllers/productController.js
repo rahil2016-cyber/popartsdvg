@@ -244,7 +244,10 @@ const createProduct = async (req, res) => {
 
     if (req.files && req.files.length > 0) {
       for (let i = 0; i < req.files.length; i++) {
-        const imageUrl = `/uploads/${req.files[i].filename}`;
+        // Cloudinary returns full URL in file.path; local storage uses filename
+        const imageUrl = req.files[i].path && req.files[i].path.startsWith('http')
+          ? req.files[i].path
+          : `/uploads/${req.files[i].filename}`;
         console.log('Inserting image:', imageUrl);
         await connection.execute(
           'INSERT INTO product_images (product_id, image_url, is_primary) VALUES (?, ?, ?)',
@@ -360,7 +363,10 @@ const updateProduct = async (req, res) => {
       if (canAdd > 0) {
         const filesToAdd = req.files.slice(0, canAdd);
         for (const file of filesToAdd) {
-          const imageUrl = `/uploads/${file.filename}`;
+          // Cloudinary returns full URL in file.path; local storage uses filename
+          const imageUrl = file.path && file.path.startsWith('http')
+            ? file.path
+            : `/uploads/${file.filename}`;
           await connection.execute(
             'INSERT INTO product_images (product_id, image_url, is_primary) VALUES (?, ?, ?)',
             [id, imageUrl, 0]
