@@ -19,11 +19,8 @@ const adminRoutes = require('./routes/adminRoutes');
 
 const errorHandler = require('./middleware/errorHandler');
 
-// Run DB setup in background (non-blocking) - don't delay requests
+// DB setup must be triggered manually via /api/run-setup endpoint
 const setupDatabase = require('./setup.js');
-setupDatabase()
-  .then(() => console.log('✅ Database setup/migration completed successfully.'))
-  .catch(err => console.error('⚠️ Database setup/migration failed (non-fatal):', err.message));
 
 const app = express();
 
