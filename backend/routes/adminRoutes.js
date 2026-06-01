@@ -1,6 +1,9 @@
 
 const express = require('express');
 const router = express.Router();
+const rateLimit = require('express-rate-limit');
+
+// Removed local loginLimiter
 const { getDashboardStats, getUsers, createAdmin } = require('../controllers/adminController');
 const { getProducts, createProduct, updateProduct, deleteProduct } = require('../controllers/productController');
 const { getAllOrders, getOrderById, updateOrderStatus } = require('../controllers/orderController');

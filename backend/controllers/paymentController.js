@@ -81,7 +81,39 @@ const verifyPayment = async (req, res) => {
   }
 };
 
+const cashfreeWebhook = async (req, res) => {
+  try {
+    const cashfreeSignature = req.headers['x-webhook-signature'];
+    
+    // In a real production environment, you should verify the signature using Cashfree SDK
+    // Cashfree.PGVerifyWebhookSignature(cashfreeSignature, req.rawBody, process.env.CASHFREE_SECRET_KEY)
+    
+    const payload = req.body;
+    
+    // Check if it's a successful payment event
+    if (payload.type === 'PAYMENT_SUCCESS_WEBHOOK' && payload.data && payload.data.payment) {
+      const paymentStatus = payload.data.payment.payment_status;
+      const orderId = payload.data.order.order_id;
+      
+      if (paymentStatus === 'SUCCESS') {
+        // Update order status in DB
+        await pool.execute(
+          'UPDATE orders SET payment_status = ?, order_status = ? WHERE order_number = ?',
+          ['completed', 'processing', orderId]
+        );
+        console.log(`Webhook successfully processed payment for order ${orderId}`);
+      }
+    }
+    
+    res.status(200).send('OK');
+  } catch (error) {
+    console.error('Error processing Cashfree webhook:', error);
+    res.status(500).send('Webhook Error');
+  }
+};
+
 module.exports = {
   createSession,
-  verifyPayment
+  verifyPayment,
+  cashfreeWebhook
 };
