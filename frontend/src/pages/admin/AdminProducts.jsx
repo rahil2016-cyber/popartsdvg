@@ -26,7 +26,8 @@ const AdminProducts = () => {
   });
   const navigate = useNavigate();
 
-  const API_BASE_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+  const API_BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:5000';
+  const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:5000/api';
 
   const getFullImageUrl = (url) => {
     if (!url) return '';
@@ -38,7 +39,7 @@ const AdminProducts = () => {
 
   const fetchProducts = async (categoryId = '') => {
     try {
-      const url = new URL('http://127.0.0.1:5000/api/admin/products');
+      const url = new URL(API_URL + '/admin/products', window.location.origin);
       if (categoryId) {
         url.searchParams.set('category', categoryId);
       }
@@ -60,7 +61,7 @@ const AdminProducts = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/admin/categories', {
+      const response = await fetch(API_URL + '/admin/categories', {
         headers: {
           'Authorization': `Bearer ${getToken()}`,
         }
@@ -137,8 +138,8 @@ const AdminProducts = () => {
       }
 
       const url = editingProduct
-        ? `http://127.0.0.1:5000/api/admin/products/${editingProduct.id}`
-        : 'http://127.0.0.1:5000/api/admin/products';
+        ? `${API_URL}/admin/products/${editingProduct.id}`
+        : `${API_URL}/admin/products`;
 
       const response = await fetch(url, {
         method: editingProduct ? 'PUT' : 'POST',
@@ -169,7 +170,7 @@ const AdminProducts = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        await fetch(`http://127.0.0.1:5000/api/admin/products/${id}`, {
+        await fetch(`${API_URL}/admin/products/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${getToken()}`
