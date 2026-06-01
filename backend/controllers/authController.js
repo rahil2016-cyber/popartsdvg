@@ -4,8 +4,10 @@ const jwt = require('jsonwebtoken');
 const pool = require('../config/db');
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE
+  const secret = process.env.JWT_SECRET || 'fallback_secret_key_poparts_dvg_9876';
+  const expire = process.env.JWT_EXPIRE || '7d';
+  return jwt.sign({ id }, secret, {
+    expiresIn: expire
   });
 };
 
