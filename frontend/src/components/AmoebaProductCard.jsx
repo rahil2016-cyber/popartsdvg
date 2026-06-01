@@ -15,8 +15,10 @@ const AmoebaProductCard = ({
   const image = product.primary_image 
     ? (product.primary_image.startsWith('http') ? product.primary_image : API_BASE_URL + product.primary_image) 
     : product.image 
-    ? (product.image.startsWith('http') ? product.image : API_BASE_URL + product.image) 
-    : 'https://via.placeholder.com/400';
+    ? (product.image.startsWith('http') ? product.image : API_BASE_URL + product.image)
+    : (product.images && product.images.length > 0)
+    ? (product.images[0].image_url.startsWith('http') ? product.images[0].image_url : API_BASE_URL + product.images[0].image_url)
+    : 'https://placehold.co/400?text=No+Image';
 
   const slug = product.slug;
   const price = product.discount_price || product.price;

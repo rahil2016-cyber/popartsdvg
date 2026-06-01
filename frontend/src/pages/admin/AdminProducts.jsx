@@ -322,12 +322,16 @@ const AdminProducts = () => {
                     <tr key={product.id} className="hover:bg-gray-50 transition">
                       <td className="px-6 py-4 pl-8">
                         <div className="flex items-center gap-4">
-                          {product.primary_image && (
+                          {product.primary_image || (product.images && product.images.length > 0) ? (
                             <img
-                              src={getFullImageUrl(product.primary_image)}
+                              src={getFullImageUrl(product.primary_image || product.images[0].image_url)}
                               alt={product.name}
                               className="h-16 w-16 rounded-lg object-cover border border-gray-200"
                             />
+                          ) : (
+                            <div className="h-16 w-16 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center text-xs text-gray-400">
+                              No Img
+                            </div>
                           )}
                           <div>
                             <p className="font-semibold text-gray-900">{product.name}</p>
