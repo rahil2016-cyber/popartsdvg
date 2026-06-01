@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Gift, Package, LogOut, Plus, Edit2, Trash2, Upload, PlayCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { uploadToCloudinary } from '../../utils/cloudinary';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
@@ -122,10 +123,22 @@ const AdminProducts = () => {
         });
       }
       
-      // Add new images
-      selectedImages.forEach(image => {
-        formDataToSend.append('images', image);
-      });
+      // Upload new images to Cloudinary directly first
+      if (selectedImages.length > 0) {
+        toast.loading('Uploading images...', { id: 'upload' });
+        try {
+          for (const image of selectedImages) {
+            const url = await uploadToCloudinary(image, getToken, API_BASE_URL);
+            formDataToSend.append('image_urls[]', url);
+          }
+          toast.dismiss('upload');
+        } catch (err) {
+          toast.dismiss('upload');
+          toast.error('Image upload failed');
+          setLoading(false);
+          return;
+        }
+      }
 
       // Add deleted image ids (if editing)
       if (editingProduct && editingProduct.images) {

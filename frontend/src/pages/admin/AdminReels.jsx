@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Gift, Package, LogOut, Plus, Edit2, Trash2, Upload, PlayCircle, Image as ImageIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { uploadToCloudinary } from '../../utils/cloudinary';
 
 const AdminReels = () => {
   const [reels, setReels] = useState([]);
@@ -75,7 +76,17 @@ const AdminReels = () => {
 
       // Add file if selected
       if (selectedFile) {
-        formDataToSend.append('media', selectedFile);
+        toast.loading('Uploading media...', { id: 'upload' });
+        try {
+          const url = await uploadToCloudinary(selectedFile, getToken, API_BASE_URL);
+          formDataToSend.append('media_url', url);
+          toast.dismiss('upload');
+        } catch (err) {
+          toast.dismiss('upload');
+          toast.error('Media upload failed');
+          setLoading(false);
+          return;
+        }
       }
 
       console.log('🔍 Sending form data:', [...formDataToSend.entries()]);

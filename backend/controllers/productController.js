@@ -217,8 +217,23 @@ const createProduct = async (req, res) => {
       console.log('Warning: Could not save product_categories:', e.message);
     }
 
-    // Save images (non-fatal if upload fails)
-    if (req.files && req.files.length > 0) {
+    // Save images (from direct frontend uploads or multer)
+    const directImageUrls = req.body['image_urls[]'] 
+      ? (Array.isArray(req.body['image_urls[]']) ? req.body['image_urls[]'] : [req.body['image_urls[]']]) 
+      : [];
+
+    if (directImageUrls.length > 0) {
+      for (let i = 0; i < directImageUrls.length; i++) {
+        try {
+          await connection.execute(
+            'INSERT INTO product_images (product_id, image_url, is_primary) VALUES (?, ?, ?)',
+            [productId, directImageUrls[i], i === 0 ? 1 : 0]
+          );
+        } catch (imgErr) {
+          console.log('Warning: Could not save direct image URL:', imgErr.message);
+        }
+      }
+    } else if (req.files && req.files.length > 0) {
       for (let i = 0; i < req.files.length; i++) {
         try {
           const imageUrl = req.files[i].path && req.files[i].path.startsWith('http')
@@ -311,8 +326,30 @@ const updateProduct = async (req, res) => {
       }
     }
 
-    // Add new images (non-fatal)
-    if (req.files && req.files.length > 0) {
+    // Add new images (direct or multer)
+    const directImageUrls = req.body['image_urls[]'] 
+      ? (Array.isArray(req.body['image_urls[]']) ? req.body['image_urls[]'] : [req.body['image_urls[]']]) 
+      : [];
+
+    if (directImageUrls.length > 0) {
+      const [existingImages] = await connection.execute('SELECT COUNT(*) as count FROM product_images WHERE product_id = ?', [id]);
+      const currentCount = existingImages[0].count;
+      const canAdd = 6 - currentCount;
+      
+      if (canAdd > 0) {
+        const urlsToAdd = directImageUrls.slice(0, canAdd);
+        for (const url of urlsToAdd) {
+          try {
+            await connection.execute(
+              'INSERT INTO product_images (product_id, image_url, is_primary) VALUES (?, ?, ?)',
+              [id, url, 0]
+            );
+          } catch (imgErr) {
+            console.log('Warning: Could not save direct image URL:', imgErr.message);
+          }
+        }
+      }
+    } else if (req.files && req.files.length > 0) {
       const [existingImages] = await connection.execute('SELECT COUNT(*) as count FROM product_images WHERE product_id = ?', [id]);
       const currentCount = existingImages[0].count;
       const canAdd = 6 - currentCount;

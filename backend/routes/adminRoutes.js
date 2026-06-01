@@ -14,6 +14,27 @@ router.get('/dashboard', adminProtect, getDashboardStats);
 router.get('/users', adminProtect, getUsers);
 router.post('/', adminProtect, createAdmin);
 
+// Cloudinary signature for direct frontend uploads
+router.get('/upload-signature', adminProtect, (req, res) => {
+  try {
+    const cloudinary = require('../config/cloudinary');
+    const timestamp = Math.round((new Date).getTime() / 1000);
+    const signature = cloudinary.utils.api_sign_request({
+      timestamp: timestamp,
+      folder: 'popartsdvg'
+    }, cloudinary.config().api_secret);
+    
+    res.json({
+      signature,
+      timestamp,
+      api_key: cloudinary.config().api_key,
+      cloud_name: cloudinary.config().cloud_name
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error generating signature', error: error.message });
+  }
+});
+
 // Products
 router.get('/products', adminProtect, getProducts);
 router.post('/products', adminProtect, upload.array('images', 6), createProduct);
