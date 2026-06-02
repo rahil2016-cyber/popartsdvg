@@ -4,35 +4,20 @@ import { ShoppingCart, Search, Menu, X, User, ChevronDown } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
-const shopDropdownLinks = [
-  { label: 'Best Sellers', to: '/#bestsellers' },
-  { label: 'New Arrivals', to: '/products' },
-  { label: 'Personalized Gifts', to: '/products?category=personalised-gifts' },
-  { label: 'Premium Hampers', to: '/products?category=premium-hampers' },
-  { label: 'Hamper Boxes', to: '/products?category=empty-boxes' },
-  { label: 'Greeting Cards', to: '/products?category=greeting-cards' },
-];
-
-const occasionsDropdownLinks = [
+const categoriesDropdownLinks = [
   { label: 'Birthday Gifts', to: '/products?category=birthday-gifts' },
   { label: 'Return Gifts', to: '/products?category=return-gifts' },
   { label: 'Baby Hampers', to: '/products?category=baby-hampers' },
-  { label: 'Bridal & Muhurtam', to: '/products?category=bridal-gifting' },
-  { label: 'Festivals', to: '/products?category=festive-gifts' },
-];
-
-const mainNavLinks = [
-  { label: 'Corporate Gifting', to: '/products?category=corporate-gifting' },
-  { label: 'Build Your Own', to: '/build-hamper' },
-  { label: 'Track Order', to: '/track-order' },
-  { label: 'About Us', to: '/about' },
-  { label: 'Contact', to: '/contact' },
+  { label: 'School Essentials', to: '/products?category=school-essentials' },
+  { label: 'Lunch Boxes', to: '/products?category=lunch-boxes' },
+  { label: 'Water Bottles', to: '/products?category=water-bottles' },
+  { label: 'Stationery', to: '/products?category=stationery' },
+  { label: 'Personalized Gifts', to: '/products?category=personalised-gifts' },
 ];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [shopOpen, setShopOpen] = useState(false);
-  const [occasionsOpen, setOccasionsOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const { user, logout } = useAuth();
   const { cart } = useCart();
@@ -57,16 +42,22 @@ const Navbar = () => {
   const cartCount = cart.items?.reduce((sum, item) => sum + item.quantity, 0) || 0;
 
   const isActive = (path) => {
+    const currentPath = location.pathname + location.search;
     if (path === '/') return location.pathname === '/';
-    if (path.startsWith('/#')) return location.pathname === '/';
-    return location.pathname.startsWith(path.split('?')[0]) && path !== '/';
+    return currentPath === path || (path !== '/products' && currentPath.startsWith(path));
   };
 
   const closeMobile = () => {
     setIsMenuOpen(false);
-    setShopOpen(false);
-    setOccasionsOpen(false);
+    setCategoriesOpen(false);
   };
+
+  const navItemClass = (path) => 
+    `text-sm font-semibold transition-colors py-1 relative whitespace-nowrap ${
+      isActive(path) 
+        ? 'text-[#ec407a] border-b-2 border-[#ec407a]' 
+        : 'text-[#4a4458] hover:text-[#ec407a]'
+    }`;
 
   return (
     <>
@@ -83,36 +74,43 @@ const Navbar = () => {
               <img src="/images/logo.png" alt="POPARTS DVG" className="h-14 w-auto md:h-16" />
             </Link>
 
-            <div className="hidden items-center gap-5 xl:flex">
-              <Link
-                to="/"
-                className={`text-sm font-medium transition-colors ${
-                  isActive('/') ? 'border-b-2 border-[#673ab7] pb-0.5 text-[#4a148c]' : 'text-[#4a4458] hover:text-[#673ab7]'
-                }`}
-              >
+            <div className="hidden items-center gap-6 xl:flex">
+              <Link to="/" className={navItemClass('/')}>
                 Home
               </Link>
 
-              {/* Shop Dropdown */}
+              <Link to="/products" className={navItemClass('/products')}>
+                Shop
+              </Link>
+
+              <Link to="/products?category=premium-hampers" className={navItemClass('/products?category=premium-hampers')}>
+                Hampers
+              </Link>
+
+              {/* Categories Dropdown */}
               <div
                 className="relative"
-                onMouseEnter={() => setShopOpen(true)}
-                onMouseLeave={() => setShopOpen(false)}
+                onMouseEnter={() => setCategoriesOpen(true)}
+                onMouseLeave={() => setCategoriesOpen(false)}
               >
                 <button
-                  className="flex items-center gap-1 text-sm font-medium text-[#4a4458] transition hover:text-[#673ab7]"
+                  className={`flex items-center gap-1 text-sm font-semibold transition py-1 ${
+                    isActive('/products?category') && !isActive('/products?category=premium-hampers')
+                      ? 'text-[#ec407a] border-b-2 border-[#ec407a]'
+                      : 'text-[#4a4458] hover:text-[#ec407a]'
+                  }`}
                 >
-                  Shop
+                  Categories
                   <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
                 </button>
-                {shopOpen && (
+                {categoriesOpen && (
                   <div className="absolute left-1/2 top-full z-50 mt-2 w-56 -translate-x-1/2 rounded-xl border border-gray-100 bg-white py-2 shadow-xl">
-                    {shopDropdownLinks.map((link) => (
+                    {categoriesDropdownLinks.map((link) => (
                       <Link
                         key={link.label}
                         to={link.to}
-                        onClick={() => setShopOpen(false)}
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-pink-50 hover:text-[#673ab7]"
+                        onClick={() => setCategoriesOpen(false)}
+                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-pink-50 hover:text-[#ec407a] font-medium"
                       >
                         {link.label}
                       </Link>
@@ -121,48 +119,21 @@ const Navbar = () => {
                 )}
               </div>
 
-              {/* Occasions Dropdown */}
-              <div
-                className="relative"
-                onMouseEnter={() => setOccasionsOpen(true)}
-                onMouseLeave={() => setOccasionsOpen(false)}
-              >
-                <button
-                  className="flex items-center gap-1 text-sm font-medium text-[#4a4458] transition hover:text-[#673ab7]"
-                >
-                  Occasions
-                  <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
-                </button>
-                {occasionsOpen && (
-                  <div className="absolute left-1/2 top-full z-50 mt-2 w-56 -translate-x-1/2 rounded-xl border border-gray-100 bg-white py-2 shadow-xl">
-                    {occasionsDropdownLinks.map((link) => (
-                      <Link
-                        key={link.label}
-                        to={link.to}
-                        onClick={() => setOccasionsOpen(false)}
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-pink-50 hover:text-[#673ab7]"
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <Link to="/products?sort=newest" className={navItemClass('/products?sort=newest')}>
+                New Arrivals
+              </Link>
 
-              {/* Main Links */}
-              {mainNavLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  to={link.to}
-                  className="whitespace-nowrap text-sm font-medium text-[#4a4458] transition hover:text-[#673ab7]"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              <Link to="/products?featured=true" className={navItemClass('/products?featured=true')}>
+                Best Sellers
+              </Link>
+
+              <Link to="/products?offers=true" className={navItemClass('/products?offers=true')}>
+                Offers
+              </Link>
             </div>
 
             <div className="flex items-center gap-4 xl:hidden">
-              <Link to="/cart" className="relative text-[#3d3654] transition hover:text-[#673ab7]" aria-label="Cart">
+              <Link to="/cart" className="relative text-[#3d3654] transition hover:text-[#ec407a]" aria-label="Cart">
                 <ShoppingCart className="h-5 w-5" strokeWidth={1.75} />
                 <span className="absolute -right-2.5 -top-2 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#ec407a] px-1 text-[10px] font-bold text-white">
                   {cartCount}
@@ -177,7 +148,7 @@ const Navbar = () => {
               <button
                 type="button"
                 onClick={() => navigate('/products')}
-                className="text-[#3d3654] transition hover:text-[#673ab7]"
+                className="text-[#3d3654] transition hover:text-[#ec407a]"
                 aria-label="Search"
               >
                 <Search className="h-5 w-5" strokeWidth={1.75} />
@@ -185,7 +156,7 @@ const Navbar = () => {
 
               {user ? (
                 <div className="group relative">
-                  <button type="button" className="text-[#3d3654] transition hover:text-[#673ab7]" aria-label="Account menu">
+                  <button type="button" className="text-[#3d3654] transition hover:text-[#ec407a]" aria-label="Account menu">
                     <User className="h-5 w-5" strokeWidth={1.75} />
                   </button>
                   <div className="invisible absolute right-0 mt-2 w-48 rounded-xl bg-white py-2 opacity-0 shadow-xl transition-all duration-200 group-hover:visible group-hover:opacity-100">
@@ -197,12 +168,12 @@ const Navbar = () => {
                   </div>
                 </div>
               ) : (
-                <Link to="/login" className="text-[#3d3654] transition hover:text-[#673ab7]" aria-label="Account">
+                <Link to="/login" className="text-[#3d3654] transition hover:text-[#ec407a]" aria-label="Account">
                   <User className="h-5 w-5" strokeWidth={1.75} />
                 </Link>
               )}
 
-              <Link to="/cart" className="relative text-[#3d3654] transition hover:text-[#673ab7]" aria-label="Cart">
+              <Link to="/cart" className="relative text-[#3d3654] transition hover:text-[#ec407a]" aria-label="Cart">
                 <ShoppingCart className="h-5 w-5" strokeWidth={1.75} />
                 <span className="absolute -right-2.5 -top-2 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#ec407a] px-1 text-[10px] font-bold text-white">
                   {cartCount}
@@ -216,43 +187,27 @@ const Navbar = () => {
           <div className="border-t bg-white xl:hidden">
             <div className="max-h-[80vh] space-y-1 overflow-y-auto px-4 py-4">
               <Link to="/" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">Home</Link>
+              <Link to="/products" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">Shop</Link>
+              <Link to="/products?category=premium-hampers" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">Hampers</Link>
 
-              {/* Mobile Shop Dropdown */}
-              <button type="button" onClick={() => setShopOpen(!shopOpen)} className="flex w-full items-center justify-between py-2.5 font-medium text-gray-800">
-                Shop
-                <ChevronDown className={`h-4 w-4 transition ${shopOpen ? 'rotate-180' : ''}`} />
+              {/* Mobile Categories Dropdown */}
+              <button type="button" onClick={() => setCategoriesOpen(!categoriesOpen)} className="flex w-full items-center justify-between py-2.5 font-medium text-gray-800">
+                Categories
+                <ChevronDown className={`h-4 w-4 transition ${categoriesOpen ? 'rotate-180' : ''}`} />
               </button>
-              {shopOpen && (
+              {categoriesOpen && (
                 <div className="ml-3 space-y-1 border-l-2 border-pink-100 pl-4">
-                  {shopDropdownLinks.map((link) => (
-                    <Link key={link.label} to={link.to} onClick={closeMobile} className="block py-2 text-sm text-gray-600">
+                  {categoriesDropdownLinks.map((link) => (
+                    <Link key={link.label} to={link.to} onClick={closeMobile} className="block py-2 text-sm text-gray-600 font-medium">
                       {link.label}
                     </Link>
                   ))}
                 </div>
               )}
 
-              {/* Mobile Occasions Dropdown */}
-              <button type="button" onClick={() => setOccasionsOpen(!occasionsOpen)} className="flex w-full items-center justify-between py-2.5 font-medium text-gray-800">
-                Occasions
-                <ChevronDown className={`h-4 w-4 transition ${occasionsOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {occasionsOpen && (
-                <div className="ml-3 space-y-1 border-l-2 border-pink-100 pl-4">
-                  {occasionsDropdownLinks.map((link) => (
-                    <Link key={link.label} to={link.to} onClick={closeMobile} className="block py-2 text-sm text-gray-600">
-                      {link.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
-
-              {/* Main Links */}
-              {mainNavLinks.map((link) => (
-                <Link key={link.label} to={link.to} onClick={closeMobile} className="block py-2 text-sm font-medium text-gray-800">
-                  {link.label}
-                </Link>
-              ))}
+              <Link to="/products?sort=newest" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">New Arrivals</Link>
+              <Link to="/products?featured=true" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">Best Sellers</Link>
+              <Link to="/products?offers=true" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">Offers</Link>
 
               <form onSubmit={handleSearch} className="flex pt-2">
                 <input
@@ -262,7 +217,7 @@ const Navbar = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="flex-1 rounded-l-full border border-gray-300 px-4 py-2 focus:outline-none"
                 />
-                <button type="submit" className="rounded-r-full bg-gradient-to-r from-pink-500 to-purple-600 px-4 py-2 text-white">
+                <button type="submit" className="rounded-r-full bg-[#ec407a] px-4 py-2 text-white">
                   <Search className="h-5 w-5" />
                 </button>
               </form>
