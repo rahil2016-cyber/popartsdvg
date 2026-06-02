@@ -372,7 +372,7 @@ const Home = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
             {budgets.map((budget, index) => (
               <motion.div
                 key={budget.range}
@@ -380,29 +380,29 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08 }}
-                className={`group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br ${budget.gradient} h-[320px] flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 border border-pink-50/30`}
+                className={`group relative overflow-hidden rounded-[2rem] p-4 md:p-5 bg-gradient-to-br ${budget.gradient} h-36 md:h-44 flex items-center justify-between shadow-sm hover:shadow-md transition-all duration-300 border border-pink-50/30`}
               >
-                <div className="w-[55%] z-10 flex flex-col justify-between h-full">
+                <div className="flex flex-col justify-between h-full flex-1 min-w-0 pr-2">
                   <div>
                     {/* Circle icon */}
-                    <div className={`w-11 h-11 rounded-full ${budget.iconBg} flex items-center justify-center`}>
-                      <budget.icon className={`w-5 h-5 ${budget.iconColor}`} />
+                    <div className={`w-8 h-8 rounded-full ${budget.iconBg} flex items-center justify-center`}>
+                      <budget.icon className={`w-4 h-4 ${budget.iconColor}`} />
                     </div>
-                    <h4 className="text-lg font-extrabold text-[#1b1842] mt-4 leading-tight">{budget.label}</h4>
-                    <p className="text-[11px] text-gray-500 mt-2 leading-relaxed max-w-[130px]">{budget.desc}</p>
+                    <h4 className="text-sm md:text-base font-extrabold text-[#1b1842] mt-2.5 leading-tight truncate">{budget.label}</h4>
+                    <p className="text-[10px] md:text-xs text-gray-500 mt-1 leading-normal max-w-[130px] line-clamp-2">{budget.desc}</p>
                   </div>
                   <Link
                     to={`/products?budget=${budget.range}`}
-                    className="inline-flex items-center gap-1 text-[#ec407a] hover:text-[#d81b60] text-xs font-bold transition-colors mt-4"
+                    className="inline-flex items-center gap-1 text-[#ec407a] hover:text-[#d81b60] text-[10px] md:text-xs font-bold transition-colors mt-2"
                   >
-                    Shop now <ArrowRight className="w-3.5 h-3.5" />
+                    Shop now <ArrowRight className="w-3 h-3" />
                   </Link>
                 </div>
-                <div className="absolute right-[-10px] bottom-4 w-[52%] h-[65%] flex items-end justify-end overflow-hidden">
+                <div className="w-[76px] h-[76px] md:w-[100px] md:h-[100px] rounded-2xl overflow-hidden shrink-0 shadow-sm relative bg-white border border-pink-50/20">
                   <img
                     src={budget.image}
                     alt={budget.label}
-                    className="max-w-[125%] max-h-[125%] object-contain transform group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
               </motion.div>
