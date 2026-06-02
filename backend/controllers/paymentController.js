@@ -116,8 +116,8 @@ const verifyPayment = async (req, res) => {
             WHERE oi.order_id = ?
           `, [order.id]);
           
-          // Send order emails
-          sendOrderEmails(order, orderItemsForEmail);
+          // Send order emails - MUST await before res.json() or Vercel kills the process
+          await sendOrderEmails(order, orderItemsForEmail);
         }
       }
       
@@ -167,8 +167,8 @@ const cashfreeWebhook = async (req, res) => {
               WHERE oi.order_id = ?
             `, [order.id]);
             
-            // Send order emails
-            sendOrderEmails(order, orderItemsForEmail);
+            // Send order emails - MUST await before res.send() or Vercel kills the process
+            await sendOrderEmails(order, orderItemsForEmail);
             console.log(`Webhook successfully processed payment and sent email for order ${orderId}`);
           }
         }

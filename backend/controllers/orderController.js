@@ -131,7 +131,7 @@ const createOrder = async (req, res) => {
     // Only send email immediately for COD orders
     // Online payment orders get their email after payment is verified in paymentController.js
     if (paymentMethod === 'COD') {
-      sendOrderEmails(newOrder[0], orderItemsForEmail);
+      await sendOrderEmails(newOrder[0], orderItemsForEmail);
     }
 
     res.status(201).json(newOrder[0]);
