@@ -73,7 +73,7 @@ const Checkout = () => {
           city: formData.city,
           state: formData.state,
           pincode: formData.pincode
-        } : { address: PICKUP_LOCATION, city: 'Davanagere', state: 'Karnataka', pincode: '577001' },
+        } : { address: PICKUP_LOCATION, city: 'Davanagere', state: 'Karnataka', pincode: '577004' },
         paymentMethod: formData.paymentMethod,
         couponCode: coupon?.code,
         customerName: formData.customerName,
