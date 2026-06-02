@@ -19,6 +19,7 @@ import OrderDetail from './pages/OrderDetail';
 import TrackOrder from './pages/TrackOrder';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import BuildHamper from './pages/BuildHamper';
 import PaymentVerify from './pages/PaymentVerify';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
@@ -62,6 +63,7 @@ const AppContent = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/products" element={<Products />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/build-hamper" element={<BuildHamper />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/payment/verify/:orderId" element={<PaymentVerify />} />

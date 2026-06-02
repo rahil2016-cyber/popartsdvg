@@ -21,7 +21,7 @@ const occasionsDropdownLinks = [
 
 const mainNavLinks = [
   { label: 'Corporate Gifting', to: '/products?category=corporate-gifting' },
-  { label: 'Build Your Own', to: '/#build-hamper' },
+  { label: 'Build Your Own', to: '/build-hamper' },
   { label: 'Track Order', to: '/track-order' },
   { label: 'About Us', to: '/about' },
   { label: 'Contact', to: '/contact' },

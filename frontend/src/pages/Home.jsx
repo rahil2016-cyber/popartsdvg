@@ -231,102 +231,31 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Section 4: Build Your Own Hamper */}
-      <section id="build-hamper" className="py-16 md:py-20">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <SectionHeading
-            eyebrow="Game Changer"
-            title="Build Your Own Hamper"
-            subtitle="People love customization — tell us what you want and we'll curate it beautifully."
-          />
-
-          <div className="mb-8 flex flex-wrap justify-center gap-2">
-            {buildSteps.map((step, index) => (
-              <div
-                key={step}
-                className={`flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium sm:text-sm ${
-                  index <= buildStep
-                    ? 'bg-[#673ab7] text-white'
-                    : 'bg-gray-100 text-gray-500'
-                }`}
-              >
-                {index < buildStep ? <Check className="h-3.5 w-3.5" /> : <span>{index + 1}</span>}
-                <span className="hidden sm:inline">{step}</span>
-              </div>
-            ))}
+      {/* Section 4: Build Your Own Hamper CTA */}
+      <section id="build-hamper" className="py-16 md:py-20 relative">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="bg-gradient-to-br from-[#1b1842] to-[#2d2866] rounded-[2.5rem] p-8 md:p-14 text-center shadow-2xl relative overflow-hidden">
+            {/* Background decorations */}
+            <div className="absolute top-0 left-0 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+            
+            <span className="mb-4 inline-block text-xs font-semibold uppercase tracking-[0.25em] text-pink-300">
+              Game Changer
+            </span>
+            <h2 className="font-playfair text-4xl md:text-5xl text-white mb-6">Design the Perfect Gift</h2>
+            <p className="mx-auto max-w-2xl text-purple-100 text-lg mb-10">
+              People love customization! Build a personalized hamper step-by-step. Choose a premium box, add their favorite items, pick a greeting card, and we'll curate it beautifully.
+            </p>
+            
+            <Link
+              to="/build-hamper"
+              className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-pink-500 to-orange-400 px-10 py-5 text-lg font-bold text-white shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
+            >
+              <Gift className="w-6 h-6" />
+              Build Your Own Hamper Now
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
           </div>
-
-          <form onSubmit={handleBuildSubmit} className="rounded-3xl border border-purple-100 bg-white p-6 shadow-xl md:p-8">
-            <h3 className="mb-4 text-lg font-semibold text-[#1b1842]">{buildSteps[buildStep]}</h3>
-
-            {buildStep < 3 && buildFieldOptions && (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {buildFieldOptions.map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    onClick={() => {
-                      setBuildForm({ ...buildForm, [buildFieldKey]: option });
-                      setBuildStep(buildStep + 1);
-                    }}
-                    className={`rounded-xl border-2 px-4 py-3 text-sm font-medium transition hover:border-[#673ab7] hover:bg-purple-50 ${
-                      buildForm[buildFieldKey] === option
-                        ? 'border-[#673ab7] bg-purple-50 text-[#673ab7]'
-                        : 'border-gray-200 text-gray-700'
-                    }`}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {buildStep === 3 && (
-              <div>
-                <textarea
-                  value={buildForm.personalisation}
-                  onChange={(e) => setBuildForm({ ...buildForm, personalisation: e.target.value })}
-                  placeholder="Names, messages, colour preferences, quantity..."
-                  rows={4}
-                  className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:border-[#673ab7] focus:outline-none focus:ring-2 focus:ring-purple-100"
-                />
-                <button
-                  type="button"
-                  onClick={() => setBuildStep(4)}
-                  className="mt-4 rounded-full bg-[#673ab7] px-8 py-3 text-sm font-semibold text-white hover:bg-[#5e35b1]"
-                >
-                  Continue
-                </button>
-              </div>
-            )}
-
-            {buildStep === 4 && (
-              <div className="text-center">
-                <div className="mb-6 rounded-xl bg-purple-50 p-4 text-left text-sm text-gray-700">
-                  <p><strong>Occasion:</strong> {buildForm.occasion}</p>
-                  <p><strong>Budget:</strong> {buildForm.budget}</p>
-                  <p><strong>Theme:</strong> {buildForm.theme}</p>
-                  <p><strong>Personalisation:</strong> {buildForm.personalisation || 'None'}</p>
-                </div>
-                <button
-                  type="submit"
-                  className="rounded-full bg-gradient-to-r from-[#673ab7] to-[#ec407a] px-10 py-4 font-semibold text-white shadow-lg hover:shadow-xl"
-                >
-                  Submit Request
-                </button>
-              </div>
-            )}
-
-            {buildStep > 0 && buildStep < 4 && (
-              <button
-                type="button"
-                onClick={() => setBuildStep(buildStep - 1)}
-                className="mt-4 text-sm text-gray-500 hover:text-[#673ab7]"
-              >
-                ← Back
-              </button>
-            )}
-          </form>
         </div>
       </section>
 
