@@ -161,7 +161,7 @@ const Home = () => {
       <FeatureBar />
 
       {/* Section 2: Best Sellers */}
-      <section id="bestsellers" className="py-16 md:py-20">
+      <section id="bestsellers" className="py-12 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <SectionHeading
             eyebrow="Fan Favourites"
@@ -169,23 +169,33 @@ const Home = () => {
             subtitle="Our bestsellers — premium hampers customers can't stop ordering."
           />
           {loading ? (
-            <div className="flex gap-8 overflow-x-auto pb-4 scrollbar-hide md:justify-center">
+            <div className="flex gap-4 md:gap-8 overflow-x-auto pb-4 scrollbar-hide md:justify-center">
               {[...Array(5)].map((_, i) => (
-                <AmoebaProductCardSkeleton key={i} />
+                <div key={i} className="w-[160px] md:w-64 shrink-0">
+                  <AmoebaProductCardSkeleton />
+                </div>
               ))}
             </div>
           ) : (
-            <div className="flex gap-8 overflow-x-auto pb-6 scrollbar-hide md:justify-center md:overflow-visible md:pb-0">
+            <div className="flex gap-4 md:gap-8 overflow-x-auto pb-6 scrollbar-hide md:justify-center md:overflow-visible md:pb-0 snap-x">
               {(featuredProducts.length ? featuredProducts : bestsellers).slice(0, 8).map((product, index) => (
                 <AmoebaProductCard
                   key={product.slug || product.id || index}
                   product={product}
                   index={index}
-                  className="w-64"
+                  className="w-[160px] md:w-64 shrink-0 snap-center"
                 />
               ))}
             </div>
           )}
+          <div className="mt-6 flex justify-start md:justify-center">
+            <Link
+              to="/products"
+              className="rounded-full bg-[#1b1842] px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#2d2866]"
+            >
+              View all
+            </Link>
+          </div>
         </div>
       </section>
 

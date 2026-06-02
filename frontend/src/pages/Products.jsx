@@ -173,7 +173,7 @@ const Products = () => {
 
         <main className="flex-1">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
+            <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-10">
               {[...Array(6)].map((_, i) => (
                 <AmoebaProductCardSkeleton key={i} />
               ))}
@@ -185,7 +185,7 @@ const Products = () => {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-10">
+              <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-10">
                 {products.map((product, index) => (
                   <AmoebaProductCard
                     key={product.id}
