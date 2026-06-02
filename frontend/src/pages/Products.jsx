@@ -96,46 +96,52 @@ const Products = () => {
 
       <div className="flex flex-col lg:flex-row gap-8">
         <aside className="lg:w-64 flex-shrink-0">
-          <div className="bg-white rounded-2xl shadow-sm p-6 sticky top-24">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <Filter className="w-5 h-5 mr-2" />
-              Categories
-            </h3>
-            <div className="space-y-2 mb-8">
-              <Link
-                to="/products"
-                className={`block px-3 py-2 rounded-lg transition-colors ${!categoryParam && !budgetParam ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
-              >
-                All Products
-              </Link>
-              {categories.map((category) => (
+          <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 lg:sticky lg:top-24">
+            
+            <div className="mb-6 lg:mb-8">
+              <h3 className="text-sm sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4 flex items-center">
+                <Filter className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+                Categories
+              </h3>
+              <div className="flex lg:flex-col overflow-x-auto gap-2 lg:gap-2 pb-2 lg:pb-0 scrollbar-hide">
                 <Link
-                  key={category.id}
-                  to={`/products?category=${category.slug}`}
-                  className={`block px-3 py-2 rounded-lg transition-colors ${categoryParam === category.slug ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                  to="/products"
+                  className={`flex-shrink-0 px-4 py-2 rounded-full lg:rounded-lg transition-colors text-sm font-medium ${!categoryParam && !budgetParam ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 lg:bg-transparent lg:hover:bg-gray-100'}`}
                 >
-                  {category.name}
+                  All Products
                 </Link>
-              ))}
+                {categories.map((category) => (
+                  <Link
+                    key={category.id}
+                    to={`/products?category=${category.slug}`}
+                    className={`flex-shrink-0 px-4 py-2 rounded-full lg:rounded-lg transition-colors text-sm font-medium ${categoryParam === category.slug ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 lg:bg-transparent lg:hover:bg-gray-100'}`}
+                  >
+                    {category.name}
+                  </Link>
+                ))}
+              </div>
             </div>
 
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Price Range</h3>
-            <div className="space-y-2">
-              {[
-                { label: 'Under ₹499', value: '0-499' },
-                { label: '₹500 - ₹999', value: '500-999' },
-                { label: '₹1000 - ₹1999', value: '1000-1999' },
-                { label: '₹2000+', value: '2000+' }
-              ].map((budget) => (
-                <Link
-                  key={budget.value}
-                  to={`/products?budget=${budget.value}`}
-                  className={`block px-3 py-2 rounded-lg transition-colors ${budgetParam === budget.value ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'text-gray-600 hover:bg-gray-100'}`}
-                >
-                  {budget.label}
-                </Link>
-              ))}
+            <div>
+              <h3 className="text-sm sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Price Range</h3>
+              <div className="flex lg:flex-col overflow-x-auto gap-2 lg:gap-2 pb-2 lg:pb-0 scrollbar-hide">
+                {[
+                  { label: 'Under ₹499', value: '0-499' },
+                  { label: '₹500 - ₹999', value: '500-999' },
+                  { label: '₹1000 - ₹1999', value: '1000-1999' },
+                  { label: '₹2000+', value: '2000+' }
+                ].map((budget) => (
+                  <Link
+                    key={budget.value}
+                    to={`/products?budget=${budget.value}`}
+                    className={`flex-shrink-0 px-4 py-2 rounded-full lg:rounded-lg transition-colors text-sm font-medium ${budgetParam === budget.value ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 lg:bg-transparent lg:hover:bg-gray-100'}`}
+                  >
+                    {budget.label}
+                  </Link>
+                ))}
+              </div>
             </div>
+
           </div>
         </aside>
 

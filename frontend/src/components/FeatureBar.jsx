@@ -25,22 +25,22 @@ const features = [
 
 const FeatureBar = () => {
   return (
-    <section className="bg-white px-4 py-10 sm:px-6 lg:px-8">
+    <section className="bg-white px-4 py-6 md:py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl">
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+        <div className="flex overflow-x-auto gap-4 pb-4 md:grid md:grid-cols-4 md:gap-6 scrollbar-hide snap-x">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
               <div
                 key={feature.title}
-                className="flex items-center gap-3 rounded-2xl border border-[#f3e8ff] bg-white px-4 py-4 shadow-sm transition hover:shadow-md"
+                className="flex w-64 shrink-0 snap-center items-center gap-3 rounded-2xl border border-[#f3e8ff] bg-white px-4 py-3 shadow-sm transition hover:shadow-md md:w-auto md:px-4 md:py-4"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#f3e8ff] to-[#fff1f2] text-[#7c3aed]">
-                  <Icon className="h-6 w-6" strokeWidth={2} />
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#f3e8ff] to-[#fff1f2] text-[#7c3aed] md:h-12 md:w-12">
+                  <Icon className="h-5 w-5 md:h-6 md:w-6" strokeWidth={2} />
                 </div>
                 <div className="text-left">
-                  <h4 className="text-sm font-semibold text-[#1e1b4b]">{feature.title}</h4>
-                  <p className="text-xs text-[#78716c]">{feature.subtitle}</p>
+                  <h4 className="text-xs font-semibold text-[#1e1b4b] md:text-sm">{feature.title}</h4>
+                  <p className="text-[10px] text-[#78716c] md:text-xs">{feature.subtitle}</p>
                 </div>
               </div>
             );
