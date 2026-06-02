@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+
 const pool = require('../config/db');
 const { sendOrderEmails } = require('../services/emailService');
 
