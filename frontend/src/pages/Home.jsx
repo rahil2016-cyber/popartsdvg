@@ -6,7 +6,14 @@ import {
   ChevronRight,
   Gift,
   Mail,
-  ArrowRight
+  ArrowRight,
+  Cake,
+  Baby,
+  Heart,
+  Sparkles,
+  Briefcase,
+  Crown,
+  Wand2
 } from 'lucide-react';
 import { FaInstagram, FaFacebookF, FaYoutube, FaPinterestP } from 'react-icons/fa';
 import api from '../services/api';
@@ -16,14 +23,14 @@ import AmoebaProductCard, { AmoebaProductCardSkeleton } from '../components/Amoe
 import InstagramReelsSlider from '../components/InstagramReelsSlider';
 
 const occasions = [
-  { emoji: '🎂', name: 'Birthday Gifts', slug: 'birthday-gifts', bgColor: 'bg-[#fff0f3]', hoverBg: 'hover:bg-[#ffe4e6]' },
-  { emoji: '🎁', name: 'Return Gifts', slug: 'return-gifts', bgColor: 'bg-[#f3e8ff]', hoverBg: 'hover:bg-[#fae8ff]' },
-  { emoji: '👶', name: 'Baby Hampers', slug: 'baby-hampers', bgColor: 'bg-[#e8f5e9]', hoverBg: 'hover:bg-[#e8f5e9]/80' },
-  { emoji: '🎒', name: 'School Essentials', slug: 'school-essentials', bgColor: 'bg-[#e3f2fd]', hoverBg: 'hover:bg-[#e3f2fd]/80' },
-  { emoji: '🍱', name: 'Lunch Boxes', slug: 'lunch-boxes', bgColor: 'bg-[#fae8ff]', hoverBg: 'hover:bg-[#fae8ff]/80' },
-  { emoji: '🍼', name: 'Water Bottles', slug: 'water-bottles', bgColor: 'bg-[#fffbeb]', hoverBg: 'hover:bg-[#fffbeb]/80' },
-  { emoji: '✏️', name: 'Stationery', slug: 'stationery', bgColor: 'bg-[#ffe4e6]', hoverBg: 'hover:bg-[#ffe4e6]/80' },
-  { emoji: '⭐', name: 'Personalized Gifts', slug: 'personalised-gifts', bgColor: 'bg-[#fdf4ff]', hoverBg: 'hover:bg-[#fdf4ff]/80' },
+  { icon: Cake, name: 'Birthday Gifts', slug: 'birthday-gifts', bgColor: 'bg-rose-50', iconColor: 'text-[#ec407a]', hoverBg: 'hover:bg-rose-100/70' },
+  { icon: Gift, name: 'Return Gifts', slug: 'return-gifts', bgColor: 'bg-purple-50', iconColor: 'text-[#ab47bc]', hoverBg: 'hover:bg-purple-100/70' },
+  { icon: Baby, name: 'Baby Hampers', slug: 'baby-hampers', bgColor: 'bg-green-50', iconColor: 'text-[#2e7d32]', hoverBg: 'hover:bg-green-100/70' },
+  { icon: Heart, name: 'Bridal Gifting', slug: 'bridal-gifting', bgColor: 'bg-pink-50', iconColor: 'text-[#f43f5e]', hoverBg: 'hover:bg-pink-100/70' },
+  { icon: Sparkles, name: 'Festive Gifts', slug: 'festive-gifts', bgColor: 'bg-amber-50', iconColor: 'text-[#d97706]', hoverBg: 'hover:bg-amber-100/70' },
+  { icon: Briefcase, name: 'Corporate Gifting', slug: 'corporate-gifting', bgColor: 'bg-indigo-50', iconColor: 'text-[#1565c0]', hoverBg: 'hover:bg-indigo-100/70' },
+  { icon: Crown, name: 'Premium Hampers', slug: 'premium-hampers', bgColor: 'bg-yellow-50', iconColor: 'text-[#b45309]', hoverBg: 'hover:bg-yellow-100/70' },
+  { icon: Wand2, name: 'Personalised Gifts', slug: 'personalised-gifts', bgColor: 'bg-fuchsia-50', iconColor: 'text-[#d946ef]', hoverBg: 'hover:bg-fuchsia-100/70' },
 ];
 
 const budgets = [
@@ -149,7 +156,7 @@ const Home = () => {
                   className="w-[100px] md:w-[120px] shrink-0 snap-center flex flex-col items-center text-center group/item"
                 >
                   <div className={`w-16 h-16 md:w-20 md:h-20 rounded-2xl ${occ.bgColor} ${occ.hoverBg} flex items-center justify-center shadow-sm group-hover/item:shadow-md transition-all duration-300 transform group-hover/item:-translate-y-1`}>
-                    <span className="text-2xl md:text-3xl">{occ.emoji}</span>
+                    <occ.icon className={`w-7 h-7 md:w-9 md:h-9 ${occ.iconColor}`} />
                   </div>
                   <span className="mt-3 text-[11px] md:text-xs font-semibold text-[#1b1842] group-hover/item:text-[#ec407a] transition-colors leading-tight">
                     {occ.name}

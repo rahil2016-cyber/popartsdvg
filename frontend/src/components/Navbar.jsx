@@ -8,11 +8,11 @@ const categoriesDropdownLinks = [
   { label: 'Birthday Gifts', to: '/products?category=birthday-gifts' },
   { label: 'Return Gifts', to: '/products?category=return-gifts' },
   { label: 'Baby Hampers', to: '/products?category=baby-hampers' },
-  { label: 'School Essentials', to: '/products?category=school-essentials' },
-  { label: 'Lunch Boxes', to: '/products?category=lunch-boxes' },
-  { label: 'Water Bottles', to: '/products?category=water-bottles' },
-  { label: 'Stationery', to: '/products?category=stationery' },
-  { label: 'Personalized Gifts', to: '/products?category=personalised-gifts' },
+  { label: 'Bridal Gifting', to: '/products?category=bridal-gifting' },
+  { label: 'Festive Gifts', to: '/products?category=festive-gifts' },
+  { label: 'Corporate Gifting', to: '/products?category=corporate-gifting' },
+  { label: 'Premium Hampers', to: '/products?category=premium-hampers' },
+  { label: 'Personalised Gifts', to: '/products?category=personalised-gifts' },
 ];
 
 const Navbar = () => {
