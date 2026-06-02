@@ -13,8 +13,14 @@ const transporter = nodemailer.createTransport({
 
 const sendOrderEmails = async (order, items) => {
   try {
-    const adminEmail = 'popartsdvg@gmail.com';
+    const senderEmail = process.env.EMAIL_USER || 'popartsdvg@gmail.com';
+    const adminEmail = senderEmail;
     const customerEmail = order.customer_email;
+    
+    console.log('Attempting to send order emails...');
+    console.log('Sender:', senderEmail);
+    console.log('Customer:', customerEmail);
+    console.log('Order Number:', order.order_number);
     
     // Build order details for both emails
     const orderDetails = items.map(item => 
@@ -63,7 +69,7 @@ const sendOrderEmails = async (order, items) => {
 
     // Send email to customer
     await transporter.sendMail({
-      from: 'popartsdvg@gmail.com',
+      from: `"POPARTS DVG" <${senderEmail}>`,
       to: customerEmail,
       subject: customerSubject,
       html: customerHtml
@@ -71,15 +77,16 @@ const sendOrderEmails = async (order, items) => {
 
     // Send email to admin
     await transporter.sendMail({
-      from: 'popartsdvg@gmail.com',
+      from: `"POPARTS DVG" <${senderEmail}>`,
       to: adminEmail,
       subject: adminSubject,
       html: adminHtml
     });
 
-    console.log('Order emails sent successfully!');
+    console.log('Order emails sent successfully to', customerEmail, 'and', adminEmail);
   } catch (error) {
-    console.error('Error sending emails:', error);
+    console.error('Error sending emails:', error.message);
+    console.error('Full error:', JSON.stringify(error, null, 2));
   }
 };
 
