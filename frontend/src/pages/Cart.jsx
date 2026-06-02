@@ -138,6 +138,16 @@ const Cart = () => {
                   {item.name}
                 </Link>
 
+                {item.metadata && item.metadata.items && item.metadata.items.length > 0 && (
+                  <ul className="mt-2 text-sm text-gray-500 list-disc list-inside">
+                    {item.metadata.items.map((bundleItem, idx) => (
+                      <li key={idx}>
+                        {bundleItem.name} {bundleItem.quantity > 1 ? `(x${bundleItem.quantity})` : ''}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
                 <div className="text-lg font-bold text-gray-900 mt-2">
                   ₹{price}
                 </div>

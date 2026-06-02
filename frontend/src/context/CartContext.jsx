@@ -30,10 +30,10 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const addToCart = async (productId, quantity = 1) => {
+  const addToCart = async (productId, quantity = 1, metadata = null) => {
     try {
-      console.log('CartProvider: Adding to cart:', { productId, quantity, sessionId });
-      await api.post('/cart', { productId, quantity, sessionId });
+      console.log('CartProvider: Adding to cart:', { productId, quantity, sessionId, metadata });
+      await api.post('/cart', { productId, quantity, sessionId, metadata });
       console.log('CartProvider: Added to cart, reloading...');
       await loadCart();
       console.log('CartProvider: Cart after reload:', cart);

@@ -33,7 +33,15 @@ const getCart = async (req, res) => {
 
     let total = 0;
     items.forEach(item => {
-      const price = item.discount_price || item.price;
+      let price = item.discount_price || item.price;
+      
+      // Calculate bundle price if metadata exists
+      if (item.metadata && item.metadata.items) {
+        item.metadata.items.forEach(bundleItem => {
+          price += (bundleItem.discount_price || bundleItem.price) * bundleItem.quantity;
+        });
+      }
+
       item.total = price * item.quantity;
       total += item.total;
     });
@@ -49,26 +57,35 @@ const getCart = async (req, res) => {
 const addToCart = async (req, res) => {
   try {
     console.log('Add to cart request:', req.body);
-    const { productId, quantity, sessionId } = req.body;
+    const { productId, quantity, sessionId, metadata } = req.body;
     const userId = req.user ? req.user.id : null;
 
-    const [existingItems] = await pool.execute(
-      'SELECT * FROM cart WHERE product_id = ? AND (user_id = ? OR session_id = ?)',
-      [productId, userId, sessionId]
-    );
-
-    console.log('Existing items:', existingItems);
-
-    if (existingItems.length > 0) {
+    // If metadata exists (it's a custom hamper bundle), we don't group it with existing items.
+    // We just insert it as a fresh row so they can have multiple different hampers.
+    if (metadata) {
       await pool.execute(
-        'UPDATE cart SET quantity = quantity + ? WHERE id = ?',
-        [quantity, existingItems[0].id]
+        'INSERT INTO cart (user_id, session_id, product_id, quantity, metadata) VALUES (?, ?, ?, ?, ?)',
+        [userId, sessionId, productId, quantity, JSON.stringify(metadata)]
       );
     } else {
-      await pool.execute(
-        'INSERT INTO cart (user_id, session_id, product_id, quantity) VALUES (?, ?, ?, ?)',
-        [userId, sessionId, productId, quantity]
+      const [existingItems] = await pool.execute(
+        'SELECT * FROM cart WHERE product_id = ? AND (user_id = ? OR session_id = ?) AND metadata IS NULL',
+        [productId, userId, sessionId]
       );
+
+      console.log('Existing items:', existingItems);
+
+      if (existingItems.length > 0) {
+        await pool.execute(
+          'UPDATE cart SET quantity = quantity + ? WHERE id = ?',
+          [quantity, existingItems[0].id]
+        );
+      } else {
+        await pool.execute(
+          'INSERT INTO cart (user_id, session_id, product_id, quantity) VALUES (?, ?, ?, ?)',
+          [userId, sessionId, productId, quantity]
+        );
+      }
     }
 
     res.json({ message: 'Item added to cart' });

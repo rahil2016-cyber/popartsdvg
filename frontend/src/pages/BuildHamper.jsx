@@ -89,25 +89,38 @@ const BuildHamper = () => {
 
   const handleAddToCart = async () => {
     try {
-      // Add Box
-      if (selectedBox && typeof selectedBox.id === 'number') {
-         await addToCart(selectedBox.id, 1);
-      } else if (selectedBox) {
-         // It's a dummy box, we can't really add it to cart without a real DB ID. 
-         // In a real scenario, these must exist in DB. 
-      }
-      
-      // Add Gifts
+      const metadata = { items: [] };
+
+      // Add Gifts to metadata
       for (const gift of selectedGifts) {
-         await addToCart(gift.id, gift.quantity);
+         metadata.items.push({
+           id: gift.id,
+           name: gift.name,
+           price: gift.price,
+           discount_price: gift.discount_price,
+           quantity: gift.quantity
+         });
       }
 
-      // Add Card
-      if (selectedCard && typeof selectedCard.id === 'number') {
-         await addToCart(selectedCard.id, 1);
+      // Add Card to metadata
+      if (selectedCard) {
+         metadata.items.push({
+           id: selectedCard.id,
+           name: selectedCard.name,
+           price: selectedCard.price,
+           discount_price: selectedCard.discount_price,
+           quantity: 1,
+           message: cardMessage
+         });
       }
       
-      // Note: the message is currently lost as the cart doesn't support notes per item yet.
+      if (selectedBox && typeof selectedBox.id === 'number') {
+         await addToCart(selectedBox.id, 1, metadata);
+      } else {
+         // Fallback if using dummy box
+         toast.error('Dummy box cannot be added to cart. Please add real boxes in Admin panel.');
+         return;
+      }
       
       toast.success('Awesome! Custom hamper added to cart.');
       navigate('/cart');
@@ -115,6 +128,18 @@ const BuildHamper = () => {
       toast.error('Failed to add hamper to cart.');
     }
   };
+
+  const boxesCategory = categories.find(c => c.slug === 'empty-boxes');
+  const cardsCategory = categories.find(c => c.slug === 'greeting-cards');
+  
+  // Use DB products if available, fallback to DUMMY data for preview
+  const availableBoxes = (boxesCategory && products.filter(p => p.category_name?.toLowerCase() === boxesCategory.name.toLowerCase()).length > 0) 
+    ? products.filter(p => p.category_name?.toLowerCase() === boxesCategory.name.toLowerCase()) 
+    : DUMMY_BOXES;
+    
+  const availableCards = (cardsCategory && products.filter(p => p.category_name?.toLowerCase() === cardsCategory.name.toLowerCase()).length > 0) 
+    ? products.filter(p => p.category_name?.toLowerCase() === cardsCategory.name.toLowerCase()) 
+    : DUMMY_CARDS;
 
   const renderStepIndicator = () => (
     <div className="flex items-center justify-center mb-10 overflow-x-auto py-2">
@@ -160,18 +185,18 @@ const BuildHamper = () => {
                 <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                   <h2 className="text-2xl font-semibold mb-6 text-gray-800">Choose Your Hamper Box</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    {DUMMY_BOXES.map(box => (
+                    {availableBoxes.map(box => (
                       <div 
                         key={box.id} 
                         onClick={() => setSelectedBox(box)}
                         className={`cursor-pointer rounded-2xl border-2 transition-all p-4 ${selectedBox?.id === box.id ? 'border-[#1b1842] bg-purple-50/30 ring-4 ring-purple-100' : 'border-transparent bg-gray-50 hover:bg-gray-100'}`}
                       >
-                        <div className="aspect-square rounded-xl overflow-hidden mb-4">
-                          <img src={box.image_url} alt={box.name} className="w-full h-full object-cover" />
+                        <div className="aspect-square rounded-xl overflow-hidden mb-4 bg-white">
+                          <img src={box.image_url || box.primary_image} alt={box.name} className="w-full h-full object-cover" />
                         </div>
                         <h3 className="font-semibold text-gray-800">{box.name}</h3>
                         <p className="text-sm text-gray-500 mb-2">{box.description}</p>
-                        <p className="font-bold text-[#1b1842]">₹{box.price}</p>
+                        <p className="font-bold text-[#1b1842]">₹{box.discount_price || box.price}</p>
                       </div>
                     ))}
                   </div>
@@ -238,17 +263,17 @@ const BuildHamper = () => {
                 <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                   <h2 className="text-2xl font-semibold mb-6 text-gray-800">Pick a Greeting Card</h2>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 mb-8">
-                    {DUMMY_CARDS.map(card => (
+                    {availableCards.map(card => (
                       <div 
                         key={card.id} 
                         onClick={() => setSelectedCard(card)}
                         className={`cursor-pointer rounded-2xl border-2 transition-all p-3 ${selectedCard?.id === card.id ? 'border-[#1b1842] bg-purple-50/30 ring-4 ring-purple-100' : 'border-transparent bg-gray-50 hover:bg-gray-100'}`}
                       >
-                        <div className="aspect-[3/4] rounded-xl overflow-hidden mb-3">
-                          <img src={card.image_url} alt={card.name} className="w-full h-full object-cover" />
+                        <div className="aspect-[3/4] rounded-xl overflow-hidden mb-3 bg-white">
+                          <img src={card.image_url || card.primary_image} alt={card.name} className="w-full h-full object-cover" />
                         </div>
                         <h3 className="font-semibold text-gray-800 text-center text-sm">{card.name}</h3>
-                        <p className="font-bold text-[#1b1842] text-center text-sm">₹{card.price}</p>
+                        <p className="font-bold text-[#1b1842] text-center text-sm">₹{card.discount_price || card.price}</p>
                       </div>
                     ))}
                   </div>
@@ -277,12 +302,12 @@ const BuildHamper = () => {
                     {/* Box Summary */}
                     <div className="flex items-center gap-4 border-b border-gray-200 pb-6 mb-6">
                       <div className="w-20 h-20 rounded-xl overflow-hidden bg-white shrink-0">
-                        <img src={selectedBox?.image_url} alt="Box" className="w-full h-full object-cover" />
+                        <img src={selectedBox?.image_url || selectedBox?.primary_image} alt="Box" className="w-full h-full object-cover" />
                       </div>
                       <div>
                         <span className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-1 block">Packaging</span>
                         <h4 className="font-semibold text-lg">{selectedBox?.name}</h4>
-                        <p className="text-gray-600">₹{selectedBox?.price}</p>
+                        <p className="text-gray-600">₹{selectedBox?.discount_price || selectedBox?.price}</p>
                       </div>
                     </div>
 
@@ -311,12 +336,12 @@ const BuildHamper = () => {
                     {selectedCard && (
                       <div className="flex items-center gap-4 pb-4">
                         <div className="w-16 h-20 rounded-lg overflow-hidden bg-white shrink-0 border">
-                          <img src={selectedCard?.image_url} alt="Card" className="w-full h-full object-cover" />
+                        <img src={selectedCard?.image_url || selectedCard?.primary_image} alt="Card" className="w-full h-full object-cover" />
                         </div>
                         <div>
                           <span className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-1 block">Greeting Card</span>
                           <h4 className="font-medium text-sm">{selectedCard?.name}</h4>
-                          <p className="text-gray-600 text-xs">₹{selectedCard?.price}</p>
+                          <p className="text-gray-600 text-xs">₹{selectedCard?.discount_price || selectedCard?.price}</p>
                         </div>
                       </div>
                     )}
