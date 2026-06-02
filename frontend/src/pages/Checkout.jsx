@@ -336,7 +336,14 @@ const Checkout = () => {
             <h3 className="text-xl font-semibold text-gray-800 mb-6">Order Summary</h3>
 
             <div className="space-y-4 mb-6 max-h-64 overflow-y-auto">
-              {cart.items.map((item) => (
+              {cart.items.map((item) => {
+                let itemPrice = parseFloat(item.discount_price || item.price || 0);
+                if (item.metadata && item.metadata.items) {
+                  item.metadata.items.forEach(bundleItem => {
+                    itemPrice += parseFloat(bundleItem.discount_price || bundleItem.price || 0) * parseInt(bundleItem.quantity || 1);
+                  });
+                }
+                return (
                 <div key={item.id} className="flex gap-4">
                   <img
                     src={getFullImageUrl(item.product_image)}
@@ -348,10 +355,10 @@ const Checkout = () => {
                     <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
                   </div>
                   <p className="text-sm font-semibold text-gray-900">
-                    ₹{(item.discount_price || item.price) * item.quantity}
+                    ₹{itemPrice * item.quantity}
                   </p>
                 </div>
-              ))}
+              )})}
             </div>
 
             <div className="border-t pt-4">

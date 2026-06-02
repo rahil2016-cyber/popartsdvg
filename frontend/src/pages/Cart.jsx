@@ -113,8 +113,13 @@ const Cart = () => {
         <div className="flex-1">
           <div className="flex flex-col gap-6">
             {cart.items.map((item, index) => {
-              const price = item.discount_price || item.price;
-              const itemTotal = price * item.quantity;
+              let price = parseFloat(item.discount_price || item.price || 0);
+          if (item.metadata && item.metadata.items) {
+            item.metadata.items.forEach(bundleItem => {
+              price += parseFloat(bundleItem.discount_price || bundleItem.price || 0) * parseInt(bundleItem.quantity || 1);
+            });
+          }
+          const itemTotal = price * item.quantity;
 
               return (
                 <motion.div
