@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Filter } from 'lucide-react';
+import { Filter, Check } from 'lucide-react';
 import api from '../services/api';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
@@ -129,42 +129,57 @@ const Products = () => {
                 <Filter className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Categories
               </h3>
-              <div className="flex flex-row lg:flex-col overflow-x-auto gap-2 lg:gap-2 pb-2 lg:pb-0 scrollbar-hide snap-x whitespace-nowrap">
+              <div className="flex flex-row lg:flex-col overflow-x-auto gap-3 lg:gap-1 pb-2 lg:pb-0 scrollbar-hide snap-x whitespace-nowrap lg:whitespace-normal">
                 <button
                   onClick={clearCategories}
-                  className={`flex-shrink-0 inline-block text-left px-4 py-2 rounded-full lg:rounded-lg transition-colors text-sm font-medium ${selectedCategories.length === 0 ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 lg:bg-transparent lg:hover:bg-gray-100'}`}
+                  className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#ec407a] transition-colors flex-shrink-0 text-left"
                 >
-                  All Products
+                  <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all shrink-0 ${selectedCategories.length === 0 ? 'bg-[#ec407a] border-[#ec407a] text-white' : 'border-gray-300 bg-white'}`}>
+                    {selectedCategories.length === 0 && <Check className="w-3 h-3 stroke-[3px]" />}
+                  </div>
+                  <span>All Products</span>
                 </button>
-                {categories.map((category) => (
-                  <button
-                    key={category.id}
-                    onClick={() => toggleCategory(category.slug)}
-                    className={`flex-shrink-0 inline-block text-left px-4 py-2 rounded-full lg:rounded-lg transition-colors text-sm font-medium ${selectedCategories.includes(category.slug) ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 lg:bg-transparent lg:hover:bg-gray-100'}`}
-                  >
-                    {category.name}
-                  </button>
-                ))}
+                {categories.map((category) => {
+                  const isChecked = selectedCategories.includes(category.slug);
+                  return (
+                    <button
+                      key={category.id}
+                      onClick={() => toggleCategory(category.slug)}
+                      className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#ec407a] transition-colors flex-shrink-0 text-left"
+                    >
+                      <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all shrink-0 ${isChecked ? 'bg-[#ec407a] border-[#ec407a] text-white' : 'border-gray-300 bg-white'}`}>
+                        {isChecked && <Check className="w-3 h-3 stroke-[3px]" />}
+                      </div>
+                      <span>{category.name}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
             <div>
               <h3 className="text-sm sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">Price Range</h3>
-              <div className="flex flex-row lg:flex-col overflow-x-auto gap-2 lg:gap-2 pb-2 lg:pb-0 scrollbar-hide snap-x whitespace-nowrap">
+              <div className="flex flex-row lg:flex-col overflow-x-auto gap-3 lg:gap-1 pb-2 lg:pb-0 scrollbar-hide snap-x whitespace-nowrap lg:whitespace-normal">
                 {[
                   { label: 'Under ₹499', value: '0-499' },
                   { label: '₹500 - ₹999', value: '500-999' },
                   { label: '₹1000 - ₹1999', value: '1000-1999' },
                   { label: '₹2000+', value: '2000+' }
-                ].map((budget) => (
-                  <button
-                    key={budget.value}
-                    onClick={() => toggleBudget(budget.value)}
-                    className={`flex-shrink-0 inline-block text-left px-4 py-2 rounded-full lg:rounded-lg transition-colors text-sm font-medium ${selectedBudgets.includes(budget.value) ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 lg:bg-transparent lg:hover:bg-gray-100'}`}
-                  >
-                    {budget.label}
-                  </button>
-                ))}
+                ].map((budget) => {
+                  const isChecked = selectedBudgets.includes(budget.value);
+                  return (
+                    <button
+                      key={budget.value}
+                      onClick={() => toggleBudget(budget.value)}
+                      className="flex items-center gap-2.5 px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#ec407a] transition-colors flex-shrink-0 text-left"
+                    >
+                      <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all shrink-0 ${isChecked ? 'bg-[#ec407a] border-[#ec407a] text-white' : 'border-gray-300 bg-white'}`}>
+                        {isChecked && <Check className="w-3 h-3 stroke-[3px]" />}
+                      </div>
+                      <span>{budget.label}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
 
