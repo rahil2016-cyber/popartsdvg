@@ -32,20 +32,7 @@ const AmoebaProductCard = ({
 
   const discountPercent = hasDiscount ? Math.round(((product.price - product.discount_price) / product.price) * 100) : 0;
 
-  // Deterministic rating based on name/ID to match mockup screenshots beautifully
-  const getRating = () => {
-    if (product.rating) return product.rating;
-    const code = (product.name || '').charCodeAt(0) || 0;
-    const rate = 4.5 + (code % 5) * 0.1;
-    return rate.toFixed(1);
-  };
-  const getReviewCount = () => {
-    if (product.reviews_count) return product.reviews_count;
-    const code = (product.name || '').charCodeAt(1) || 0;
-    return 20 + (code % 20) * 11;
-  };
-  const rating = getRating();
-  const reviewsCount = getReviewCount();
+
 
   // Entrance animations based on viewport visibility
   const entranceProps = animateOnView
@@ -142,12 +129,7 @@ const AmoebaProductCard = ({
           </h3>
         </Link>
 
-        {/* Rating row matching the mockup */}
-        <div className="mt-1 flex items-center gap-1 text-[11px] text-gray-500">
-          <span className="text-[#f1c40f] text-sm leading-none">★</span>
-          <span className="font-semibold text-gray-700 leading-none">{rating}</span>
-          <span className="text-gray-400 leading-none">({reviewsCount})</span>
-        </div>
+
 
         {/* Prices row */}
         <div className="mt-1 flex items-baseline gap-2">

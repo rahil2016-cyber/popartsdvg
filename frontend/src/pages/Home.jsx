@@ -17,6 +17,7 @@ import api from '../services/api';
 import toast from 'react-hot-toast';
 import HeroSection from '../components/HeroSection';
 import AmoebaProductCard, { AmoebaProductCardSkeleton } from '../components/AmoebaProductCard';
+import InstagramReelsSlider from '../components/InstagramReelsSlider';
 
 const occasions = [
   { emoji: '🎂', name: 'Birthday Gifts', slug: 'birthday-gifts', bgColor: 'bg-[#fff0f3]', hoverBg: 'hover:bg-[#ffe4e6]' },
@@ -71,21 +72,26 @@ const trustBadges = [
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [newArrivals, setNewArrivals] = useState([]);
+  const [instagramPosts, setInstagramPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState('');
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [featuredRes, latestRes] = await Promise.all([
+        const [featuredRes, latestRes, reelsRes] = await Promise.all([
           api.get('/products?featured=true&limit=8'),
-          api.get('/products?limit=8')
+          api.get('/products?limit=8'),
+          api.get('/reels')
         ]);
         if (featuredRes.data.products?.length > 0) {
           setFeaturedProducts(featuredRes.data.products);
         }
         if (latestRes.data.products?.length > 0) {
           setNewArrivals(latestRes.data.products);
+        }
+        if (reelsRes.data?.length > 0) {
+          setInstagramPosts(reelsRes.data);
         }
       } catch (error) {
         console.error('Failed to load products for homepage:', error);
@@ -313,6 +319,35 @@ const Home = () => {
               </button>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Section 4.5: Real Orders & Customer Reactions (Instagram Reels) */}
+      <section className="py-10 md:py-14 bg-white border-b border-gray-50">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <span className="mb-2 inline-block text-xs font-semibold uppercase tracking-[0.25em] text-[#ec407a]">
+              @popartsdvg
+            </span>
+            <h2 className="text-xl md:text-2xl font-bold text-[#1b1842]">
+              Real Orders & Customer Reactions
+            </h2>
+            <p className="text-xs text-gray-500 mt-1">
+              Your visuals are our biggest selling asset — follow us for daily gifting inspo and reels!
+            </p>
+          </div>
+          <InstagramReelsSlider posts={instagramPosts} />
+          <div className="mt-8 text-center">
+            <a
+              href="https://www.instagram.com/popartsdvg?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 px-8 py-3 text-xs font-bold text-white shadow-md hover:shadow-lg hover:scale-105 transition-all"
+            >
+              <FaInstagram className="h-4 w-4" />
+              Follow @popartsdvg on Instagram
+            </a>
+          </div>
         </div>
       </section>
 
