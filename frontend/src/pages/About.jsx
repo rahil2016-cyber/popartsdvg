@@ -11,9 +11,9 @@ import {
 } from 'lucide-react';
 
 const team = [
-  { name: 'Priya', role: 'Founder & Curator', image: '/images/hero-dream-flower.png' },
-  { name: 'Arjun', role: 'Design Lead', image: '/images/hero-hamper-toys.png' },
-  { name: 'Meera', role: 'Customer Happiness', image: '/images/hero-return-gifts.png' },
+  { name: 'Priya', role: 'Founder & Curator', image: '/images/birthday-hamper.png' },
+  { name: 'Arjun', role: 'Design Lead', image: '/images/return-gift-hamper.png' },
+  { name: 'Meera', role: 'Customer Happiness', image: '/images/baby-hamper.png' },
 ];
 
 const milestones = [
@@ -76,16 +76,16 @@ const About = () => {
               viewport={{ once: true }}
             >
               <span className="inline-block text-xs font-semibold uppercase tracking-[0.25em] text-[#8e44ad]">
-                Our Mission
+                Our Story
               </span>
-              <h2 className="mt-4 font-playfair text-3xl text-[#1b1842] md:text-4xl">
-                Making gifting personal & memorable
+              <h2 className="mt-4 font-playfair text-3xl text-[#1b1842] md:text-4xl leading-tight">
+                Not your regular gift hampers.
               </h2>
-              <p className="mt-6 text-[#5a5678]">
-                At POPARTSDVG, we believe that every gift tells a story. Whether it's a baby shower, birthday, wedding, or corporate event — we're here to help you express your love, gratitude, and celebration in the most beautiful way possible.
+              <p className="mt-6 text-[#5a5678] text-base leading-relaxed">
+                We’re here for the thoughtful texts, the last-minute surprises, the proud parent moments, and the “I saw this and thought of you” kind of gifting.
               </p>
-              <p className="mt-4 text-[#5a5678]">
-                Founded in Bangalore, we've grown from a small passion project to becoming the city's most loved gifting destination. Our mission is simple: to make every gift feel like it was made just for them.
+              <p className="mt-4 text-[#5a5678] text-base leading-relaxed">
+                Every POPARTSDVG hamper is curated to make someone smile, feel celebrated, and know they matter.
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <div className="flex items-center gap-2">
@@ -109,7 +109,7 @@ const About = () => {
               className="relative"
             >
               <div className="aspect-square overflow-hidden rounded-3xl">
-                <img src="/images/hero-dream-flower.png" alt="Our Story" className="h-full w-full object-cover" />
+                <img src="/images/build-hamper-banner-right.png" alt="Our Story" className="h-full w-full object-cover" />
               </div>
               <div className="absolute -bottom-6 -left-6 rounded-2xl bg-white p-6 shadow-xl">
                 <div className="flex items-center gap-4">
