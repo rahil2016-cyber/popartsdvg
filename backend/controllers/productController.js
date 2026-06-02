@@ -3,7 +3,7 @@ const pool = require('../config/db');
 
 const getProducts = async (req, res) => {
   try {
-    const { category, featured, search, page = 1, limit = 12, min_price, max_price } = req.query;
+    const { category, featured, search, page = 1, limit = 12, budget } = req.query;
     const offset = (page - 1) * limit;
     
     // Simple resilient query - no dependency on product_categories
@@ -27,10 +27,16 @@ const getProducts = async (req, res) => {
     const countParams = [];
 
     if (category) {
-      query += ` AND (c.slug = ? OR c.id = ? OR p.category_id = ?)`;
-      params.push(category, category, category);
-      countQuery += ` AND (c.slug = ? OR c.id = ? OR p.category_id = ?)`;
-      countParams.push(category, category, category);
+      const categories = category.split(',');
+      const placeholders = categories.map(() => '?').join(',');
+      
+      let condition = ` AND (c.slug IN (${placeholders}) OR c.id IN (${placeholders}) OR p.category_id IN (${placeholders}))`;
+      query += condition;
+      countQuery += condition;
+      
+      const catParams = [...categories, ...categories, ...categories];
+      params.push(...catParams);
+      countParams.push(...catParams);
     }
 
     if (featured === 'true') {
@@ -45,18 +51,20 @@ const getProducts = async (req, res) => {
       countParams.push(`%${search}%`, `%${search}%`);
     }
 
-    if (min_price) {
-      query += ' AND COALESCE(p.discount_price, p.price) >= ?';
-      params.push(parseFloat(min_price));
-      countQuery += ' AND COALESCE(p.discount_price, p.price) >= ?';
-      countParams.push(parseFloat(min_price));
-    }
-    
-    if (max_price) {
-      query += ' AND COALESCE(p.discount_price, p.price) <= ?';
-      params.push(parseFloat(max_price));
-      countQuery += ' AND COALESCE(p.discount_price, p.price) <= ?';
-      countParams.push(parseFloat(max_price));
+    if (budget) {
+       const budgetRanges = budget.split(',');
+       const budgetConditions = [];
+       for (const b of budgetRanges) {
+          if (b === '0-499') budgetConditions.push('(COALESCE(p.discount_price, p.price) <= 499)');
+          if (b === '500-999') budgetConditions.push('(COALESCE(p.discount_price, p.price) BETWEEN 500 AND 999)');
+          if (b === '1000-1999') budgetConditions.push('(COALESCE(p.discount_price, p.price) BETWEEN 1000 AND 1999)');
+          if (b === '2000+') budgetConditions.push('(COALESCE(p.discount_price, p.price) >= 2000)');
+       }
+       if (budgetConditions.length > 0) {
+          const cond = ` AND (${budgetConditions.join(' OR ')})`;
+          query += cond;
+          countQuery += cond;
+       }
     }
 
     query += ` GROUP BY p.id ORDER BY p.created_at DESC LIMIT ${parseInt(limit)} OFFSET ${parseInt(offset)}`;
