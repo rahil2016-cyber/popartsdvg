@@ -5,7 +5,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Gift,
-  Mail,
   ArrowRight,
   Cake,
   Baby,
@@ -15,9 +14,8 @@ import {
   Crown,
   Wand2
 } from 'lucide-react';
-import { FaInstagram, FaFacebookF, FaYoutube, FaPinterestP } from 'react-icons/fa';
+import { FaInstagram } from 'react-icons/fa';
 import api from '../services/api';
-import toast from 'react-hot-toast';
 import HeroSection from '../components/HeroSection';
 import AmoebaProductCard, { AmoebaProductCardSkeleton } from '../components/AmoebaProductCard';
 import InstagramReelsSlider from '../components/InstagramReelsSlider';
@@ -46,28 +44,28 @@ const hamperCollections = [
     desc: 'Make birthdays extra special', 
     link: '/products?category=birthday-gifts', 
     gradient: 'from-[#fff0f3] to-[#ffe4e6]', 
-    image: '/images/hero-return-gifts.png' 
+    image: '/images/birthday-hamper.png' 
   },
   { 
     title: 'Return Gift Hampers', 
     desc: 'Perfect for parties & celebrations', 
     link: '/products?category=return-gifts', 
     gradient: 'from-[#fffbeb] to-[#fef3c7]', 
-    image: '/images/hero-hamper-toys.png' 
+    image: '/images/return-gift-hamper.png' 
   },
   { 
     title: 'Baby Hampers', 
     desc: 'Adorable gifts for little ones', 
     link: '/products?category=baby-hampers', 
     gradient: 'from-[#ffe4e6] to-[#fecdd3]', 
-    image: '/images/hero-dream-flower.png' 
+    image: '/images/baby-hamper.png' 
   },
   { 
     title: 'Custom Hampers', 
     desc: 'Personalize it your way', 
     link: '/build-hamper', 
     gradient: 'from-[#e0f2fe] to-[#bae6fd]', 
-    image: '/images/hero-summer-beach.png' 
+    image: '/images/custom-hamper.png' 
   },
 ];
 
@@ -78,7 +76,6 @@ const Home = () => {
   const [newArrivals, setNewArrivals] = useState([]);
   const [instagramPosts, setInstagramPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [email, setEmail] = useState('');
 
   useEffect(() => {
     const loadData = async () => {
@@ -114,11 +111,7 @@ const Home = () => {
     }
   };
 
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    toast.success('Thank you for subscribing to PopArts newsletter!');
-    setEmail('');
-  };
+
 
   return (
     <div className="overflow-hidden bg-white">
@@ -420,57 +413,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Section 6: Stay Updated Banner */}
-      <section className="py-10 md:py-14 bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-[#ffeef0] via-[#fae8ff] to-[#f3e8ff] rounded-3xl p-6 md:p-10 flex flex-col lg:flex-row items-center justify-between gap-6 shadow-sm">
-            <div className="flex items-center gap-4 flex-1">
-              <div className="w-12 h-12 rounded-full bg-[#ec407a] flex items-center justify-center text-white shrink-0 shadow-md">
-                <Mail className="w-5 h-5" />
-              </div>
-              <div className="text-left">
-                <h4 className="text-base md:text-lg font-bold text-[#1b1842]">Stay Updated with PopArts</h4>
-                <p className="text-[11px] md:text-xs text-gray-500 mt-0.5">Get special offers, new arrivals and gifting ideas.</p>
-              </div>
-            </div>
-            
-            <form onSubmit={handleSubscribe} className="flex w-full lg:w-auto flex-1 max-w-md bg-white rounded-full p-1 border border-pink-100 shadow-sm">
-              <input
-                type="email"
-                required
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 bg-transparent px-4 py-2 text-xs focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="bg-[#ec407a] hover:bg-[#d81b60] text-white font-bold text-xs px-6 py-2.5 rounded-full transition-colors whitespace-nowrap"
-              >
-                Subscribe
-              </button>
-            </form>
 
-            <div className="flex items-center gap-3">
-              <span className="text-xs font-bold text-[#1b1842]">Follow Us</span>
-              <div className="flex gap-2">
-                <a href="https://www.instagram.com/popartsdvg" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-[#ec407a] hover:bg-[#d81b60] text-white flex items-center justify-center transition-colors">
-                  <FaInstagram className="w-4 h-4" />
-                </a>
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-[#ec407a] hover:bg-[#d81b60] text-white flex items-center justify-center transition-colors">
-                  <FaFacebookF className="w-4 h-4" />
-                </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-[#ec407a] hover:bg-[#d81b60] text-white flex items-center justify-center transition-colors">
-                  <FaYoutube className="w-4 h-4" />
-                </a>
-                <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" className="w-8 h-8 rounded-full bg-[#ec407a] hover:bg-[#d81b60] text-white flex items-center justify-center transition-colors">
-                  <FaPinterestP className="w-4 h-4" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
