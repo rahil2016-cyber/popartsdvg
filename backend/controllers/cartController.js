@@ -33,12 +33,12 @@ const getCart = async (req, res) => {
 
     let total = 0;
     items.forEach(item => {
-      let price = item.discount_price || item.price;
+      let price = parseFloat(item.discount_price || item.price || 0);
       
       // Calculate bundle price if metadata exists
       if (item.metadata && item.metadata.items) {
         item.metadata.items.forEach(bundleItem => {
-          price += (bundleItem.discount_price || bundleItem.price) * bundleItem.quantity;
+          price += parseFloat(bundleItem.discount_price || bundleItem.price || 0) * parseInt(bundleItem.quantity || 1);
         });
       }
 
