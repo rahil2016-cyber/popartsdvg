@@ -4,11 +4,7 @@ import { motion } from 'framer-motion';
 import {
   ChevronLeft,
   ChevronRight,
-  ShieldCheck,
-  Heart,
   Gift,
-  Truck,
-  RotateCcw,
   Mail,
   ArrowRight
 } from 'lucide-react';
@@ -28,6 +24,13 @@ const occasions = [
   { emoji: '🍼', name: 'Water Bottles', slug: 'water-bottles', bgColor: 'bg-[#fffbeb]', hoverBg: 'hover:bg-[#fffbeb]/80' },
   { emoji: '✏️', name: 'Stationery', slug: 'stationery', bgColor: 'bg-[#ffe4e6]', hoverBg: 'hover:bg-[#ffe4e6]/80' },
   { emoji: '⭐', name: 'Personalized Gifts', slug: 'personalised-gifts', bgColor: 'bg-[#fdf4ff]', hoverBg: 'hover:bg-[#fdf4ff]/80' },
+];
+
+const budgets = [
+  { label: 'Under ₹499', range: '0-499', color: 'bg-pink-50 border-pink-200 text-pink-700' },
+  { label: '₹500–₹999', range: '500-999', color: 'bg-purple-50 border-purple-200 text-purple-700' },
+  { label: '₹1000–₹1999', range: '1000-1999', color: 'bg-violet-50 border-violet-200 text-violet-700' },
+  { label: '₹2000+', range: '2000+', color: 'bg-gradient-to-br from-purple-600 to-pink-500 border-transparent text-white' },
 ];
 
 const hamperCollections = [
@@ -61,13 +64,7 @@ const hamperCollections = [
   },
 ];
 
-const trustBadges = [
-  { icon: ShieldCheck, title: 'Premium Quality', desc: 'Carefully selected safe & durable products', color: 'bg-purple-50 text-[#ab47bc]' },
-  { icon: Heart, title: 'Safe for Kids', desc: 'Non-toxic, child safe & BPA free', color: 'bg-green-50 text-[#2e7d32]' },
-  { icon: Gift, title: 'Unique Designs', desc: 'Fun, colorful & trendy designs', color: 'bg-pink-50 text-[#ec407a]' },
-  { icon: Truck, title: 'Fast & Reliable', desc: 'Quick delivery at your doorstep', color: 'bg-blue-50 text-[#1565c0]' },
-  { icon: RotateCcw, title: 'Easy Returns', desc: '7 days hassle free returns', color: 'bg-amber-50 text-[#d97706]' },
-];
+
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -322,6 +319,71 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Section 4.2: Shop by Budget */}
+      <section className="bg-gradient-to-b from-purple-50/50 to-white py-16 md:py-20 border-b border-gray-50">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <span className="mb-2 inline-block text-xs font-semibold uppercase tracking-[0.25em] text-[#ec407a]">
+              Budget Friendly
+            </span>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1b1842]">Shop by Budget</h2>
+            <p className="text-sm text-gray-500 mt-2">
+              Gifting shoppers think in budget — find the perfect hamper in your range.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+            {budgets.map((budget, index) => (
+              <motion.div
+                key={budget.range}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+              >
+                <Link
+                  to={`/products?budget=${budget.range}`}
+                  className={`flex h-32 flex-col items-center justify-center rounded-2xl border-2 p-6 text-center transition hover:-translate-y-1 hover:shadow-lg md:h-40 ${budget.color}`}
+                >
+                  <span className="text-lg font-bold md:text-xl">{budget.label}</span>
+                  <span className="mt-2 flex items-center gap-1 text-sm opacity-80">
+                    Shop now <ArrowRight className="h-4 w-4" />
+                  </span>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4.3: Build Your Own Hamper CTA */}
+      <section id="build-hamper" className="py-16 md:py-20 relative">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="bg-gradient-to-br from-[#1b1842] to-[#2d2866] rounded-[2.5rem] p-8 md:p-14 text-center shadow-2xl relative overflow-hidden">
+            {/* Background decorations */}
+            <div className="absolute top-0 left-0 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+            
+            <span className="mb-4 inline-block text-xs font-semibold uppercase tracking-[0.25em] text-pink-300">
+              Game Changer
+            </span>
+            <h2 className="font-playfair text-4xl md:text-5xl text-white mb-6">Design the Perfect Gift</h2>
+            <p className="mx-auto max-w-2xl text-purple-100 text-lg mb-10">
+              People love customization! Build a personalized hamper step-by-step. Choose a premium box, add their favorite items, pick a greeting card, and we'll curate it beautifully.
+            </p>
+            
+            <Link
+              to="/build-hamper"
+              className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-pink-500 to-orange-400 px-10 py-5 text-lg font-bold text-white shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
+            >
+              <Gift className="w-6 h-6" />
+              Build Your Own Hamper Now
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Section 4.5: Real Orders & Customer Reactions (Instagram Reels) */}
       <section className="py-10 md:py-14 bg-white border-b border-gray-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -333,7 +395,7 @@ const Home = () => {
               Real Orders & Customer Reactions
             </h2>
             <p className="text-xs text-gray-500 mt-1">
-              Your visuals are our biggest selling asset — follow us for daily gifting inspo and reels!
+              Your visuals are our biggest selling asset — follow us for daily gifting info and reels!
             </p>
           </div>
           <InstagramReelsSlider posts={instagramPosts} />
@@ -347,29 +409,6 @@ const Home = () => {
               <FaInstagram className="h-4 w-4" />
               Follow @popartsdvg on Instagram
             </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 5: Why Parents Love PopArts */}
-      <section className="py-10 md:py-16 bg-[#fafafa]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <h3 className="text-lg md:text-xl font-bold text-center text-[#1b1842] mb-10 flex items-center justify-center gap-2">
-            Why Parents Love PopArts <Heart className="w-4 h-4 text-[#ec407a] fill-[#ec407a]" />
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
-            {trustBadges.map((b) => {
-              const Icon = b.icon;
-              return (
-                <div key={b.title} className="flex flex-col items-center text-center p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                  <div className={`w-12 h-12 rounded-full ${b.color} flex items-center justify-center mb-3`}>
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <h5 className="text-xs md:text-sm font-bold text-[#1b1842] leading-tight">{b.title}</h5>
-                  <p className="text-[9px] md:text-[10px] text-gray-500 mt-2 leading-relaxed">{b.desc}</p>
-                </div>
-              );
-            })}
           </div>
         </div>
       </section>

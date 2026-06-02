@@ -119,16 +119,16 @@ const Navbar = () => {
                 )}
               </div>
 
-              <Link to="/products?sort=newest" className={navItemClass('/products?sort=newest')}>
-                New Arrivals
+              <Link to="/build-hamper" className={navItemClass('/build-hamper')}>
+                Build Your Own Hamper
               </Link>
 
-              <Link to="/products?featured=true" className={navItemClass('/products?featured=true')}>
-                Best Sellers
+              <Link to="/about" className={navItemClass('/about')}>
+                About Us
               </Link>
 
-              <Link to="/products?offers=true" className={navItemClass('/products?offers=true')}>
-                Offers
+              <Link to="/contact" className={navItemClass('/contact')}>
+                Contact
               </Link>
             </div>
 
@@ -205,9 +205,9 @@ const Navbar = () => {
                 </div>
               )}
 
-              <Link to="/products?sort=newest" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">New Arrivals</Link>
-              <Link to="/products?featured=true" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">Best Sellers</Link>
-              <Link to="/products?offers=true" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">Offers</Link>
+              <Link to="/build-hamper" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">Build Your Own Hamper</Link>
+              <Link to="/about" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">About Us</Link>
+              <Link to="/contact" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">Contact</Link>
 
               <form onSubmit={handleSearch} className="flex pt-2">
                 <input
