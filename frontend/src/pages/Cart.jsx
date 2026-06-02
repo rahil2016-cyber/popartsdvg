@@ -108,131 +108,143 @@ const Cart = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <h1 className="text-3xl font-bold text-gray-800 mb-8">Shopping Cart</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-4">
-          {cart.items.map((item, index) => {
-          const price = item.discount_price || item.price;
-          const itemTotal = price * item.quantity;
+      <div className="flex flex-col lg:flex-row gap-12">
+        {/* Cart Items List */}
+        <div className="flex-1">
+          <div className="flex flex-col gap-6">
+            {cart.items.map((item, index) => {
+              const price = item.discount_price || item.price;
+              const itemTotal = price * item.quantity;
 
-          return (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              className="bg-white rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row gap-6"
-            >
-              <Link to={`/product/${item.slug}`} className="flex-shrink-0">
-                <img
-                  src={getFullImageUrl(item.product_image)}
-                  alt={item.name}
-                  className="w-32 h-32 object-cover rounded-xl"
-                />
-              </Link>
-
-              <div className="flex-1">
-                <Link
-                  to={`/product/${item.slug}`}
-                  className="text-xl font-semibold text-gray-800 hover:text-hot-pink transition-colors"
+              return (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="flex flex-col sm:flex-row items-center gap-6 py-6 border-b border-gray-200"
                 >
-                  {item.name}
-                </Link>
+                  <Link to={`/product/${item.slug}`} className="shrink-0">
+                    <img
+                      src={getFullImageUrl(item.product_image)}
+                      alt={item.name}
+                      className="w-32 h-32 object-cover bg-gray-50"
+                    />
+                  </Link>
 
-                {item.metadata && item.metadata.items && item.metadata.items.length > 0 && (
-                  <ul className="mt-2 text-sm text-gray-500 list-disc list-inside">
-                    {item.metadata.items.map((bundleItem, idx) => (
-                      <li key={idx}>
-                        {bundleItem.name} {bundleItem.quantity > 1 ? `(x${bundleItem.quantity})` : ''}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                  <div className="flex-1 flex flex-col sm:flex-row justify-between w-full">
+                    <div className="flex-1 pr-6">
+                      <Link
+                        to={`/product/${item.slug}`}
+                        className="text-lg text-gray-800 hover:text-hot-pink transition-colors"
+                      >
+                        {item.name}
+                      </Link>
 
-                <div className="text-lg font-bold text-gray-900 mt-2">
-                  ₹{price}
-                </div>
+                      {item.metadata && item.metadata.items && item.metadata.items.length > 0 && (
+                        <ul className="mt-1 text-sm text-gray-500 list-disc list-inside space-y-1">
+                          {item.metadata.items.map((bundleItem, idx) => (
+                            <li key={idx}>
+                              {bundleItem.name} {bundleItem.quantity > 1 ? `(x${bundleItem.quantity})` : ''}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
 
-                <div className="flex items-center justify-between mt-4">
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
-                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:border-hot-pink hover:text-hot-pink"
-                    >
-                      <Minus className="w-4 h-4" />
-                    </button>
-                    <span className="text-lg font-semibold text-gray-800 w-8 text-center">{item.quantity}</span>
-                    <button
-                      onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
-                      className="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:border-hot-pink hover:text-hot-pink"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
+                    <div className="flex items-center gap-8 mt-4 sm:mt-0">
+                      <div className="text-gray-500 font-medium whitespace-nowrap">
+                        ₹{price}
+                      </div>
+
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center border border-gray-300 rounded-full bg-white h-10 px-2">
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="p-1.5 text-gray-500 hover:text-red-500 transition-colors"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                          <span className="text-sm font-medium text-gray-800 w-8 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+                            className="p-1.5 text-gray-500 hover:text-gray-900 transition-colors"
+                          >
+                            <Plus className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="text-lg text-gray-800 whitespace-nowrap w-20 text-right">
+                        ₹{itemTotal}
+                      </div>
+                    </div>
                   </div>
+                </motion.div>
+              );
+            })}
+          </div>
 
-                  <div className="flex items-center gap-4">
-                    <span className="text-xl font-bold text-gray-900">₹{itemTotal}</span>
-                    <button
-                      onClick={() => removeFromCart(item.id)}
-                      className="text-gray-400 hover:text-hot-pink transition-colors"
-                    >
-                      <Trash2 className="w-6 h-6" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
+          <div className="mt-8 border-t border-[#d18e8a] pt-4 inline-block">
+            <Link 
+              to="/products"
+              className="text-[#d18e8a] font-bold text-sm tracking-widest uppercase hover:opacity-80 flex items-center"
+            >
+              &larr; CONTINUE SHOPPING
+            </Link>
+          </div>
         </div>
 
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-2xl p-6 shadow-sm sticky top-24">
-            <button
-              onClick={handleCheckout}
-              className="w-full bg-gradient-to-r from-hot-pink to-royal-purple text-white py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
-            >
-              Proceed to Checkout
-              <ArrowRight className="w-5 h-5" />
-            </button>
-
-            <button
-              onClick={clearCart}
-              className="w-full mt-4 text-gray-500 hover:text-hot-pink transition-colors font-medium"
-            >
-              Clear Cart
-            </button>
+        {/* Sidebar Summary */}
+        <div className="lg:w-96 shrink-0">
+          <div className="bg-gray-50 rounded-2xl p-8 sticky top-24">
+            <h2 className="text-xl font-bold text-gray-800 mb-6">Order Summary</h2>
             
-            <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-              <Link to={user ? "/orders" : "/track-order"} className="text-gray-600 hover:text-hot-pink transition-colors font-medium inline-flex items-center gap-2">
-                View Order History
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-          
-          {/* Guest Recent Orders in Sidebar */}
-          {guestOrders.length > 0 && !user && (
-            <div className="mt-8 bg-white rounded-2xl p-6 shadow-sm sticky top-[420px]">
-              <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <Package className="w-5 h-5 text-hot-pink" />
-                Recent Orders
-              </h3>
-              <div className="space-y-3">
-                {guestOrders.slice(0, 3).map((order, idx) => (
-                  <Link
-                    key={idx}
-                    to={`/order/${order.order_number}`}
-                    className="block p-4 rounded-xl border border-gray-100 hover:border-purple-200 hover:bg-purple-50 transition-all"
-                  >
-                    <p className="font-bold text-gray-900 text-sm">#{order.order_number}</p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      {new Date(order.date).toLocaleDateString()}
-                    </p>
-                  </Link>
-                ))}
+            <div className="space-y-4 mb-6 pb-6 border-b border-gray-200">
+              <div className="flex justify-between text-gray-600">
+                <span>Subtotal</span>
+                <span>₹{cart.total}</span>
+              </div>
+              <div className="flex justify-between text-gray-600">
+                <span>Shipping</span>
+                <span className="text-green-600">Free</span>
               </div>
             </div>
-          )}
+
+            <div className="flex justify-between items-center mb-8">
+              <span className="text-lg font-bold text-gray-800">Total</span>
+              <span className="text-2xl font-bold text-gray-900">₹{cart.total}</span>
+            </div>
+
+            <button
+              onClick={handleCheckout}
+              className="w-full bg-gray-900 text-white py-4 font-bold text-lg hover:bg-gray-800 transition-all uppercase tracking-wider"
+            >
+              Checkout
+            </button>
+            
+            {guestOrders.length > 0 && !user && (
+              <div className="mt-8 pt-8 border-t border-gray-200">
+                <h3 className="text-sm font-bold text-gray-800 mb-4 uppercase tracking-wider">
+                  Recent Orders
+                </h3>
+                <div className="space-y-3">
+                  {guestOrders.slice(0, 3).map((order, idx) => (
+                    <Link
+                      key={idx}
+                      to={`/order/${order.order_number}`}
+                      className="block p-3 rounded bg-white border border-gray-100 hover:border-gray-300 transition-all"
+                    >
+                      <p className="font-bold text-gray-900 text-sm">#{order.order_number}</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {new Date(order.date).toLocaleDateString()}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

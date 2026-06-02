@@ -79,10 +79,10 @@ const BuildHamper = () => {
 
   const calculateTotal = () => {
     let total = 0;
-    if (selectedBox) total += (selectedBox.price || selectedBox.discount_price);
-    if (selectedCard) total += (selectedCard.price || selectedCard.discount_price);
+    if (selectedBox) total += parseFloat(selectedBox.discount_price || selectedBox.price || 0);
+    if (selectedCard) total += parseFloat(selectedCard.discount_price || selectedCard.price || 0);
     selectedGifts.forEach(gift => {
-      total += (gift.discount_price || gift.price) * gift.quantity;
+      total += parseFloat(gift.discount_price || gift.price || 0) * parseInt(gift.quantity || 1);
     });
     return total;
   };

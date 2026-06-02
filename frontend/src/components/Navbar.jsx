@@ -6,9 +6,11 @@ import { useCart } from '../context/CartContext';
 
 const shopDropdownLinks = [
   { label: 'Best Sellers', to: '/#bestsellers' },
-  { label: 'New Arrivals', to: '/products' }, // Assuming new arrivals is just products sorted by date
+  { label: 'New Arrivals', to: '/products' },
   { label: 'Personalized Gifts', to: '/products?category=personalised-gifts' },
   { label: 'Premium Hampers', to: '/products?category=premium-hampers' },
+  { label: 'Hamper Boxes', to: '/products?category=empty-boxes' },
+  { label: 'Greeting Cards', to: '/products?category=greeting-cards' },
 ];
 
 const occasionsDropdownLinks = [
