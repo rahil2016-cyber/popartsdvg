@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import { load } from '@cashfreepayments/cashfree-js';
 
 const DELIVERY_CHARGE = 120;
-const PICKUP_LOCATION = "Poparts DVG Store, 123 Main Street, Davanagere, Karnataka - 577001";
+const PICKUP_LOCATION = "2633/1, MCC B Block, Near Tank Park, Davanagere, Karnataka, 577004";
 
 const Checkout = () => {
   const { user } = useAuth();
