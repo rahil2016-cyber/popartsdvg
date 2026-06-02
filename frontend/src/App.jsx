@@ -53,7 +53,7 @@ const AppContent = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="overflow-x-hidden w-full min-h-screen flex flex-col">
       {!isAdminRoute && <Navbar />}
       <main className={`flex-grow ${isAdminRoute ? '' : ''}`}>
         <Routes>
