@@ -54,10 +54,23 @@ const createOrder = async (req, res) => {
         throw new Error(`Product not found: ${item.productId}`);
       }
       const product = products[0];
-      const price = product.discount_price || product.price;
+      let price = parseFloat(product.discount_price || product.price || 0);
+
+      if (item.metadata && item.metadata.items) {
+        item.metadata.items.forEach(bundleItem => {
+          price += parseFloat(bundleItem.discount_price || bundleItem.price || 0) * parseInt(bundleItem.quantity || 1);
+        });
+      }
+
       const itemTotal = price * item.quantity;
       totalAmount += itemTotal;
-      orderItems.push({ productId: item.productId, quantity: item.quantity, price, total: itemTotal });
+      orderItems.push({ 
+        productId: item.productId, 
+        quantity: item.quantity, 
+        price, 
+        total: itemTotal,
+        metadata: item.metadata ? JSON.stringify(item.metadata) : null
+      });
     }
 
     if (couponId) {
@@ -107,8 +120,8 @@ const createOrder = async (req, res) => {
 
     for (const item of orderItems) {
       await connection.execute(
-        'INSERT INTO order_items (order_id, product_id, quantity, price, total) VALUES (?, ?, ?, ?, ?)',
-        [orderId, item.productId, item.quantity, item.price, item.total]
+        'INSERT INTO order_items (order_id, product_id, quantity, price, total, metadata) VALUES (?, ?, ?, ?, ?, ?)',
+        [orderId, item.productId, item.quantity, item.price, item.total, item.metadata]
       );
     }
 
@@ -159,7 +172,11 @@ const getMyOrders = async (req, res) => {
         LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
         WHERE oi.order_id = ?
       `, [order.id]);
-      order.items = items;
+
+      order.items = items.map(item => ({
+        ...item,
+        metadata: typeof item.metadata === 'string' ? JSON.parse(item.metadata) : item.metadata
+      }));
     }
 
     res.json(orders);
@@ -194,7 +211,10 @@ const getOrderById = async (req, res) => {
       LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
       WHERE oi.order_id = ?
     `, [order.id]);
-    order.items = items;
+    order.items = items.map(item => ({
+      ...item,
+      metadata: typeof item.metadata === 'string' ? JSON.parse(item.metadata) : item.metadata
+    }));
 
     res.json(order);
   } catch (error) {

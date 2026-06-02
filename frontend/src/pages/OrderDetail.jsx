@@ -160,7 +160,18 @@ const OrderDetail = () => {
                 >
                   {item.name}
                 </Link>
-                <p className="text-gray-600">Qty: {item.quantity}</p>
+
+                {item.metadata && item.metadata.items && item.metadata.items.length > 0 && (
+                  <ul className="mt-1 text-sm text-gray-500 list-disc list-inside space-y-1">
+                    {item.metadata.items.map((bundleItem, idx) => (
+                      <li key={idx}>
+                        {bundleItem.name} {bundleItem.quantity > 1 ? `(x${bundleItem.quantity})` : ''}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                <p className="text-gray-600 mt-1">Qty: {item.quantity}</p>
               </div>
               <p className="font-semibold text-gray-900">₹{item.total}</p>
             </div>

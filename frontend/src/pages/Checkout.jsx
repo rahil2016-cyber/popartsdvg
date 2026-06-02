@@ -67,7 +67,7 @@ const Checkout = () => {
 
     try {
       const orderData = {
-        items: cart.items.map(item => ({ productId: item.product_id, quantity: item.quantity })),
+        items: cart.items.map(item => ({ productId: item.product_id, quantity: item.quantity, metadata: item.metadata })),
         shippingAddress: formData.deliveryType === 'shipping' ? {
           address: formData.address,
           city: formData.city,

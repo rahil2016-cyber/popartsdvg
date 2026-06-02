@@ -232,6 +232,17 @@ const Orders = () => {
                         </div>
                         <div>
                           <h3 className="text-sm font-medium text-gray-800 line-clamp-2 hover:text-blue-600">{item.name}</h3>
+                          
+                          {item.metadata && item.metadata.items && item.metadata.items.length > 0 && (
+                            <ul className="mt-1 text-xs text-gray-500 list-disc list-inside">
+                              {item.metadata.items.map((bundleItem, idx) => (
+                                <li key={idx} className="truncate">
+                                  {bundleItem.name} {bundleItem.quantity > 1 ? `(x${bundleItem.quantity})` : ''}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+
                           <p className="text-xs text-gray-500 mt-1">Quantity: {item.quantity}</p>
                         </div>
                       </div>
