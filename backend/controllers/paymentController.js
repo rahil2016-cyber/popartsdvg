@@ -1,4 +1,6 @@
+const fetch = require('node-fetch');
 const pool = require('../config/db');
+const { sendOrderEmails } = require('../services/emailService');
 
 const CASHFREE_BASE_URL = process.env.CASHFREE_ENV === 'PRODUCTION' 
   ? 'https://api.cashfree.com/pg' 
@@ -93,11 +95,32 @@ const verifyPayment = async (req, res) => {
     const successfulPayment = payments.find(p => p.payment_status === 'SUCCESS');
 
     if (successfulPayment) {
-      // Update order status in DB
-      await pool.execute(
-        'UPDATE orders SET payment_status = ?, order_status = ? WHERE order_number = ?',
-        ['completed', 'processing', order_id]
-      );
+      // Check if already completed to avoid duplicate emails
+      const [existingOrder] = await pool.execute('SELECT * FROM orders WHERE order_number = ?', [order_id]);
+      
+      if (existingOrder.length > 0) {
+        const order = existingOrder[0];
+        
+        if (order.payment_status !== 'completed') {
+          // Update order status in DB
+          await pool.execute(
+            'UPDATE orders SET payment_status = ?, order_status = ? WHERE order_number = ?',
+            ['completed', 'processing', order_id]
+          );
+          
+          // Fetch order items for the email
+          const [orderItemsForEmail] = await pool.execute(`
+            SELECT oi.*, p.name
+            FROM order_items oi
+            JOIN products p ON oi.product_id = p.id
+            WHERE oi.order_id = ?
+          `, [order.id]);
+          
+          // Send order emails
+          sendOrderEmails(order, orderItemsForEmail);
+        }
+      }
+      
       res.json({ success: true, message: 'Payment verified successfully', payment: successfulPayment });
     } else {
       res.json({ success: false, message: 'Payment not successful yet' });
@@ -123,12 +146,32 @@ const cashfreeWebhook = async (req, res) => {
       const orderId = payload.data.order.order_id;
       
       if (paymentStatus === 'SUCCESS') {
-        // Update order status in DB
-        await pool.execute(
-          'UPDATE orders SET payment_status = ?, order_status = ? WHERE order_number = ?',
-          ['completed', 'processing', orderId]
-        );
-        console.log(`Webhook successfully processed payment for order ${orderId}`);
+        // Check if already completed to avoid duplicate emails
+        const [existingOrder] = await pool.execute('SELECT * FROM orders WHERE order_number = ?', [orderId]);
+        
+        if (existingOrder.length > 0) {
+          const order = existingOrder[0];
+          
+          if (order.payment_status !== 'completed') {
+            // Update order status in DB
+            await pool.execute(
+              'UPDATE orders SET payment_status = ?, order_status = ? WHERE order_number = ?',
+              ['completed', 'processing', orderId]
+            );
+            
+            // Fetch order items for the email
+            const [orderItemsForEmail] = await pool.execute(`
+              SELECT oi.*, p.name
+              FROM order_items oi
+              JOIN products p ON oi.product_id = p.id
+              WHERE oi.order_id = ?
+            `, [order.id]);
+            
+            // Send order emails
+            sendOrderEmails(order, orderItemsForEmail);
+            console.log(`Webhook successfully processed payment and sent email for order ${orderId}`);
+          }
+        }
       }
     }
     
