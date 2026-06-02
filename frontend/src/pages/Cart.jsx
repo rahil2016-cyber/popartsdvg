@@ -1,16 +1,28 @@
 
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Trash2, Plus, Minus, ArrowRight } from 'lucide-react';
+import { ShoppingCart, Trash2, Plus, Minus, ArrowRight, Package } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 const Cart = () => {
   const { cart, loading, updateCartItem, removeFromCart, clearCart } = useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
+  const [guestOrders, setGuestOrders] = useState([]);
   
+  useEffect(() => {
+    try {
+      const savedOrders = JSON.parse(localStorage.getItem('guestOrders') || '[]');
+      setGuestOrders(savedOrders);
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
+
   const API_BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : (import.meta.env.PROD ? '' : 'http://localhost:5000');
   const sessionId = localStorage.getItem('sessionId');
-
   console.log('Cart.jsx: Cart data:', cart);
   console.log('Cart.jsx: Session ID:', sessionId);
 
@@ -53,10 +65,41 @@ const Cart = () => {
           Shop Now
         </Link>
         <div className="mt-6">
-          <Link to="/track-order" className="text-gray-500 hover:text-hot-pink transition-colors underline font-medium">
+          <Link to={user ? "/orders" : "/track-order"} className="text-gray-500 hover:text-hot-pink transition-colors underline font-medium">
             View Order History & Track Order
           </Link>
         </div>
+
+        {/* Guest Recent Orders Section */}
+        {guestOrders.length > 0 && !user && (
+          <div className="mt-12 max-w-2xl mx-auto text-left">
+            <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+              <Package className="w-6 h-6 text-hot-pink" />
+              Your Recent Orders
+            </h3>
+            <div className="space-y-4">
+              {guestOrders.map((order, idx) => (
+                <Link
+                  key={idx}
+                  to={`/order/${order.order_number}`}
+                  className="block bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md hover:border-purple-200 transition-all"
+                >
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <p className="text-lg font-bold text-gray-900">Order #{order.order_number}</p>
+                      <p className="text-sm text-gray-500 mt-1">
+                        Placed on {new Date(order.date).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div className="flex items-center text-hot-pink font-semibold gap-2">
+                      Track <ArrowRight className="w-5 h-5" />
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -150,12 +193,36 @@ const Cart = () => {
             </button>
             
             <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-              <Link to="/track-order" className="text-gray-600 hover:text-hot-pink transition-colors font-medium inline-flex items-center gap-2">
+              <Link to={user ? "/orders" : "/track-order"} className="text-gray-600 hover:text-hot-pink transition-colors font-medium inline-flex items-center gap-2">
                 View Order History
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
+          
+          {/* Guest Recent Orders in Sidebar */}
+          {guestOrders.length > 0 && !user && (
+            <div className="mt-8 bg-white rounded-2xl p-6 shadow-sm sticky top-[420px]">
+              <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Package className="w-5 h-5 text-hot-pink" />
+                Recent Orders
+              </h3>
+              <div className="space-y-3">
+                {guestOrders.slice(0, 3).map((order, idx) => (
+                  <Link
+                    key={idx}
+                    to={`/order/${order.order_number}`}
+                    className="block p-4 rounded-xl border border-gray-100 hover:border-purple-200 hover:bg-purple-50 transition-all"
+                  >
+                    <p className="font-bold text-gray-900 text-sm">#{order.order_number}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {new Date(order.date).toLocaleDateString()}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

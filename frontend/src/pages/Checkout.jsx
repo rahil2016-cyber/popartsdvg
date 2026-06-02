@@ -86,6 +86,20 @@ const Checkout = () => {
       const res = await api.post('/orders', orderData);
       await clearCart();
       
+      // Save order to localStorage so guest users can track it later in their Cart page
+      try {
+        const existingOrders = JSON.parse(localStorage.getItem('guestOrders') || '[]');
+        const newGuestOrder = {
+          order_number: res.data.order_number,
+          date: new Date().toISOString(),
+          total: orderData.items.length
+        };
+        // Add to beginning of array, keep only last 10 orders
+        localStorage.setItem('guestOrders', JSON.stringify([newGuestOrder, ...existingOrders].slice(0, 10)));
+      } catch (e) {
+        console.error('Failed to save guest order to local storage', e);
+      }
+      
       if (formData.paymentMethod === 'Cashfree') {
         const orderId = res.data.id;
         const sessionRes = await api.post('/payments/create-session', { orderId });
