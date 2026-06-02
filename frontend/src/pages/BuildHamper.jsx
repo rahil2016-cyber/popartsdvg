@@ -195,7 +195,7 @@ const BuildHamper = () => {
                           <img src={box.image_url || box.primary_image} alt={box.name} className="w-full h-full object-cover" />
                         </div>
                         <h3 className="font-semibold text-gray-800">{box.name}</h3>
-                        <p className="text-sm text-gray-500 mb-2">{box.description}</p>
+                        <p className="text-sm text-gray-500 mb-2 line-clamp-3">{box.description}</p>
                         <p className="font-bold text-[#1b1842]">₹{box.discount_price || box.price}</p>
                       </div>
                     ))}

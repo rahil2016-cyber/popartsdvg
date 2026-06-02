@@ -205,10 +205,6 @@ const Cart = () => {
                 <span>Subtotal</span>
                 <span>₹{cart.total}</span>
               </div>
-              <div className="flex justify-between text-gray-600">
-                <span>Shipping</span>
-                <span className="text-green-600">Free</span>
-              </div>
             </div>
 
             <div className="flex justify-between items-center mb-8">
