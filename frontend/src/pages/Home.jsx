@@ -12,7 +12,11 @@ import {
   Sparkles,
   Briefcase,
   Crown,
-  Wand2
+  Wand2,
+  ShoppingBag,
+  Star,
+  Package,
+  Mail
 } from 'lucide-react';
 import { FaInstagram } from 'react-icons/fa';
 import api from '../services/api';
@@ -32,10 +36,46 @@ const occasions = [
 ];
 
 const budgets = [
-  { label: 'Under ₹499', range: '0-499', color: 'bg-pink-50 border-pink-200 text-pink-700' },
-  { label: '₹500–₹999', range: '500-999', color: 'bg-purple-50 border-purple-200 text-purple-700' },
-  { label: '₹1000–₹1999', range: '1000-1999', color: 'bg-violet-50 border-violet-200 text-violet-700' },
-  { label: '₹2000+', range: '2000+', color: 'bg-gradient-to-br from-purple-600 to-pink-500 border-transparent text-white' },
+  {
+    label: 'Under ₹499',
+    range: '0-499',
+    desc: 'Cute & affordable gifts for everyone',
+    gradient: 'from-[#fff1f2] to-[#ffe4e6]',
+    image: '/images/budget-under-499.png',
+    icon: Gift,
+    iconColor: 'text-[#ec407a]',
+    iconBg: 'bg-pink-100/50'
+  },
+  {
+    label: '₹500–₹999',
+    range: '500-999',
+    desc: 'Most popular gifting range',
+    gradient: 'from-[#faf5ff] to-[#f3e8ff]',
+    image: '/images/budget-500-999.png',
+    icon: ShoppingBag,
+    iconColor: 'text-[#ab47bc]',
+    iconBg: 'bg-purple-100/50'
+  },
+  {
+    label: '₹1000–₹1999',
+    range: '1000-1999',
+    desc: 'Perfect for birthdays & special moments',
+    gradient: 'from-[#fffbeb] to-[#fef3c7]',
+    image: '/images/budget-1000-1999.png',
+    icon: Star,
+    iconColor: 'text-[#d97706]',
+    iconBg: 'bg-amber-100/50'
+  },
+  {
+    label: '₹2000+',
+    range: '2000+',
+    desc: 'Premium hampers for unforgettable celebrations',
+    gradient: 'from-[#fff1f2] to-[#ffe4e6]',
+    image: '/images/budget-2000-above.png',
+    icon: Crown,
+    iconColor: 'text-[#ec407a]',
+    iconBg: 'bg-rose-100/50'
+  },
 ];
 
 const hamperCollections = [
@@ -320,36 +360,51 @@ const Home = () => {
       </section>
 
       {/* Section 4.2: Shop by Budget */}
-      <section className="bg-gradient-to-b from-purple-50/50 to-white py-16 md:py-20 border-b border-gray-50">
+      <section className="bg-gradient-to-b from-purple-50/20 to-white py-16 md:py-20 border-b border-gray-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <span className="mb-2 inline-block text-xs font-semibold uppercase tracking-[0.25em] text-[#ec407a]">
-              Budget Friendly
+          <div className="text-center mb-12">
+            <span className="mb-2 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-[#ec407a]">
+              ✨ Budget Friendly ✨
             </span>
-            <h2 className="text-2xl md:text-3xl font-bold text-[#1b1842]">Shop by Budget</h2>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#1b1842]">Shop by Budget</h2>
             <p className="text-sm text-gray-500 mt-2">
-              Gifting shoppers think in budget — find the perfect hamper in your range.
+              Find the perfect hamper in your budget range.
             </p>
           </div>
           
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {budgets.map((budget, index) => (
               <motion.div
                 key={budget.range}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08 }}
+                className={`group relative overflow-hidden rounded-[2rem] p-6 bg-gradient-to-br ${budget.gradient} h-[320px] flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 border border-pink-50/30`}
               >
-                <Link
-                  to={`/products?budget=${budget.range}`}
-                  className={`flex h-32 flex-col items-center justify-center rounded-2xl border-2 p-6 text-center transition hover:-translate-y-1 hover:shadow-lg md:h-40 ${budget.color}`}
-                >
-                  <span className="text-lg font-bold md:text-xl">{budget.label}</span>
-                  <span className="mt-2 flex items-center gap-1 text-sm opacity-80">
-                    Shop now <ArrowRight className="h-4 w-4" />
-                  </span>
-                </Link>
+                <div className="w-[55%] z-10 flex flex-col justify-between h-full">
+                  <div>
+                    {/* Circle icon */}
+                    <div className={`w-11 h-11 rounded-full ${budget.iconBg} flex items-center justify-center`}>
+                      <budget.icon className={`w-5 h-5 ${budget.iconColor}`} />
+                    </div>
+                    <h4 className="text-lg font-extrabold text-[#1b1842] mt-4 leading-tight">{budget.label}</h4>
+                    <p className="text-[11px] text-gray-500 mt-2 leading-relaxed max-w-[130px]">{budget.desc}</p>
+                  </div>
+                  <Link
+                    to={`/products?budget=${budget.range}`}
+                    className="inline-flex items-center gap-1 text-[#ec407a] hover:text-[#d81b60] text-xs font-bold transition-colors mt-4"
+                  >
+                    Shop now <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+                <div className="absolute right-[-10px] bottom-4 w-[52%] h-[65%] flex items-end justify-end overflow-hidden">
+                  <img
+                    src={budget.image}
+                    alt={budget.label}
+                    className="max-w-[125%] max-h-[125%] object-contain transform group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
               </motion.div>
             ))}
           </div>
@@ -358,28 +413,108 @@ const Home = () => {
 
       {/* Section 4.3: Build Your Own Hamper CTA */}
       <section id="build-hamper" className="py-16 md:py-20 relative">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="bg-gradient-to-br from-[#1b1842] to-[#2d2866] rounded-[2.5rem] p-8 md:p-14 text-center shadow-2xl relative overflow-hidden">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="bg-[#1b1842] rounded-[2.5rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
             {/* Background decorations */}
-            <div className="absolute top-0 left-0 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-            <div className="absolute top-0 right-0 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+            <div className="absolute top-0 left-0 w-64 h-64 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+            <div className="absolute bottom-0 right-0 w-64 h-64 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
             
-            <span className="mb-4 inline-block text-xs font-semibold uppercase tracking-[0.25em] text-pink-300">
-              Game Changer
-            </span>
-            <h2 className="font-playfair text-4xl md:text-5xl text-white mb-6">Design the Perfect Gift</h2>
-            <p className="mx-auto max-w-2xl text-purple-100 text-lg mb-10">
-              People love customization! Build a personalized hamper step-by-step. Choose a premium box, add their favorite items, pick a greeting card, and we'll curate it beautifully.
-            </p>
-            
-            <Link
-              to="/build-hamper"
-              className="inline-flex items-center gap-3 rounded-full bg-gradient-to-r from-pink-500 to-orange-400 px-10 py-5 text-lg font-bold text-white shadow-xl hover:shadow-2xl hover:scale-105 transition-all"
-            >
-              <Gift className="w-6 h-6" />
-              Build Your Own Hamper Now
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Link>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10 text-left">
+              {/* Left col */}
+              <div className="lg:col-span-5 flex flex-col justify-center">
+                <span className="mb-3 inline-block text-xs font-semibold uppercase tracking-[0.25em] text-pink-300">
+                  Game Changer
+                </span>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4 leading-tight">
+                  Design the Perfect Gift
+                </h2>
+                <p className="text-purple-100 text-sm md:text-base leading-relaxed mb-8 max-w-sm">
+                  Create a personalized hamper step-by-step. You choose, we curate it beautifully.
+                </p>
+                <Link
+                  to="/build-hamper"
+                  className="inline-flex items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-pink-500 to-orange-400 px-8 py-4.5 text-base font-bold text-white shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all self-start"
+                >
+                  <Gift className="w-5 h-5" />
+                  Build Your Own Hamper
+                  <ArrowRight className="w-4 h-4 ml-1" />
+                </Link>
+              </div>
+
+              {/* Center col: timeline */}
+              <div className="lg:col-span-4 relative pl-4 lg:pl-6 flex flex-col gap-6 before:absolute before:left-[36px] before:top-2 before:bottom-2 before:w-[2px] before:border-l before:border-dashed before:border-pink-300/30">
+                {/* Step 1 */}
+                <div className="flex items-start gap-4 relative">
+                  <div className="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center text-white shrink-0 shadow-md">
+                    <Package className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                      <span className="text-pink-300">1.</span> Choose Your Box
+                    </h4>
+                    <p className="text-xs text-purple-200 mt-0.5 leading-normal max-w-[200px]">
+                      Pick a premium box that fits the occasion.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Step 2 */}
+                <div className="flex items-start gap-4 relative">
+                  <div className="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center text-white shrink-0 shadow-md">
+                    <ShoppingBag className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                      <span className="text-pink-300">2.</span> Add Your Favorites
+                    </h4>
+                    <p className="text-xs text-purple-200 mt-0.5 leading-normal max-w-[200px]">
+                      Select fun and useful products they'll love.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Step 3 */}
+                <div className="flex items-start gap-4 relative">
+                  <div className="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center text-white shrink-0 shadow-md">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                      <span className="text-pink-300">3.</span> Add a Greeting Card
+                    </h4>
+                    <p className="text-xs text-purple-200 mt-0.5 leading-normal max-w-[200px]">
+                      Personalize it with your special message.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Step 4 */}
+                <div className="flex items-start gap-4 relative">
+                  <div className="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center text-white shrink-0 shadow-md">
+                    <Gift className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                      <span className="text-pink-300">4.</span> We Pack Beautifully
+                    </h4>
+                    <p className="text-xs text-purple-200 mt-0.5 leading-normal max-w-[200px]">
+                      We pack it with love and deliver happiness.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right col: Image */}
+              <div className="lg:col-span-3 flex justify-center items-center z-10">
+                <div className="relative rounded-[2rem] overflow-hidden max-w-[320px] lg:max-w-none w-full shadow-lg">
+                  <img
+                    src="/images/build-hamper-banner-right.png"
+                    alt="Build Your Own Hamper"
+                    className="w-full h-auto object-contain hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
