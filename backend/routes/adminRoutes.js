@@ -40,8 +40,8 @@ router.get('/upload-signature', adminProtect, (req, res) => {
 
 // Products
 router.get('/products', adminProtect, getProducts);
-router.post('/products', adminProtect, upload.array('images', 6), createProduct);
-router.put('/products/:id', adminProtect, upload.array('images', 6), updateProduct);
+router.post('/products', adminProtect, upload.array('images'), createProduct);
+router.put('/products/:id', adminProtect, upload.array('images'), updateProduct);
 router.delete('/products/:id', adminProtect, deleteProduct);
 
 // Orders

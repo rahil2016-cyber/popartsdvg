@@ -84,10 +84,7 @@ const AdminProducts = () => {
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const newImages = Array.from(e.target.files);
-      // Limit total selected images to 6
-      const total = selectedImages.length + newImages.length;
-      const imagesToAdd = total > 6 ? newImages.slice(0, 6 - selectedImages.length) : newImages;
-      setSelectedImages([...selectedImages, ...imagesToAdd]);
+      setSelectedImages([...selectedImages, ...newImages]);
     }
   };
 
@@ -398,7 +395,7 @@ const AdminProducts = () => {
               {/* Image Upload */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Product Images (Up to 6)
+                  Product Images
                 </label>
                 <div className="grid grid-cols-3 gap-3">
                   {/* Existing Images (for edit) */}
@@ -438,19 +435,17 @@ const AdminProducts = () => {
                   ))}
                   
                   {/* Upload Button */}
-                  {(existingImages.length + selectedImages.length) < 6 && (
-                    <label className="w-full h-24 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 transition-colors">
-                      <Upload className="h-8 w-8 text-gray-400 mb-1" />
-                      <p className="text-xs text-gray-500">Add Image</p>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        multiple
-                        onChange={handleImageChange}
-                        className="hidden"
-                      />
-                    </label>
-                  )}
+                  <label className="w-full h-24 border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-purple-400 transition-colors">
+                    <Upload className="h-8 w-8 text-gray-400 mb-1" />
+                    <p className="text-xs text-gray-500">Add Image</p>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </label>
                 </div>
               </div>
 

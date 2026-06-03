@@ -349,40 +349,32 @@ const updateProduct = async (req, res) => {
     if (directImageUrls.length > 0) {
       const [existingImages] = await connection.execute('SELECT COUNT(*) as count FROM product_images WHERE product_id = ?', [id]);
       const currentCount = Number(existingImages[0].count || 0);
-      const canAdd = 6 - currentCount;
       
-      if (canAdd > 0) {
-        const urlsToAdd = directImageUrls.slice(0, canAdd);
-        for (let i = 0; i < urlsToAdd.length; i++) {
-          try {
-            await connection.execute(
-              'INSERT INTO product_images (product_id, image_url, is_primary) VALUES (?, ?, ?)',
-              [id, urlsToAdd[i], (currentCount === 0 && i === 0) ? 1 : 0]
-            );
-          } catch (imgErr) {
-            console.log('Warning: Could not save direct image URL:', imgErr.message);
-          }
+      for (let i = 0; i < directImageUrls.length; i++) {
+        try {
+          await connection.execute(
+            'INSERT INTO product_images (product_id, image_url, is_primary) VALUES (?, ?, ?)',
+            [id, directImageUrls[i], (currentCount === 0 && i === 0) ? 1 : 0]
+          );
+        } catch (imgErr) {
+          console.log('Warning: Could not save direct image URL:', imgErr.message);
         }
       }
     } else if (req.files && req.files.length > 0) {
       const [existingImages] = await connection.execute('SELECT COUNT(*) as count FROM product_images WHERE product_id = ?', [id]);
-      const currentCount = existingImages[0].count;
-      const canAdd = 6 - currentCount;
+      const currentCount = Number(existingImages[0].count || 0);
       
-      if (canAdd > 0) {
-        const filesToAdd = req.files.slice(0, canAdd);
-        for (let i = 0; i < filesToAdd.length; i++) {
-          try {
-            const imageUrl = filesToAdd[i].path && filesToAdd[i].path.startsWith('http')
-              ? filesToAdd[i].path
-              : `/uploads/${filesToAdd[i].filename}`;
-            await connection.execute(
-              'INSERT INTO product_images (product_id, image_url, is_primary) VALUES (?, ?, ?)',
-              [id, imageUrl, (currentCount === 0 && i === 0) ? 1 : 0]
-            );
-          } catch (imgErr) {
-            console.log('Warning: Could not save image:', imgErr.message);
-          }
+      for (let i = 0; i < req.files.length; i++) {
+        try {
+          const imageUrl = req.files[i].path && req.files[i].path.startsWith('http')
+            ? req.files[i].path
+            : `/uploads/${req.files[i].filename}`;
+          await connection.execute(
+            'INSERT INTO product_images (product_id, image_url, is_primary) VALUES (?, ?, ?)',
+            [id, imageUrl, (currentCount === 0 && i === 0) ? 1 : 0]
+          );
+        } catch (imgErr) {
+          console.log('Warning: Could not save image:', imgErr.message);
         }
       }
     }

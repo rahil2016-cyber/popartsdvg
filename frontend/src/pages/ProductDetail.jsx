@@ -92,12 +92,12 @@ const ProductDetail = () => {
             />
           </div>
           {images.length > 1 && (
-            <div className="flex gap-4">
+            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
               {images.map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(index)}
-                  className={`w-24 h-24 rounded-xl overflow-hidden border-2 transition-all ${
+                  className={`w-24 h-24 flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all ${
                     selectedImage === index
                       ? 'border-hot-pink'
                       : 'border-transparent hover:border-gray-300'
