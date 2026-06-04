@@ -93,11 +93,11 @@ const AmoebaProductCard = ({
 
         {/* Amoeba frame */}
         <div
-          className={`relative overflow-hidden bg-white p-3 shadow-lg transition-all duration-500 ${blob.frame} ${blob.rotate} group-hover:shadow-xl group-hover:shadow-purple-200/50 ${blob.hoverRotate}`}
+          className={`relative overflow-hidden bg-white p-0.5 shadow-lg transition-all duration-500 ${blob.frame} ${blob.rotate} group-hover:shadow-xl group-hover:shadow-purple-200/50 ${blob.hoverRotate}`}
         >
           <Link to={`/product/${slug}`} className="relative block">
             {/* Rectangular inner image container to make product fully visible */}
-            <div className="relative overflow-hidden rounded-xl bg-gray-50 flex items-center justify-center w-full">
+            <div className="relative overflow-hidden rounded-xl bg-transparent flex items-center justify-center w-full">
               <img 
                 src={image} 
                 alt={product.name || 'Product Image'}
