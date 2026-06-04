@@ -88,33 +88,34 @@ const AmoebaProductCard = ({
         <motion.div
           variants={glowVariants}
           initial="rest"
-          className="absolute -inset-3 bg-gradient-to-br from-purple-200/80 via-pink-100/70 to-violet-200/60 blur-md rounded-2xl transition-transform duration-700"
+          className="absolute -inset-2 bg-gradient-to-br from-purple-200/80 via-pink-100/70 to-violet-200/60 blur-md rounded-[1.75rem] transition-transform duration-700"
         />
 
         {/* Card Frame */}
         <div
-          className="relative overflow-hidden bg-white p-2 shadow-lg transition-all duration-500 rounded-2xl group-hover:shadow-xl group-hover:shadow-purple-200/50"
+          className="relative overflow-hidden bg-white shadow-md transition-all duration-500 rounded-[1.75rem] group-hover:shadow-xl group-hover:shadow-purple-200/50"
         >
           <Link to={`/product/${slug}`} className="relative block">
             {/* Inner image container that takes the dynamic shape of the image */}
-            <div className="relative overflow-hidden rounded-xl bg-transparent flex items-center justify-center w-full">
+            <div className="relative overflow-hidden bg-gray-50 flex items-center justify-center w-full">
               <img 
                 src={image} 
                 alt={product.name || 'Product Image'}
-                className="w-full h-auto object-contain transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </div>
 
             {isSoldOut ? (
-              <span className="absolute left-3 top-3 z-10 rounded-full bg-gray-800/90 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
-                Sold out
+              <span className="absolute left-3 top-3 z-10 w-10 h-10 rounded-full bg-gray-800/90 flex flex-col items-center justify-center text-[8px] font-extrabold uppercase tracking-wide text-white shadow-sm leading-tight">
+                <span>Sold</span>
+                <span>Out</span>
               </span>
             ) : hasDiscount ? (
-              <span className="absolute left-3 top-3 z-10 rounded-full bg-[#ec407a] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
+              <span className="absolute left-3 top-3 z-10 w-10 h-10 rounded-full bg-[#ec407a] flex items-center justify-center text-xs font-bold text-white shadow-sm">
                 -{discountPercent}%
               </span>
             ) : (
-              <span className="absolute left-3 top-3 z-10 rounded-full bg-[#ab47bc] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-white shadow-sm">
+              <span className="absolute left-3 top-3 z-10 w-10 h-10 rounded-full bg-[#ab47bc] flex items-center justify-center text-[9px] font-bold uppercase tracking-wider text-white shadow-sm">
                 NEW
               </span>
             )}
@@ -172,7 +173,7 @@ const AmoebaProductCard = ({
 
 export const AmoebaProductCardSkeleton = () => (
   <div className="mx-auto w-full max-w-[260px] animate-pulse">
-    <div className="h-56 rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100" />
+    <div className="h-56 rounded-[1.75rem] bg-gradient-to-br from-purple-100 to-pink-100" />
     <div className="mx-auto mt-5 h-4 w-3/4 rounded bg-gray-200" />
     <div className="mx-auto mt-2 h-5 w-1/3 rounded bg-gray-200" />
   </div>
