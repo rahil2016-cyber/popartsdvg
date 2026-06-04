@@ -84,19 +84,19 @@ const AmoebaProductCard = ({
       className={`group flex-shrink-0 ${className}`}
     >
       <div className="relative mx-auto w-full max-w-[260px]">
-        {/* Amoeba glow - animates ONLY on hover */}
+        {/* Glow background - animates ONLY on hover */}
         <motion.div
           variants={glowVariants}
           initial="rest"
-          className={`absolute -inset-3 bg-gradient-to-br from-purple-200/80 via-pink-100/70 to-violet-200/60 blur-md ${blob.glow} ${blob.rotate} transition-transform duration-700 ${blob.hoverRotate}`}
+          className="absolute -inset-3 bg-gradient-to-br from-purple-200/80 via-pink-100/70 to-violet-200/60 blur-md rounded-2xl transition-transform duration-700"
         />
 
-        {/* Amoeba frame */}
+        {/* Card Frame */}
         <div
-          className={`relative overflow-hidden bg-white p-0.5 shadow-lg transition-all duration-500 ${blob.frame} ${blob.rotate} group-hover:shadow-xl group-hover:shadow-purple-200/50 ${blob.hoverRotate}`}
+          className="relative overflow-hidden bg-white p-2 shadow-lg transition-all duration-500 rounded-2xl group-hover:shadow-xl group-hover:shadow-purple-200/50"
         >
           <Link to={`/product/${slug}`} className="relative block">
-            {/* Rectangular inner image container to make product fully visible */}
+            {/* Inner image container that takes the dynamic shape of the image */}
             <div className="relative overflow-hidden rounded-xl bg-transparent flex items-center justify-center w-full">
               <img 
                 src={image} 
@@ -172,7 +172,7 @@ const AmoebaProductCard = ({
 
 export const AmoebaProductCardSkeleton = () => (
   <div className="mx-auto w-full max-w-[260px] animate-pulse">
-    <div className="h-56 rounded-[45%_55%_60%_40%/50%_50%_50%_50%] bg-gradient-to-br from-purple-100 to-pink-100" />
+    <div className="h-56 rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100" />
     <div className="mx-auto mt-5 h-4 w-3/4 rounded bg-gray-200" />
     <div className="mx-auto mt-2 h-5 w-1/3 rounded bg-gray-200" />
   </div>
