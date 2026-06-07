@@ -32,7 +32,7 @@ const HeroSection = () => {
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex touch-pan-y">
           {heroImages.map((src, index) => (
-            <div key={index} className="min-w-0 flex-[0_0_100%] h-[250px] sm:h-[350px] md:h-[400px] lg:h-[450px] xl:h-[500px] overflow-hidden">
+            <div key={index} className="min-w-0 flex-[0_0_100%] h-[160px] sm:h-[280px] md:h-[350px] lg:h-[400px] xl:h-[450px] overflow-hidden">
               <img
                 src={src}
                 alt={`Gift hamper ${index + 1}`}
