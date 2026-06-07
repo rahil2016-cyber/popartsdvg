@@ -26,7 +26,7 @@ router.get('/upload-signature', adminProtect, (req, res) => {
       timestamp: timestamp,
       folder: 'popartsdvg'
     }, cloudinary.config().api_secret);
-    
+
     res.json({
       signature,
       timestamp,

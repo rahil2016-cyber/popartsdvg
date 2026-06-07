@@ -70,8 +70,12 @@ const Navbar = () => {
       <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.06)]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-[72px] items-center justify-between gap-4 md:h-20">
-            <Link to="/" className="shrink-0">
-              <img src="/images/logo.png" alt="POPARTS DVG" className="h-14 w-auto md:h-16" />
+            <Link to="/" className="shrink-0 transition-transform duration-300 hover:scale-[1.03] block" title="POPARTS DVG Home">
+              <img 
+                src="/images/logo.png" 
+                alt="POPARTS DVG" 
+                className="h-14 w-auto md:h-16 filter drop-shadow-[0_2px_8px_rgba(103,58,183,0.15)] hover:drop-shadow-[0_4px_12px_rgba(236,64,122,0.25)] transition-all duration-300" 
+              />
             </Link>
 
             <div className="hidden items-center gap-6 xl:flex">

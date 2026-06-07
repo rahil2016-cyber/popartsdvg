@@ -6,8 +6,8 @@ import {
   MapPin,
   Clock,
   Send,
-  MessageSquare,
 } from 'lucide-react';
+import { FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
 const Contact = () => {
@@ -74,7 +74,9 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-[#1b1842]">Phone</h3>
-                    <p className="mt-1 text-[#5a5678]">+91 98765 43210</p>
+                    <p className="mt-1 text-[#5a5678]">
+                      <a href="tel:+918408995588" className="hover:text-[#ec407a] transition-colors">+91 84089 95588</a>
+                    </p>
                   </div>
                 </div>
 
@@ -84,7 +86,9 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-[#1b1842]">Email</h3>
-                    <p className="mt-1 text-[#5a5678]">popartsdvg@gmail.com</p>
+                    <p className="mt-1 text-[#5a5678]">
+                      <a href="mailto:popartsdvg@gmail.com" className="hover:text-[#ec407a] transition-colors">popartsdvg@gmail.com</a>
+                    </p>
                   </div>
                 </div>
 
@@ -94,7 +98,9 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-[#1b1842]">Location</h3>
-                    <p className="mt-1 text-[#5a5678]">Bangalore, Karnataka, India</p>
+                    <p className="mt-1 text-[#5a5678] leading-relaxed">
+                      2633/1, MCC B Block, Near Tank Park, Davanagere, Karnataka, 577004
+                    </p>
                   </div>
                 </div>
 
@@ -115,24 +121,27 @@ const Contact = () => {
                 <h3 className="font-semibold text-[#1b1842]">Follow Us</h3>
                 <div className="mt-4 flex gap-4">
                   <a
-                    href="https://instagram.com"
+                    href="https://www.instagram.com/popartsdvg?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 text-[#673ab7] hover:from-[#673ab7] hover:to-[#ec407a] hover:text-white transition"
+                    title="Instagram"
                   >
-                    <MessageSquare className="h-6 w-6" />
+                    <FaInstagram className="h-6 w-6" />
                   </a>
                   <a
-                    href="https://wa.me/919876543210"
+                    href="https://wa.me/918408995588"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 text-[#673ab7] hover:from-[#673ab7] hover:to-[#ec407a] hover:text-white transition"
+                    title="WhatsApp"
                   >
-                    <Phone className="h-6 w-6" />
+                    <FaWhatsapp className="h-6 w-6" />
                   </a>
                   <a
                     href="mailto:popartsdvg@gmail.com"
                     className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 text-[#673ab7] hover:from-[#673ab7] hover:to-[#ec407a] hover:text-white transition"
+                    title="Email"
                   >
                     <Mail className="h-6 w-6" />
                   </a>
