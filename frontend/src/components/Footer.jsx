@@ -1,9 +1,20 @@
 
+import { useState } from 'react';
 import { FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import { Mail, Phone, MapPin, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
+  const [subscribed, setSubscribed] = useState(false);
+  const [email, setEmail] = useState('');
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (email.trim()) {
+      setSubscribed(true);
+    }
+  };
+
   return (
     <footer className="bg-gradient-to-br from-gray-900 to-gray-800 text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,7 +71,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center text-gray-400">
                 <Mail className="w-5 h-5 mr-3 text-pink-500 shrink-0" />
-                <a href="mailto:popartsdvg@gmail.com" className="hover:text-white">popartsdvg@gmail.com</a>
+                <span className="select-all cursor-text hover:text-white transition-colors">popartsdvg@gmail.com</span>
               </li>
             </ul>
           </div>
@@ -70,16 +81,23 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
             <div className="w-full md:w-1/3">
               <p className="text-gray-400 text-sm mb-2">Subscribe to our newsletter</p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Your email address"
-                  className="flex-1 rounded-full px-4 py-2 bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-pink-500"
-                />
-                <button className="rounded-full bg-gradient-to-r from-purple-600 to-pink-500 px-6 py-2 font-semibold hover:opacity-90 transition-opacity">
-                  Subscribe
-                </button>
-              </div>
+              {subscribed ? (
+                <p className="text-green-400 font-semibold text-sm py-2">You are already subscribed!</p>
+              ) : (
+                <form onSubmit={handleSubscribe} className="flex gap-2">
+                  <input
+                    type="email"
+                    placeholder="Your email address"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="flex-1 rounded-full px-4 py-2 bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-pink-500"
+                  />
+                  <button type="submit" className="rounded-full bg-gradient-to-r from-purple-600 to-pink-500 px-6 py-2 font-semibold hover:opacity-90 transition-opacity">
+                    Subscribe
+                  </button>
+                </form>
+              )}
             </div>
             <div className="flex items-center gap-4">
               <a href="https://wa.me/918408995588" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-full bg-green-600 px-6 py-2 font-semibold hover:bg-green-700 transition-colors">

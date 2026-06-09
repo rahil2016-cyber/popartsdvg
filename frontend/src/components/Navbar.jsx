@@ -7,7 +7,7 @@ import { useCart } from '../context/CartContext';
 const categoriesDropdownLinks = [
   { label: 'Birthday Gifts', to: '/products?category=birthday-gifts' },
   { label: 'Return Gifts', to: '/products?category=return-gifts' },
-  { label: 'Baby Hampers', to: '/products?category=baby-hampers' },
+  { label: 'Traditional & Baby Arrival Hampers', to: '/products?category=baby-hampers' },
   { label: 'Bridal Gifting', to: '/products?category=bridal-gifting' },
   { label: 'Festive Gifts', to: '/products?category=festive-gifts' },
   { label: 'Corporate Gifting', to: '/products?category=corporate-gifting' },
@@ -98,6 +98,8 @@ const Navbar = () => {
                 onMouseLeave={() => setCategoriesOpen(false)}
               >
                 <button
+                  type="button"
+                  onClick={() => setCategoriesOpen(!categoriesOpen)}
                   className={`flex items-center gap-1 text-sm font-semibold transition py-1 ${
                     isActive('/products?category') && !isActive('/products?category=premium-hampers')
                       ? 'text-[#ec407a] border-b-2 border-[#ec407a]'
@@ -108,17 +110,19 @@ const Navbar = () => {
                   <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
                 </button>
                 {categoriesOpen && (
-                  <div className="absolute left-1/2 top-full z-50 mt-2 w-56 -translate-x-1/2 rounded-xl border border-gray-100 bg-white py-2 shadow-xl">
-                    {categoriesDropdownLinks.map((link) => (
-                      <Link
-                        key={link.label}
-                        to={link.to}
-                        onClick={() => setCategoriesOpen(false)}
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-pink-50 hover:text-[#ec407a] font-medium"
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
+                  <div className="absolute left-1/2 top-full z-50 pt-2 w-56 -translate-x-1/2">
+                    <div className="rounded-xl border border-gray-100 bg-white py-2 shadow-xl">
+                      {categoriesDropdownLinks.map((link) => (
+                        <Link
+                          key={link.label}
+                          to={link.to}
+                          onClick={() => setCategoriesOpen(false)}
+                          className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-pink-50 hover:text-[#ec407a] font-medium"
+                        >
+                          {link.label}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

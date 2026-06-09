@@ -87,7 +87,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-semibold text-[#1b1842]">Email</h3>
                     <p className="mt-1 text-[#5a5678]">
-                      <a href="mailto:popartsdvg@gmail.com" className="hover:text-[#ec407a] transition-colors">popartsdvg@gmail.com</a>
+                      <span className="select-all cursor-text font-semibold text-[#1b1842] hover:text-[#ec407a] transition-colors">popartsdvg@gmail.com</span>
                     </p>
                   </div>
                 </div>
@@ -138,25 +138,7 @@ const Contact = () => {
                   >
                     <FaWhatsapp className="h-6 w-6" />
                   </a>
-                  <a
-                    href="mailto:popartsdvg@gmail.com"
-                    className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 text-[#673ab7] hover:from-[#673ab7] hover:to-[#ec407a] hover:text-white transition"
-                    title="Email"
-                  >
-                    <Mail className="h-6 w-6" />
-                  </a>
                 </div>
-              </div>
-
-              {/* Quick Links */}
-              <div className="mt-10 rounded-2xl border border-purple-100 bg-purple-50 p-6">
-                <h3 className="font-semibold text-[#1b1842]">Quick Help</h3>
-                <ul className="mt-4 space-y-2 text-sm text-[#5a5678]">
-                  <li>• Custom hamper requests</li>
-                  <li>• Bulk & corporate orders</li>
-                  <li>• Wedding & event gifting</li>
-                  <li>• Delivery inquiries</li>
-                </ul>
               </div>
             </motion.div>
 

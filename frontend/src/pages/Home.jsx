@@ -27,7 +27,7 @@ import InstagramReelsSlider from '../components/InstagramReelsSlider';
 const occasions = [
   { icon: Cake, name: 'Birthday Gifts', slug: 'birthday-gifts', bgColor: 'bg-rose-50', iconColor: 'text-[#ec407a]', hoverBg: 'hover:bg-rose-100/70' },
   { icon: Gift, name: 'Return Gifts', slug: 'return-gifts', bgColor: 'bg-purple-50', iconColor: 'text-[#ab47bc]', hoverBg: 'hover:bg-purple-100/70' },
-  { icon: Baby, name: 'Baby Hampers', slug: 'baby-hampers', bgColor: 'bg-green-50', iconColor: 'text-[#2e7d32]', hoverBg: 'hover:bg-green-100/70' },
+  { icon: Baby, name: 'Traditional & Baby Arrival Hampers', slug: 'baby-hampers', bgColor: 'bg-green-50', iconColor: 'text-[#2e7d32]', hoverBg: 'hover:bg-green-100/70' },
   { icon: Heart, name: 'Bridal Gifting', slug: 'bridal-gifting', bgColor: 'bg-pink-50', iconColor: 'text-[#f43f5e]', hoverBg: 'hover:bg-pink-100/70' },
   { icon: Sparkles, name: 'Festive Gifts', slug: 'festive-gifts', bgColor: 'bg-amber-50', iconColor: 'text-[#d97706]', hoverBg: 'hover:bg-amber-100/70' },
   { icon: Briefcase, name: 'Corporate Gifting', slug: 'corporate-gifting', bgColor: 'bg-indigo-50', iconColor: 'text-[#1565c0]', hoverBg: 'hover:bg-indigo-100/70' },
@@ -94,8 +94,8 @@ const hamperCollections = [
     image: '/images/return-gift-hamper.png' 
   },
   { 
-    title: 'Baby Hampers', 
-    desc: 'Adorable gifts for little ones', 
+    title: 'Traditional & Baby Arrival Hampers', 
+    desc: 'Not just stationery', 
     link: '/products?category=baby-hampers', 
     gradient: 'from-[#ffe4e6] to-[#fecdd3]', 
     image: '/images/baby-hamper.png' 
@@ -209,7 +209,7 @@ const Home = () => {
       </section>
 
       {/* Section 2: Best Sellers */}
-      <section className="py-10 md:py-14 bg-white border-b border-gray-50">
+      <section id="bestsellers" className="py-10 md:py-14 bg-white border-b border-gray-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-xl md:text-2xl font-bold text-[#1b1842] flex items-center gap-2">

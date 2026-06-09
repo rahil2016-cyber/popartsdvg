@@ -8,8 +8,8 @@ const features = [
   },
   {
     icon: Heart,
-    title: 'Cute & Unique Stationery',
-    subtitle: 'Fun designs, premium quality',
+    title: 'Traditional, Baby Arrival Hamper',
+    subtitle: 'Not just stationery',
   },
   {
     icon: Smile,
