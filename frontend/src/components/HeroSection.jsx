@@ -24,7 +24,7 @@ const HeroSection = () => {
   // Hero images
   const heroImages = [
     '/images/my-hero-image.jpg.png',
-    '/images/another-image.jpg.png',
+    '/images/traditional-hampers-banner.png',
   ];
 
   return (
