@@ -18,9 +18,6 @@ const About = () => {
             className="text-center"
           >
             <h1 className="font-playfair text-4xl md:text-5xl lg:text-6xl font-bold">About Us</h1>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-white/90">
-              Every gift should tell a story.
-            </p>
           </motion.div>
         </div>
       </section>
@@ -44,7 +41,7 @@ const About = () => {
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute bottom-4 left-4 right-4 rounded-xl bg-white/85 backdrop-blur-sm p-3 text-center shadow-md border border-purple-50">
-                  <p className="text-sm font-bold text-[#1b1842]">Founder & Curator</p>
+                  <p className="text-sm font-bold text-[#1b1842]">Founder</p>
                   <p className="text-xs text-purple-600 font-medium">POPARTSDVG</p>
                 </div>
               </div>
