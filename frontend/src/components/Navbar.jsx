@@ -52,11 +52,10 @@ const Navbar = () => {
     setCategoriesOpen(false);
   };
 
-  const navItemClass = (path) => 
-    `text-sm font-semibold transition-colors py-1 relative whitespace-nowrap ${
-      isActive(path) 
-        ? 'text-[#ec407a] border-b-2 border-[#ec407a]' 
-        : 'text-[#4a4458] hover:text-[#ec407a]'
+  const navItemClass = (path) =>
+    `text-sm font-semibold transition-colors py-1 relative whitespace-nowrap ${isActive(path)
+      ? 'text-[#ec407a] border-b-2 border-[#ec407a]'
+      : 'text-[#4a4458] hover:text-[#ec407a]'
     }`;
 
   return (
@@ -71,10 +70,10 @@ const Navbar = () => {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-[72px] items-center justify-between gap-4 md:h-20">
             <Link to="/" className="shrink-0 transition-transform duration-300 hover:scale-[1.03] block" title="POPARTS DVG Home">
-              <img 
-                src="/images/logo.png" 
-                alt="POPARTS DVG" 
-                className="h-14 w-auto md:h-16 filter drop-shadow-[0_2px_8px_rgba(103,58,183,0.15)] hover:drop-shadow-[0_4px_12px_rgba(236,64,122,0.25)] transition-all duration-300" 
+              <img
+                src="/images/logo.png"
+                alt="POPARTS DVG"
+                className="h-14 w-auto md:h-16 filter drop-shadow-[0_2px_8px_rgba(103,58,183,0.15)] hover:drop-shadow-[0_4px_12px_rgba(236,64,122,0.25)] transition-all duration-300"
               />
             </Link>
 
@@ -100,11 +99,10 @@ const Navbar = () => {
                 <button
                   type="button"
                   onClick={() => setCategoriesOpen(!categoriesOpen)}
-                  className={`flex items-center gap-1 text-sm font-semibold transition py-1 ${
-                    isActive('/products?category') && !isActive('/products?category=premium-hampers')
-                      ? 'text-[#ec407a] border-b-2 border-[#ec407a]'
-                      : 'text-[#4a4458] hover:text-[#ec407a]'
-                  }`}
+                  className={`flex items-center gap-1 text-sm font-semibold transition py-1 ${isActive('/products?category') && !isActive('/products?category=premium-hampers')
+                    ? 'text-[#ec407a] border-b-2 border-[#ec407a]'
+                    : 'text-[#4a4458] hover:text-[#ec407a]'
+                    }`}
                 >
                   Categories
                   <ChevronDown className="h-3.5 w-3.5 text-gray-400" />
@@ -151,7 +149,7 @@ const Navbar = () => {
                 {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
             </div>
-            
+
             <div className="hidden items-center gap-5 lg:flex">
               <button
                 type="button"

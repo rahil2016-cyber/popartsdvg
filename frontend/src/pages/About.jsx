@@ -32,18 +32,18 @@ const About = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="lg:col-span-5 flex justify-center"
+              className="lg:col-span-5 flex flex-col items-center"
             >
               <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[360px] aspect-[3/4] overflow-hidden rounded-3xl shadow-xl border-4 border-white bg-white">
                 <img
                   src="/images/founder.jpg"
-                  alt="POPARTSDVG Founder"
+                  alt="Dr Samadnya - Founder of POPARTSDVG"
                   className="h-full w-full object-cover"
                 />
-                <div className="absolute bottom-4 left-4 right-4 rounded-xl bg-white/85 backdrop-blur-sm p-3 text-center shadow-md border border-purple-50">
-                  <p className="text-sm font-bold text-[#1b1842]">Founder</p>
-                  <p className="text-xs text-purple-600 font-medium">POPARTSDVG</p>
-                </div>
+              </div>
+              <div className="mt-4 text-center">
+                <h3 className="font-playfair text-2xl font-bold text-[#1b1842]">Dr Samadnya</h3>
+                <p className="text-sm font-semibold tracking-wider text-purple-600 uppercase mt-1">Founder, POPARTSDVG</p>
               </div>
             </motion.div>
 
