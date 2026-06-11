@@ -5,11 +5,11 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 
 const categoriesDropdownLinks = [
-  { label: 'Birthday Gifts', to: '/products?category=birthday-gifts' },
+  { label: 'Birthday Gifting', to: '/products?category=birthday-gifting' },
   { label: 'Return Gifts', to: '/products?category=return-gifts' },
-  { label: 'Traditional & Baby Arrival Hampers', to: '/products?category=baby-hampers' },
-  { label: 'Bridal Gifting', to: '/products?category=bridal-gifting' },
-  { label: 'Festive Gifts', to: '/products?category=festive-gifts' },
+  { label: 'Theme Based Gifting', to: '/products?category=theme-based-gifting' },
+  { label: 'Traditional & Baby Arrival Hampers', to: '/products?category=traditional-baby-arrival-hampers' },
+  { label: 'Festive Gifting', to: '/products?category=festive-gifting' },
   { label: 'Corporate Gifting', to: '/products?category=corporate-gifting' },
   { label: 'Premium Hampers', to: '/products?category=premium-hampers' },
   { label: 'Personalised Gifts', to: '/products?category=personalised-gifts' },

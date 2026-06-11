@@ -1,14 +1,16 @@
 const pool = require('./config/db');
 
 const categories = [
-  { name: 'Birthday Gifts', slug: 'birthday-gifts' },
+  { name: 'Birthday Gifting', slug: 'birthday-gifting' },
   { name: 'Return Gifts', slug: 'return-gifts' },
-  { name: 'Baby Hampers', slug: 'baby-hampers' },
-  { name: 'Bridal & Muhurtam', slug: 'bridal-gifting' },
-  { name: 'Festivals', slug: 'festivals' },
-  { name: 'Personalized Gifts', slug: 'personalized-gifts' },
-  { name: 'Premium Hampers', slug: 'premium-hampers' },
+  { name: 'Theme Based Gifting', slug: 'theme-based-gifting' },
+  { name: 'Traditional & Baby Arrival Hampers', slug: 'traditional-baby-arrival-hampers' },
+  { name: 'Festive Gifting', slug: 'festive-gifting' },
   { name: 'Corporate Gifting', slug: 'corporate-gifting' },
+  { name: 'Premium Hampers', slug: 'premium-hampers' },
+  { name: 'Personalised Gifts', slug: 'personalised-gifts' },
+  { name: 'Empty Boxes', slug: 'empty-boxes' },
+  { name: 'Greeting Cards', slug: 'greeting-cards' }
 ];
 
 async function seedCategories() {

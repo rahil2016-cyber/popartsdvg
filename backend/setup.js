@@ -290,16 +290,18 @@ async function setupDatabase() {
     // 5. Also insert some sample data
     try {
       const categoriesToSeed = [
+        { name: 'Birthday Gifting', slug: 'birthday-gifting' },
+        { name: 'Return Gifts', slug: 'return-gifts' },
+        { name: 'Theme Based Gifting', slug: 'theme-based-gifting' },
+        { name: 'Traditional & Baby Arrival Hampers', slug: 'traditional-baby-arrival-hampers' },
+        { name: 'Festive Gifting', slug: 'festive-gifting' },
+        { name: 'Corporate Gifting', slug: 'corporate-gifting' },
+        { name: 'Premium Hampers', slug: 'premium-hampers' },
+        { name: 'Personalised Gifts', slug: 'personalised-gifts' },
         { name: 'Best Sellers', slug: 'best-sellers' },
         { name: 'New Arrivals', slug: 'new-arrivals' },
-        { name: 'Personalized Gifts', slug: 'personalized-gifts' },
-        { name: 'Premium Hampers', slug: 'premium-hampers' },
-        { name: 'Birthday Gifts', slug: 'birthday-gifts' },
-        { name: 'Return Gifts', slug: 'return-gifts' },
-        { name: 'Baby Hampers', slug: 'baby-hampers' },
-        { name: 'Bridal & Muhurtam', slug: 'bridal-gifting' },
-        { name: 'Festivals', slug: 'festivals' },
-        { name: 'Corporate Gifting', slug: 'corporate-gifting' }
+        { name: 'Empty Boxes', slug: 'empty-boxes' },
+        { name: 'Greeting Cards', slug: 'greeting-cards' }
       ];
       for (const cat of categoriesToSeed) {
         await connection.query(

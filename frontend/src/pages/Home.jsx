@@ -25,14 +25,14 @@ import AmoebaProductCard, { AmoebaProductCardSkeleton } from '../components/Amoe
 import InstagramReelsSlider from '../components/InstagramReelsSlider';
 
 const occasions = [
-  { icon: Cake, name: 'Birthday Gifts', slug: 'birthday-gifts', bgColor: 'bg-rose-50', iconColor: 'text-[#ec407a]', hoverBg: 'hover:bg-rose-100/70' },
+  { icon: Cake, name: 'Birthday Gifting', slug: 'birthday-gifting', bgColor: 'bg-rose-50', iconColor: 'text-[#ec407a]', hoverBg: 'hover:bg-rose-100/70' },
   { icon: Gift, name: 'Return Gifts', slug: 'return-gifts', bgColor: 'bg-purple-50', iconColor: 'text-[#ab47bc]', hoverBg: 'hover:bg-purple-100/70' },
-  { icon: Baby, name: 'Traditional & Baby Arrival Hampers', slug: 'baby-hampers', bgColor: 'bg-green-50', iconColor: 'text-[#2e7d32]', hoverBg: 'hover:bg-green-100/70' },
-  { icon: Heart, name: 'Bridal Gifting', slug: 'bridal-gifting', bgColor: 'bg-pink-50', iconColor: 'text-[#f43f5e]', hoverBg: 'hover:bg-pink-100/70' },
-  { icon: Sparkles, name: 'Festive Gifts', slug: 'festive-gifts', bgColor: 'bg-amber-50', iconColor: 'text-[#d97706]', hoverBg: 'hover:bg-amber-100/70' },
+  { icon: Wand2, name: 'Theme Based Gifting', slug: 'theme-based-gifting', bgColor: 'bg-pink-50', iconColor: 'text-[#f43f5e]', hoverBg: 'hover:bg-pink-100/70' },
+  { icon: Baby, name: 'Traditional & Baby Arrival Hampers', slug: 'traditional-baby-arrival-hampers', bgColor: 'bg-green-50', iconColor: 'text-[#2e7d32]', hoverBg: 'hover:bg-green-100/70' },
+  { icon: Sparkles, name: 'Festive Gifting', slug: 'festive-gifting', bgColor: 'bg-amber-50', iconColor: 'text-[#d97706]', hoverBg: 'hover:bg-amber-100/70' },
   { icon: Briefcase, name: 'Corporate Gifting', slug: 'corporate-gifting', bgColor: 'bg-indigo-50', iconColor: 'text-[#1565c0]', hoverBg: 'hover:bg-indigo-100/70' },
   { icon: Crown, name: 'Premium Hampers', slug: 'premium-hampers', bgColor: 'bg-yellow-50', iconColor: 'text-[#b45309]', hoverBg: 'hover:bg-yellow-100/70' },
-  { icon: Wand2, name: 'Personalised Gifts', slug: 'personalised-gifts', bgColor: 'bg-fuchsia-50', iconColor: 'text-[#d946ef]', hoverBg: 'hover:bg-fuchsia-100/70' },
+  { icon: Heart, name: 'Personalised Gifts', slug: 'personalised-gifts', bgColor: 'bg-fuchsia-50', iconColor: 'text-[#d946ef]', hoverBg: 'hover:bg-fuchsia-100/70' },
 ];
 
 const budgets = [
@@ -82,7 +82,7 @@ const hamperCollections = [
   { 
     title: 'Birthday Special Hampers', 
     desc: 'Make birthdays extra special', 
-    link: '/products?category=birthday-gifts', 
+    link: '/products?category=birthday-gifting', 
     gradient: 'from-[#fff0f3] to-[#ffe4e6]', 
     image: '/images/birthday-hamper.png' 
   },
@@ -96,7 +96,7 @@ const hamperCollections = [
   { 
     title: 'Traditional & Baby Arrival Hampers', 
     desc: 'Not just stationery', 
-    link: '/products?category=baby-hampers', 
+    link: '/products?category=traditional-baby-arrival-hampers', 
     gradient: 'from-[#ffe4e6] to-[#fecdd3]', 
     image: '/images/baby-hamper.png' 
   },
