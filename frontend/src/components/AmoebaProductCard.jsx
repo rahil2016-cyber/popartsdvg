@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Share2 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
 import { blobVariants } from './blobVariants';
+import ShareModal from './ShareModal';
 
 const AmoebaProductCard = ({
   product,
@@ -14,6 +16,7 @@ const AmoebaProductCard = ({
   const blob = blobVariants[index % blobVariants.length];
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const [isShareOpen, setIsShareOpen] = useState(false);
   
   const API_BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : (import.meta.env.PROD ? '' : 'http://localhost:5000');
   const image = product.primary_image 
@@ -120,6 +123,19 @@ const AmoebaProductCard = ({
               </span>
             )}
           </Link>
+
+          {/* Share Overlay Button */}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsShareOpen(true);
+            }}
+            className="absolute right-3 top-3 z-20 w-9 h-9 rounded-full bg-white/95 hover:bg-white text-gray-700 hover:text-[#ec407a] flex items-center justify-center shadow-md hover:shadow-lg hover:scale-105 active:scale-95 transition-all border border-gray-100/50"
+            aria-label="Share product"
+          >
+            <Share2 className="w-4 h-4" />
+          </button>
         </div>
       </div>
 
@@ -167,6 +183,13 @@ const AmoebaProductCard = ({
           </button>
         </div>
       </div>
+
+      {/* Share Modal */}
+      <ShareModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        product={product}
+      />
     </motion.div>
   );
 };

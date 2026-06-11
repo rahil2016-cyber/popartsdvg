@@ -1,10 +1,11 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Heart, Star, ChevronLeft } from 'lucide-react';
+import { ShoppingCart, Heart, Star, ChevronLeft, Share2 } from 'lucide-react';
 import api from '../services/api';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
+import ShareModal from '../components/ShareModal';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -14,6 +15,7 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
   const { addToCart } = useCart();
+  const [isShareOpen, setIsShareOpen] = useState(false);
 
   const API_BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : (import.meta.env.PROD ? '' : 'http://localhost:5000');
 
@@ -170,6 +172,13 @@ const ProductDetail = () => {
             <button className="w-14 h-14 border-2 border-gray-300 rounded-full flex items-center justify-center text-gray-600 hover:border-hot-pink hover:text-hot-pink transition-colors">
               <Heart className="w-6 h-6" />
             </button>
+            <button 
+              onClick={() => setIsShareOpen(true)}
+              className="w-14 h-14 border-2 border-gray-300 rounded-full flex items-center justify-center text-gray-600 hover:border-royal-purple hover:text-royal-purple transition-colors"
+              aria-label="Share product"
+            >
+              <Share2 className="w-6 h-6" />
+            </button>
           </div>
 
           {product.reviews && product.reviews.length > 0 && (
@@ -197,6 +206,12 @@ const ProductDetail = () => {
           )}
         </div>
       </div>
+
+      <ShareModal
+        isOpen={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        product={product}
+      />
     </div>
   );
 };

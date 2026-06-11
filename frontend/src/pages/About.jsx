@@ -59,16 +59,16 @@ const About = () => {
                 <Heart className="h-3.5 w-3.5 fill-purple-500 text-purple-500" />
                 Our Philosophy
               </div>
-              
+
               <h2 className="font-playfair text-3xl font-bold text-[#1b1842] sm:text-4xl md:text-5xl leading-tight">
                 Our Story
               </h2>
-              
+
               <div className="space-y-6 text-[#5a5678] text-base sm:text-lg leading-relaxed">
                 <p className="font-medium text-[#1b1842] text-lg sm:text-xl border-l-4 border-purple-500 pl-4 italic">
                   POPARTSDVG is a gifting studio built on one simple belief: every gift should tell a story.
                 </p>
-                
+
                 <p>
                   We create thoughtfully curated hampers and personalized gifts that celebrate life's special moments and meaningful connections. Designed with love and attention to detail, our gifts are made to leave lasting smiles and unforgettable memories.
                 </p>
