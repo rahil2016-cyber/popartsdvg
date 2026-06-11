@@ -61,10 +61,16 @@ async function updateCategories() {
   }
 
   console.log('✅ Categories successfully updated!');
-  process.exit(0);
+  if (require.main === module) {
+    process.exit(0);
+  }
 }
 
-updateCategories().catch(err => {
-  console.error('❌ Error updating categories:', err);
-  process.exit(1);
-});
+if (require.main === module) {
+  updateCategories().catch(err => {
+    console.error('❌ Error updating categories:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = updateCategories;

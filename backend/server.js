@@ -91,6 +91,16 @@ apiRouter.get('/run-setup', async (req, res) => {
   }
 });
 
+apiRouter.get('/run-migration', async (req, res) => {
+  try {
+    const updateCategories = require('./update-categories.js');
+    await updateCategories();
+    res.json({ success: true, message: 'Database categories migration completed successfully!' });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 apiRouter.get('/test-products', async (req, res) => {
   try {
     const pool = require('./config/db');
