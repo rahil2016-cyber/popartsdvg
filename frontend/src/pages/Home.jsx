@@ -297,6 +297,7 @@ const Home = () => {
                     src={col.image}
                     alt={col.title}
                     className="max-w-[125%] max-h-[125%] object-contain transform group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
               </div>
@@ -403,6 +404,7 @@ const Home = () => {
                     src={budget.image}
                     alt={budget.label}
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
               </motion.div>
@@ -511,6 +513,7 @@ const Home = () => {
                     src="/images/build-hamper-banner-right.png"
                     alt="Build Your Own Hamper"
                     className="w-full h-auto object-contain hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
                   />
                 </div>
               </div>

@@ -105,6 +105,7 @@ const AmoebaProductCard = ({
                 src={image} 
                 alt={product.name || 'Product Image'}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
               />
             </div>
 

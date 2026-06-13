@@ -27,10 +27,10 @@ const Footer = () => {
               Thoughtful premium hampers and personalised gifts for every celebration.
             </p>
             <div className="flex space-x-4">
-              <a href="https://www.instagram.com/popartsdvg?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-pink-500 transition-colors">
+              <a href="https://www.instagram.com/popartsdvg?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-pink-500 transition-colors" aria-label="Follow us on Instagram">
                 <FaInstagram className="w-6 h-6" />
               </a>
-              <a href="https://wa.me/918408995588" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-green-500 transition-colors">
+              <a href="https://wa.me/918408995588" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-green-500 transition-colors" aria-label="Chat with us on WhatsApp">
                 <FaWhatsapp className="w-6 h-6" />
               </a>
             </div>
@@ -88,12 +88,13 @@ const Footer = () => {
                   <input
                     type="email"
                     placeholder="Your email address"
+                    aria-label="Email address for newsletter"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="flex-1 rounded-full px-4 py-2 bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-pink-500"
                   />
-                  <button type="submit" className="rounded-full bg-gradient-to-r from-purple-600 to-pink-500 px-6 py-2 font-semibold hover:opacity-90 transition-opacity">
+                  <button type="submit" className="rounded-full bg-gradient-to-r from-purple-600 to-pink-500 px-6 py-2 font-semibold hover:opacity-90 transition-opacity" aria-label="Subscribe to newsletter">
                     Subscribe
                   </button>
                 </form>

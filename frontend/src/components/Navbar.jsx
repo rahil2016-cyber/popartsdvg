@@ -215,15 +215,16 @@ const Navbar = () => {
               <Link to="/about" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">About Us</Link>
               <Link to="/contact" onClick={closeMobile} className="block py-2.5 font-medium text-gray-800">Contact</Link>
 
-              <form onSubmit={handleSearch} className="flex pt-2">
+              <form onSubmit={handleSearch} className="flex pt-2" role="search">
                 <input
                   type="text"
                   placeholder="Search products..."
+                  aria-label="Search products"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="flex-1 rounded-l-full border border-gray-300 px-4 py-2 focus:outline-none"
                 />
-                <button type="submit" className="rounded-r-full bg-[#ec407a] px-4 py-2 text-white">
+                <button type="submit" className="rounded-r-full bg-[#ec407a] px-4 py-2 text-white" aria-label="Search">
                   <Search className="h-5 w-5" />
                 </button>
               </form>
