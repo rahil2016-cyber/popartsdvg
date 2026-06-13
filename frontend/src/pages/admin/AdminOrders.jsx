@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Gift, Package, LogOut, Eye, Truck, PlayCircle } from 'lucide-react';
+import { Gift, Package, LogOut, Eye, Truck, PlayCircle, Heart, Smile, ShoppingCart } from 'lucide-react';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
 
@@ -69,6 +69,8 @@ const AdminOrders = () => {
     }
   };
 
+  const isActive = (path) => window.location.pathname === path;
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -84,29 +86,23 @@ const AdminOrders = () => {
         </div>
 
         <nav className="space-y-2">
-          <Link to="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition">
-            <Package className="h-5 w-5" />
-            Dashboard
+          <Link to="/admin" className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin') ? 'bg-purple-50 text-purple-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}>
+            <Package className="h-5 w-5" /> Dashboard
           </Link>
-          <Link to="/admin/products" className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition">
-            <Gift className="h-5 w-5" />
-            Products
+          <Link to="/admin/products" className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/products') ? 'bg-purple-50 text-purple-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}>
+            <Gift className="h-5 w-5" /> Products
           </Link>
-          <Link to="/admin/orders" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-purple-50 text-purple-700 font-semibold">
-            <Truck className="h-5 w-5" />
-            Orders
+          <Link to="/admin/orders" className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/orders') ? 'bg-purple-50 text-purple-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}>
+            <ShoppingCart className="h-5 w-5" /> Orders
           </Link>
-          <Link to="/admin/categories" className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition">
-            <Gift className="h-5 w-5" />
-            Categories
+          <Link to="/admin/categories" className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/categories') ? 'bg-purple-50 text-purple-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}>
+            <Heart className="h-5 w-5" /> Categories
           </Link>
-          <Link to="/admin/coupons" className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition">
-            <Gift className="h-5 w-5" />
-            Coupons
+          <Link to="/admin/coupons" className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/coupons') ? 'bg-purple-50 text-purple-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}>
+            <Smile className="h-5 w-5" /> Coupons
           </Link>
-          <Link to="/admin/reels" className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition">
-            <PlayCircle className="h-5 w-5" />
-            Reels
+          <Link to="/admin/reels" className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/reels') ? 'bg-purple-50 text-purple-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}>
+            <PlayCircle className="h-5 w-5" /> Reels
           </Link>
         </nav>
 

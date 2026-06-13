@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Gift, Package, LogOut, Plus, Edit2, Trash2, Upload, PlayCircle } from 'lucide-react';
+import { Gift, Package, LogOut, Plus, Edit2, Trash2, Upload, PlayCircle, Heart, Smile, ShoppingCart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { uploadToCloudinary } from '../../utils/cloudinary';
 
@@ -15,6 +15,9 @@ const AdminProducts = () => {
   const [existingImages, setExistingImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [pages, setPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
@@ -38,9 +41,12 @@ const AdminProducts = () => {
   // Helper function to get admin token
   const getToken = () => localStorage.getItem('adminToken');
 
-  const fetchProducts = async (categoryId = '') => {
+  const fetchProducts = async (categoryId = '', page = 1) => {
     try {
+      setLoading(true);
       const url = new URL(API_URL + '/admin/products', window.location.origin);
+      url.searchParams.set('page', page);
+      url.searchParams.set('limit', 12);
       if (categoryId) {
         url.searchParams.set('category', categoryId);
       }
@@ -52,6 +58,9 @@ const AdminProducts = () => {
       });
       const data = await response.json();
       setProducts(data.products || []);
+      setTotal(data.total || 0);
+      setPages(data.pages || 1);
+      setCurrentPage(data.page || page);
     } catch (error) {
       console.error('Failed to fetch products:', error);
       toast.error('Failed to load products');
@@ -77,7 +86,7 @@ const AdminProducts = () => {
   };
 
   useEffect(() => {
-    fetchProducts(selectedCategory);
+    fetchProducts(selectedCategory, 1);
     fetchCategories();
   }, [selectedCategory]);
 
@@ -164,7 +173,7 @@ const AdminProducts = () => {
         setShowModal(false);
         setEditingProduct(null);
         resetForm();
-        await fetchProducts();
+        await fetchProducts(selectedCategory, currentPage);
       } else {
         const errorData = await response.json();
         toast.error(errorData.message || 'Failed to save product');
@@ -187,7 +196,7 @@ const AdminProducts = () => {
           }
         });
         toast.success('Product deleted!');
-        fetchProducts();
+        fetchProducts(selectedCategory, currentPage);
       } catch (error) {
         console.error('Error deleting product:', error);
         toast.error('Failed to delete product');
@@ -239,6 +248,8 @@ const AdminProducts = () => {
     navigate('/admin/login');
   };
 
+  const isActive = (path) => window.location.pathname === path;
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -253,16 +264,22 @@ const AdminProducts = () => {
           </div>
         </div>
         <nav className="space-y-2">
-          <Link to="/admin" className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition">
+          <Link to="/admin" className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin') ? 'bg-purple-50 text-purple-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}>
             <Package className="h-5 w-5" /> Dashboard
           </Link>
-          <Link to="/admin/products" className="flex items-center gap-3 px-4 py-3 rounded-xl bg-purple-50 text-purple-700 font-semibold">
+          <Link to="/admin/products" className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/products') ? 'bg-purple-50 text-purple-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}>
             <Gift className="h-5 w-5" /> Products
           </Link>
-          <Link to="/admin/orders" className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition">
-            <Package className="h-5 w-5" /> Orders
+          <Link to="/admin/orders" className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/orders') ? 'bg-purple-50 text-purple-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}>
+            <ShoppingCart className="h-5 w-5" /> Orders
           </Link>
-          <Link to="/admin/reels" className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-50 transition">
+          <Link to="/admin/categories" className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/categories') ? 'bg-purple-50 text-purple-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}>
+            <Heart className="h-5 w-5" /> Categories
+          </Link>
+          <Link to="/admin/coupons" className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/coupons') ? 'bg-purple-50 text-purple-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}>
+            <Smile className="h-5 w-5" /> Coupons
+          </Link>
+          <Link to="/admin/reels" className={`flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive('/admin/reels') ? 'bg-purple-50 text-purple-700 font-semibold' : 'text-gray-700 hover:bg-gray-50'}`}>
             <PlayCircle className="h-5 w-5" /> Reels
           </Link>
         </nav>
@@ -283,7 +300,7 @@ const AdminProducts = () => {
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none bg-white"
               >
                 <option value="">All Categories</option>
                 {categories.map((cat) => (
@@ -292,7 +309,7 @@ const AdminProducts = () => {
               </select>
             </div>
           </div>
-          <button onClick={() => { resetForm(); setShowModal(true); }} className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90">
+          <button onClick={() => { resetForm(); setShowModal(true); }} className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition shadow-md whitespace-nowrap">
             <Plus className="h-5 w-5" /> Add Product
           </button>
         </div>
@@ -358,10 +375,10 @@ const AdminProducts = () => {
                       </td>
                       <td className="px-6 py-4 pr-8 text-right">
                         <div className="flex items-center justify-end gap-3">
-                          <button onClick={() => handleEdit(product)} className="p-2 rounded-lg text-purple-600 hover:bg-purple-50">
+                          <button onClick={() => handleEdit(product)} className="p-2 rounded-lg text-purple-600 hover:bg-purple-50 transition">
                             <Edit2 className="h-4 w-4" />
                           </button>
-                          <button onClick={() => handleDelete(product.id)} className="p-2 rounded-lg text-red-600 hover:bg-red-50">
+                          <button onClick={() => handleDelete(product.id)} className="p-2 rounded-lg text-red-600 hover:bg-red-50 transition">
                             <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
@@ -376,6 +393,45 @@ const AdminProducts = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination Controls */}
+          {pages > 1 && (
+            <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100 bg-gray-50/50">
+              <p className="text-sm text-gray-500">
+                Showing <span className="font-semibold text-gray-900">{products.length}</span> of{' '}
+                <span className="font-semibold text-gray-900">{total}</span> products
+              </p>
+              <div className="flex items-center gap-1.5">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => fetchProducts(selectedCategory, currentPage - 1)}
+                  className="px-3.5 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                >
+                  Previous
+                </button>
+                {Array.from({ length: pages }, (_, i) => i + 1).map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => fetchProducts(selectedCategory, p)}
+                    className={`w-9 h-9 text-sm font-medium rounded-lg transition ${
+                      p === currentPage
+                        ? 'bg-purple-600 text-white'
+                        : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                ))}
+                <button
+                  disabled={currentPage === pages}
+                  onClick={() => fetchProducts(selectedCategory, currentPage + 1)}
+                  className="px-3.5 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 
