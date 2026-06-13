@@ -61,7 +61,6 @@ const InstagramReelsSlider = ({ posts }) => {
                   href="https://www.instagram.com/popartsdvg?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`View Instagram ${post.media_type || 'post'}`}
                 >
                   {post.media_type === 'video' ? (
                     <video
@@ -71,12 +70,11 @@ const InstagramReelsSlider = ({ posts }) => {
                       playsInline
                       autoPlay
                       className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
-                      aria-label="Instagram video post"
                     />
                   ) : (
                     <img
                       src={getFullMediaUrl(post.media_url)}
-                      alt="Instagram image post"
+                      alt=""
                       className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
                     />
                   )}
@@ -125,7 +123,6 @@ const InstagramReelsSlider = ({ posts }) => {
         onClick={scrollPrev}
         disabled={!prevBtnEnabled}
         className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white/90 rounded-full shadow-xl flex items-center justify-center text-[#673ab7] hover:bg-white hover:scale-110 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-        aria-label="Previous slide"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -135,7 +132,6 @@ const InstagramReelsSlider = ({ posts }) => {
         onClick={scrollNext}
         disabled={!nextBtnEnabled}
         className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white/90 rounded-full shadow-xl flex items-center justify-center text-[#673ab7] hover:bg-white hover:scale-110 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-        aria-label="Next slide"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

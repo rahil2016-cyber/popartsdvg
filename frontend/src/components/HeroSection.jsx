@@ -37,8 +37,6 @@ const HeroSection = () => {
                 src={src}
                 alt={`Gift hamper ${index + 1}`}
                 className="w-full h-full object-cover object-center"
-                fetchpriority={index === 0 ? "high" : undefined}
-                loading={index === 0 ? "eager" : "lazy"}
               />
             </div>
           ))}
@@ -52,7 +50,6 @@ const HeroSection = () => {
             key={index}
             onClick={() => emblaApi?.scrollTo(index)}
             className="w-3 h-3 rounded-full bg-white/50 hover:bg-white transition-all"
-            aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
