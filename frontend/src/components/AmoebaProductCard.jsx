@@ -99,12 +99,12 @@ const AmoebaProductCard = ({
           className="relative overflow-hidden bg-white shadow-md transition-all duration-500 rounded-[1.75rem] group-hover:shadow-xl group-hover:shadow-purple-200/50"
         >
           <Link to={`/product/${slug}`} className="relative block">
-            {/* Inner image container that takes the dynamic shape of the image */}
-            <div className="relative overflow-hidden bg-gray-50 flex items-center justify-center w-full">
+            {/* Inner image container that has a fixed aspect ratio for clean alignment */}
+            <div className="relative overflow-hidden bg-gray-50 flex items-center justify-center w-full h-48 sm:h-56">
               <img 
                 src={image} 
                 alt={product.name || 'Product Image'}
-                className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </div>
 
