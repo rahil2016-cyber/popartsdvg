@@ -1,6 +1,11 @@
 {
-  "buildCommand": "cd frontend && npm run build",
-  "outputDirectory": "frontend/dist",
+  "experimentalServices": {
+    "frontend": {
+      "root": "frontend",
+      "routePrefix": "/",
+      "framework": "vite"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/:path*",
@@ -9,10 +14,6 @@
     {
       "source": "/uploads/:path*",
       "destination": "https://poparts-api.joballocate.tech/uploads/:path*"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/$1"
     }
   ]
 }
