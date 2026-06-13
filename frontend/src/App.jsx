@@ -33,6 +33,7 @@ import AdminOrders from './pages/admin/AdminOrders';
 import AdminCategories from './pages/admin/AdminCategories';
 import AdminCoupons from './pages/admin/AdminCoupons';
 import AdminReels from './pages/admin/AdminReels';
+import WhatsAppButton from './components/WhatsAppButton';
 
 const AdminRoute = ({ children }) => {
   const adminToken = localStorage.getItem('adminToken');
@@ -118,6 +119,7 @@ const AppContent = () => {
         </Routes>
       </main>
       {!isAdminRoute && <Footer />}
+      <WhatsAppButton />
       <Toaster position="top-center" />
     </div>
   );
