@@ -44,7 +44,8 @@ const budgets = [
     image: '/images/budget-under-499.png',
     icon: Gift,
     iconColor: 'text-[#ec407a]',
-    iconBg: 'bg-pink-100/50'
+    iconBg: 'bg-pink-100/50',
+    alt: 'Customized Gift Box Davangere'
   },
   {
     label: '₹500–₹999',
@@ -54,7 +55,8 @@ const budgets = [
     image: '/images/budget-500-999.png',
     icon: ShoppingBag,
     iconColor: 'text-[#ab47bc]',
-    iconBg: 'bg-purple-100/50'
+    iconBg: 'bg-purple-100/50',
+    alt: 'Festival Gift Hamper Bangalore'
   },
   {
     label: '₹1000–₹1999',
@@ -64,7 +66,8 @@ const budgets = [
     image: '/images/budget-1000-1999.png',
     icon: Star,
     iconColor: 'text-[#d97706]',
-    iconBg: 'bg-amber-100/50'
+    iconBg: 'bg-amber-100/50',
+    alt: 'Personalized Corporate Gift'
   },
   {
     label: '₹2000+',
@@ -74,7 +77,8 @@ const budgets = [
     image: '/images/budget-2000-above.png',
     icon: Crown,
     iconColor: 'text-[#ec407a]',
-    iconBg: 'bg-rose-100/50'
+    iconBg: 'bg-rose-100/50',
+    alt: 'Customized Gift Hamper Bangalore'
   },
 ];
 
@@ -84,28 +88,32 @@ const hamperCollections = [
     desc: 'Make birthdays extra special', 
     link: '/products?category=birthday-gifting', 
     gradient: 'from-[#fff0f3] to-[#ffe4e6]', 
-    image: '/images/birthday-hamper.png' 
+    image: '/images/birthday-hamper.png',
+    alt: 'Birthday Return Gift Davangere'
   },
   { 
     title: 'Return Gift Hampers', 
     desc: 'Perfect for parties & celebrations', 
     link: '/products?category=return-gifts', 
     gradient: 'from-[#fffbeb] to-[#fef3c7]', 
-    image: '/images/return-gift-hamper.png' 
+    image: '/images/return-gift-hamper.png',
+    alt: 'Return Gifts Bangalore'
   },
   { 
     title: 'Traditional & Baby Arrival Hampers', 
     desc: 'Not just stationery', 
     link: '/products?category=traditional-baby-arrival-hampers', 
     gradient: 'from-[#ffe4e6] to-[#fecdd3]', 
-    image: '/images/baby-hamper.png' 
+    image: '/images/baby-hamper.png',
+    alt: 'Customized Gift Box Davangere'
   },
   { 
     title: 'Custom Hampers', 
     desc: 'Personalize it your way', 
     link: '/build-hamper', 
     gradient: 'from-[#e0f2fe] to-[#bae6fd]', 
-    image: '/images/custom-hamper.png' 
+    image: '/images/custom-hamper.png',
+    alt: 'Customized Gift Hamper Davangere'
   },
 ];
 
@@ -116,6 +124,7 @@ const Home = () => {
   const [newArrivals, setNewArrivals] = useState([]);
   const [instagramPosts, setInstagramPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [activeSeoTab, setActiveSeoTab] = useState('categories');
 
   useEffect(() => {
     const loadData = async () => {
@@ -157,6 +166,21 @@ const Home = () => {
     <div className="overflow-hidden bg-white">
       {/* Hero section kept completely untouched */}
       <HeroSection />
+
+      {/* Visual H1 welcome block for local SEO */}
+      <section className="py-12 md:py-16 bg-gradient-to-b from-purple-50/25 to-white text-center border-b border-gray-50">
+        <div className="mx-auto max-w-4xl px-4">
+          <span className="mb-2.5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-[#ec407a]">
+            ✨ Premium Gifting Studio ✨
+          </span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#1b1842] font-playfair leading-tight mb-4">
+            Customized Gifts, Return Gifts & Gift Hampers in Davangere & Bangalore
+          </h1>
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto font-medium">
+            Welcome to <strong>PopArts DVG</strong>, your trusted online gift shop specializing in curating premium customized gifts, personalized gift hampers, corporate gifts, and bulk return gifts for weddings, birthdays, baby showers, and festival celebrations in Davangere and Bangalore. We craft gifts that tell stories and deliver happiness.
+          </p>
+        </div>
+      </section>
 
       {/* Section 1: Shop by Occasion */}
       <section className="py-10 md:py-14 bg-white border-b border-gray-50">
@@ -295,7 +319,7 @@ const Home = () => {
                 <div className="absolute right-[-12px] bottom-[-12px] w-[50%] h-[85%] flex items-end justify-end overflow-hidden">
                   <img
                     src={col.image}
-                    alt={col.title}
+                    alt={col.alt || col.title}
                     className="max-w-[125%] max-h-[125%] object-contain transform group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
@@ -401,7 +425,7 @@ const Home = () => {
                 <div className="w-[76px] h-[76px] md:w-[100px] md:h-[100px] rounded-2xl overflow-hidden shrink-0 shadow-sm relative bg-white border border-pink-50/20">
                   <img
                     src={budget.image}
-                    alt={budget.label}
+                    alt={budget.alt || budget.label}
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
@@ -509,12 +533,154 @@ const Home = () => {
                 <div className="relative rounded-[2rem] overflow-hidden max-w-[320px] lg:max-w-none w-full shadow-lg">
                   <img
                     src="/images/build-hamper-banner-right.png"
-                    alt="Build Your Own Hamper"
+                    alt="Customized Gift Hamper Davangere"
                     className="w-full h-auto object-contain hover:scale-105 transition-transform duration-500"
                   />
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section: Interactive Gifting Hub & Locations for Local SEO */}
+      <section className="py-16 md:py-20 bg-gray-50/50 border-t border-b border-gray-100">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <span className="mb-2 inline-block text-xs font-semibold uppercase tracking-[0.25em] text-[#ec407a]">
+              📚 Gifting Guides & Locations
+            </span>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-[#1b1842]">
+              Explore Our Gifting Collections & Local Services
+            </h2>
+            <p className="text-xs md:text-sm text-gray-500 mt-2 max-w-2xl mx-auto">
+              Find customized gifts, bulk return gifts, and luxury corporate hampers delivered across Davangere, Bangalore, and nationwide.
+            </p>
+          </div>
+
+          {/* Tabs header */}
+          <div className="flex justify-center mb-8 border-b border-gray-200 max-w-md mx-auto">
+            <button
+              onClick={() => setActiveSeoTab('categories')}
+              className={`flex-1 py-3 text-sm font-semibold text-center border-b-2 transition-all ${
+                activeSeoTab === 'categories'
+                  ? 'border-[#ec407a] text-[#ec407a]'
+                  : 'border-transparent text-gray-500 hover:text-gray-800'
+              }`}
+            >
+              Gifting Categories
+            </button>
+            <button
+              onClick={() => setActiveSeoTab('locations')}
+              className={`flex-1 py-3 text-sm font-semibold text-center border-b-2 transition-all ${
+                activeSeoTab === 'locations'
+                  ? 'border-[#ec407a] text-[#ec407a]'
+                  : 'border-transparent text-gray-500 hover:text-gray-800'
+              }`}
+            >
+              Service Locations
+            </button>
+          </div>
+
+          {/* Tabs Content */}
+          <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100">
+            {activeSeoTab === 'categories' ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-pink-500 pl-2 mb-2">🎁 Birthday Return Gifts</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Make your celebrations memorable with premium **birthday return gifts in Davangere** and custom packages in **Bangalore**. From custom stationery to activity packs, we build hampers kids and guests cherish.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-pink-500 pl-2 mb-2">💍 Wedding Return Gifts</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Show your gratitude with elegant **wedding return gifts in Davangere** and customized favors in **Bangalore**. We craft unique wedding hampers featuring standard keepsakes and handcrafted packaging.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-pink-500 pl-2 mb-2">💼 Corporate Gifts</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Build professional relationships with bespoke **corporate gifts in Bangalore** and **Davangere**. Our custom brand hampers are ideal for onboarding, festive corporate gifting, and client appreciation events.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-pink-500 pl-2 mb-2">🌸 Customized Gift Hampers</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Select from our curated collections or build your own from scratch. Our **customized gift hampers in Davangere** are loaded with chocolates, cosmetics, and handwritten notes to make them unique.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-pink-500 pl-2 mb-2">✨ Personalized Gifts</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    We turn regular items into memories. Choose from **personalized gifts in Davangere and Bangalore** including engraved products, customized photo frames, and customized mugs for your loved ones.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-pink-500 pl-2 mb-2">🧸 Kids Gift Hampers</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Brighten their faces with custom gift hampers and unique kids packages filled with safe toys, coloring kits, and sweet treats tailored to make them happy.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-pink-500 pl-2 mb-2">👶 Baby Shower Return Gifts</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Celebrate new arrivals with cute baby shower favors, return gift favors, and hampers. We design premium items in pastel colors tailored to thank your close family.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-pink-500 pl-2 mb-2">🎉 Festival Gift Hampers</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Spread festive cheer during Diwali, Rakhi, or Christmas with custom **festival gift hampers in Bangalore** and **Davangere**, featuring traditional diyas, sweets, and premium chocolates.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-purple-600 pl-2 mb-2">📍 Customized Gifts Davangere</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    As a top-rated **gift shop in Davangere**, we create high-quality customized gifts, personalized items, and customized gift hampers for local pickup or hand delivery to your doorstep.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-purple-600 pl-2 mb-2">📍 Customized Gifts Bangalore</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Looking for premium **customized gifts in Bangalore**? We deliver hand-packed custom gift boxes, corporate hampers, and personalized favors across all major areas of Bangalore.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-purple-600 pl-2 mb-2">📍 Return Gifts Davangere</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Get customized **return gifts in Davangere** for birthday parties, housewarmings, and thread ceremonies. Bulk event return gift boxes available at affordable pricing.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-purple-600 pl-2 mb-2">📍 Return Gifts Bangalore</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Purchase premium bulk **return gifts in Bangalore** with prompt shipping. Our custom-designed return gift hampers are ideal for modern weddings and kids birthday events.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-purple-600 pl-2 mb-2">📍 Corporate Gifts Bangalore</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Providing top-tier **corporate gifts in Bangalore** for IT companies, startups, and corporate summits. Customized brand logos, premium packing, and direct delivery.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-purple-600 pl-2 mb-2">📍 Wedding Return Gifts Davangere</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Make your wedding stand out with handcrafted **wedding return gifts in Davangere**. We curate customized packaging and traditional goodies matching your wedding theme.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1b1842] text-sm md:text-base border-l-2 border-purple-600 pl-2 mb-2">📍 Birthday Return Gifts Bangalore</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Order customized **birthday return gifts in Bangalore** with theme-based styling. We build personalized birthday goodie bags and hampers kids will absolutely adore.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>

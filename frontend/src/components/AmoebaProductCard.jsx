@@ -103,7 +103,7 @@ const AmoebaProductCard = ({
             <div className="relative overflow-hidden bg-gray-50 flex items-center justify-center w-full h-48 sm:h-56">
               <img 
                 src={image} 
-                alt={product.name || 'Product Image'}
+                alt={`Customized ${product.name} | PopArts DVG Gift Hamper`}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </div>
