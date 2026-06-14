@@ -26,8 +26,8 @@ const createSession = async (req, res) => {
 
     const order = orders[0];
 
-    // Ensure order belongs to user if logged in
-    if (userId && order.user_id && order.user_id !== userId) {
+    // Ensure order belongs to user
+    if (order.user_id && order.user_id !== userId) {
       return res.status(403).json({ message: 'Unauthorized access to this order' });
     }
 

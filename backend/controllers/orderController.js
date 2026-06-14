@@ -8,23 +8,50 @@ const generateOrderNumber = () => {
 };
 
 const createOrder = async (req, res) => {
+  const {
+    items,
+    shippingAddress,
+    billingAddress,
+    paymentMethod,
+    couponCode,
+    customerName,
+    customerEmail,
+    customerPhone,
+    deliveryType,
+    deliveryCharge
+  } = req.body;
+
+  // Basic Validation
+  if (!items || !Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({ message: 'Order items are required' });
+  }
+
+  if (!customerName || !customerEmail || !customerPhone) {
+    return res.status(400).json({ message: 'Customer name, email, and phone are required' });
+  }
+
+  if (!deliveryType || !['shipping', 'pickup'].includes(deliveryType)) {
+    return res.status(400).json({ message: 'Valid delivery type is required (shipping or pickup)' });
+  }
+
+  if (!paymentMethod || !['COD', 'Cashfree'].includes(paymentMethod)) {
+    return res.status(400).json({ message: 'Valid payment method is required (COD or Cashfree)' });
+  }
+
+  if (deliveryType === 'shipping' && paymentMethod !== 'Cashfree') {
+    return res.status(400).json({ message: 'Only online payment is allowed for home delivery' });
+  }
+
+  if (deliveryType === 'shipping') {
+    if (!shippingAddress || !shippingAddress.address || !shippingAddress.city || !shippingAddress.state || !shippingAddress.pincode) {
+      return res.status(400).json({ message: 'Complete shipping address is required for home delivery' });
+    }
+  }
+
   const connection = await pool.getConnection();
   
   try {
     await connection.beginTransaction();
-
-    const {
-      items,
-      shippingAddress,
-      billingAddress,
-      paymentMethod,
-      couponCode,
-      customerName,
-      customerEmail,
-      customerPhone,
-      deliveryType,
-      deliveryCharge
-    } = req.body;
 
     const userId = req.user ? req.user.id : null;
 
@@ -189,21 +216,31 @@ const getOrderById = async (req, res) => {
   try {
     const { id } = req.params;
     
-    let query = 'SELECT * FROM orders WHERE id = ? OR order_number = ?';
-    const params = [id, id];
-
-    if (req.user) {
-      query += ' AND user_id = ?';
-      params.push(req.user.id);
-    }
-
-    const [orders] = await pool.execute(query, params);
+    // Fetch the order first
+    const [orders] = await pool.execute(
+      'SELECT * FROM orders WHERE id = ? OR order_number = ?',
+      [id, id]
+    );
 
     if (orders.length === 0) {
       return res.status(404).json({ message: 'Order not found' });
     }
 
     const order = orders[0];
+
+    // Security/Ownership check
+    if (order.user_id) {
+      // Order belongs to a registered user
+      if (!req.user || req.user.id !== order.user_id) {
+        return res.status(403).json({ message: 'Unauthorized access to this order' });
+      }
+    } else {
+      // Guest order: must be queried by the unguessable order_number, not the sequential database id
+      if (id !== order.order_number) {
+        return res.status(403).json({ message: 'Unauthorized access to this order' });
+      }
+    }
+
     const [items] = await pool.execute(`
       SELECT oi.*, p.name, p.slug, pi.image_url as product_image
       FROM order_items oi
@@ -211,6 +248,7 @@ const getOrderById = async (req, res) => {
       LEFT JOIN product_images pi ON p.id = pi.product_id AND pi.is_primary = 1
       WHERE oi.order_id = ?
     `, [order.id]);
+    
     order.items = items.map(item => ({
       ...item,
       metadata: typeof item.metadata === 'string' ? JSON.parse(item.metadata) : item.metadata

@@ -31,7 +31,7 @@ const Checkout = () => {
     city: '',
     state: '',
     pincode: '',
-    paymentMethod: 'COD',
+    paymentMethod: '',
     deliveryType: 'shipping'
   });
   const [loading, setLoading] = useState(false);
@@ -57,6 +57,16 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    if (!formData.paymentMethod) {
+      toast.error('Please select a payment method');
+      return;
+    }
+
+    if (formData.deliveryType === 'shipping' && formData.paymentMethod !== 'Cashfree') {
+      toast.error('Only online payment is allowed for home delivery');
+      return;
+    }
+
     const phoneDigits = (formData.customerPhone || '').replace(/[^0-9]/g, '');
     if (phoneDigits.length < 10) {
       toast.error('Please enter a valid 10-digit phone number');
@@ -186,7 +196,9 @@ const Checkout = () => {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-              <label className="flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-colors border-gray-200 hover:border-hot-pink">
+              <label className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-colors ${
+                formData.deliveryType === 'shipping' ? 'border-hot-pink bg-pink-50/10' : 'border-gray-200 hover:border-hot-pink'
+              }`}>
                 <input
                   type="radio"
                   name="deliveryType"
@@ -202,12 +214,14 @@ const Checkout = () => {
                 <div className="flex items-center gap-2">
                   <Truck className="w-5 h-5 text-gray-600" />
                   <div>
-                    <span className="text-gray-800">Home Delivery</span>
+                    <span className="text-gray-800 font-medium">Home Delivery</span>
                     <p className="text-sm text-gray-500">+₹{DELIVERY_CHARGE} delivery charge</p>
                   </div>
                 </div>
               </label>
-              <label className="flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-colors border-gray-200 hover:border-hot-pink">
+              <label className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-colors ${
+                formData.deliveryType === 'pickup' ? 'border-hot-pink bg-pink-50/10' : 'border-gray-200 hover:border-hot-pink'
+              }`}>
                 <input
                   type="radio"
                   name="deliveryType"
@@ -219,7 +233,7 @@ const Checkout = () => {
                 <div className="flex items-center gap-2">
                   <Store className="w-5 h-5 text-gray-600" />
                   <div>
-                    <span className="text-gray-800">Store Pickup</span>
+                    <span className="text-gray-800 font-medium">Store Pickup</span>
                     <p className="text-sm text-gray-500">Free (No delivery charge)</p>
                   </div>
                 </div>
@@ -296,7 +310,9 @@ const Checkout = () => {
 
             <div className="space-y-4 mb-8">
               {formData.deliveryType === 'pickup' && (
-                <label className="flex items-center p-4 border-2 rounded-xl cursor-pointer transition-colors border-gray-200 hover:border-hot-pink">
+                <label className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-colors ${
+                  formData.paymentMethod === 'COD' ? 'border-hot-pink bg-pink-50/10' : 'border-gray-200 hover:border-hot-pink'
+                }`}>
                   <input
                     type="radio"
                     name="paymentMethod"
@@ -305,10 +321,12 @@ const Checkout = () => {
                     onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
                     className="w-4 h-4 text-hot-pink"
                   />
-                  <span className="ml-3 text-gray-800">Cash on Delivery</span>
+                  <span className="ml-3 text-gray-800 font-medium">Cash on Delivery</span>
                 </label>
               )}
-              <label className="flex items-center p-4 border-2 rounded-xl cursor-pointer transition-colors border-gray-200 hover:border-hot-pink">
+              <label className={`flex items-center p-4 border-2 rounded-xl cursor-pointer transition-colors ${
+                formData.paymentMethod === 'Cashfree' ? 'border-hot-pink bg-pink-50/10' : 'border-gray-200 hover:border-hot-pink'
+              }`}>
                 <input
                   type="radio"
                   name="paymentMethod"
@@ -317,7 +335,7 @@ const Checkout = () => {
                   onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
                   className="w-4 h-4 text-hot-pink"
                 />
-                <span className="ml-3 text-gray-800">Pay Online (Cards/UPI/NetBanking)</span>
+                <span className="ml-3 text-gray-800 font-medium">Pay Online (Cards/UPI/NetBanking)</span>
               </label>
             </div>
 
